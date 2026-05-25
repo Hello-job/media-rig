@@ -15,7 +15,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "README.en.md"
   ],
   "scripts": {
     "dev": "vite --host 0.0.0.0",

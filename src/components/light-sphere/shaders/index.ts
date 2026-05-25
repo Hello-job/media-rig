@@ -1,4 +1,4 @@
-// GlowLine shaders
+// 发光网格线着色器
 export const glowLineVertex = `
   uniform vec3 uLightPos;
   uniform float uGlowRadius;
@@ -26,7 +26,7 @@ export const glowLineFragment = `
   }
 `;
 
-// GlassSphere shaders
+// 玻璃球体着色器
 export const glassSphereVertex = `
   varying vec3 vNormal;
   varying vec3 vWorld;
@@ -48,13 +48,13 @@ export const glassSphereFragment = `
     float NdotV = max(dot(n, viewDir), 0.0);
     float fresnel = pow(1.0 - NdotV, 2.5);
     float alpha = 0.008 + fresnel * 0.24;
-    // Back faces render with reduced alpha to prevent doubling from side views
+    // 背面降低透明度，避免侧视角出现叠加过亮。
     if (!gl_FrontFacing) alpha *= 0.3;
     gl_FragColor = vec4(uColor, alpha);
   }
 `;
 
-// LightHandle sphere shader
+// 灯光手柄球体着色器
 export const lightHandleVertex = `
   uniform vec3 uBeamDir;
   varying vec3 vNormal;
@@ -89,7 +89,7 @@ export const lightHandleFragment = `
   }
 `;
 
-// LightHandle glow disc shader
+// 灯光手柄光晕圆片着色器
 export const glowDiscVertex = `
   varying vec2 vUv;
   void main() {
@@ -110,7 +110,7 @@ export const glowDiscFragment = `
   }
 `;
 
-// Beam cone shader
+// 光束锥体着色器
 export const beamVertex = `
   varying vec2 vUv;
   void main() {
@@ -132,7 +132,7 @@ export const beamFragment = `
   }
 `;
 
-// PhotoPlane shader
+// 照片平面着色器
 export const photoPlaneVertex = `
   varying vec2 vUv;
   varying vec3 vWorld;

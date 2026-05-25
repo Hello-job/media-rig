@@ -1,18 +1,18 @@
 # MediaRig
 
-中文 | [English](./README.en.md)
+[中文](./README.md) | English
 
-MediaRig 是一个 React 组件库，用于构建交互式媒体效果控制组件。
+MediaRig is a React component library for building interactive media effect controls.
 
-当前第一个组件是 `LightSphere`：一个基于 Three.js 的灯光控制器，可用于图片布光预览。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
+The first component is `LightSphere`, a Three.js-powered light controller for image lighting previews. The goal is to turn common media configuration experiences into reusable, ready-made components.
 
-## 安装
+## Install
 
 ```bash
 npm install media-rig three @react-three/fiber @react-three/drei
 ```
 
-## 使用
+## Usage
 
 ```jsx
 import { LightSphere } from "media-rig";
@@ -31,11 +31,11 @@ export default function App() {
 }
 ```
 
-父级容器需要提供稳定的宽度和高度。
+The parent container must have a stable width and height.
 
-## 属性
+## Props
 
-| 属性 | 类型 | 默认值 |
+| Prop | Type | Default |
 | --- | --- | --- |
 | `imageUrl` | `string` | `"/assets/photo-texture2.png"` |
 | `color` | `string` | `"#ff2200"` |
@@ -49,16 +49,16 @@ export default function App() {
 | `onLightMove` | `(position) => void` | `undefined` |
 | `onLightSettle` | `(position) => void` | `undefined` |
 
-## 本地开发
+## Local Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-打开 `http://localhost:5173/` 使用预览和配置界面。
+Open `http://localhost:5173/` to use the preview/configuration UI.
 
-## 项目结构
+## Project Structure
 
 ```txt
 src/
@@ -81,27 +81,27 @@ src/
   index.ts
 ```
 
-组件库代码位于 `src/components`，仅用于预览的界面位于 `src/preview`。
+Library code lives under `src/components`. Preview-only UI lives under `src/preview`.
 
-## 构建
+## Build
 
-构建 npm 包：
+Build the npm package:
 
 ```bash
 npm run build:lib
 ```
 
-构建预览应用：
+Build the preview app:
 
 ```bash
 npm run build:preview
 ```
 
-## 发布检查清单
+## Publish Checklist
 
-1. 确认 `license` 和 `author` 字段。
-2. 运行 `npm run typecheck`。
-3. 运行 `npm run build:lib`。
-4. 运行 `npm pack --dry-run` 检查发布文件。
-5. 使用 `npm login` 登录。
-6. 使用 `npm publish --access public` 发布。
+1. Confirm the license and author fields.
+2. Run `npm run typecheck`.
+3. Run `npm run build:lib`.
+4. Run `npm pack --dry-run` to inspect published files.
+5. Log in with `npm login`.
+6. Publish with `npm publish --access public`.

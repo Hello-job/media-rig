@@ -86,7 +86,7 @@ export default function LightSphereScene({
     camera.lookAt(0, viewMode === "perspective" ? 1.05 : 0.05, 0);
     if (spotLight.current) spotLight.current.position.copy(lightRef.current);
 
-    // Check if targetPosition changed from parent (position preset buttons)
+    // 检查父组件传入的目标位置是否变化（来自位置预设按钮）。
     const tp = targetPosRef?.current;
     if (tp && tp !== lastTargetPos.current) {
       lastTargetPos.current = tp;
@@ -99,7 +99,7 @@ export default function LightSphereScene({
       };
     }
 
-    // Fire onLightMove callback
+    // 触发灯光移动回调。
     if (onLightMove) {
       const p = lightRef.current;
       onLightMove({ x: p.x, y: p.y, z: p.z });

@@ -32,7 +32,7 @@ export default function LightSphere({
 
   const targetPosRef = useRef(targetPosition);
 
-  // Sync props into ref without causing Canvas re-renders
+  // 将属性同步到 ref，避免触发 Canvas 重新渲染。
   useEffect(() => {
     configRef.current = {
       color,
@@ -45,7 +45,7 @@ export default function LightSphere({
     };
   }, [color, spread, intensity, glowRadius, glowIntensity, baseLineOpacity, sphereRadius]);
 
-  // Sync target position into ref
+  // 将目标位置同步到 ref。
   useEffect(() => {
     targetPosRef.current = targetPosition;
   }, [targetPosition]);
