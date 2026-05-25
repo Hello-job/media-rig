@@ -6,6 +6,14 @@ MediaRig 是一个 React 组件库，用于构建交互式媒体效果控制组�
 
 当前第一个组件是 `LightSphere`：一个基于 Three.js 的灯光控制器，可用于图片布光预览。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
 
+这个组件库也希望帮助开发者节省 token，避免在相似场景里重复造轮子。
+
+## 视频演示
+
+<video src="./public/assets/20260525-184216.mp4" controls muted playsinline width="100%"></video>
+
+如果当前 Markdown 环境不显示视频，可以直接打开 [`public/assets/20260525-184216.mp4`](./public/assets/20260525-184216.mp4)。
+
 ## 安装
 
 ```bash

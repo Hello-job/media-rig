@@ -6,6 +6,14 @@ MediaRig is a React component library for building interactive media effect cont
 
 The first component is `LightSphere`, a Three.js-powered light controller for image lighting previews. The goal is to turn common media configuration experiences into reusable, ready-made components.
 
+This component library also helps developers save tokens and avoid rebuilding the same interaction patterns from scratch.
+
+## Demo Video
+
+<video src="./public/assets/20260525-184216.mp4" controls muted playsinline width="100%"></video>
+
+If your Markdown environment does not render the video, open [`public/assets/20260525-184216.mp4`](./public/assets/20260525-184216.mp4) directly.
+
 ## Install
 
 ```bash
