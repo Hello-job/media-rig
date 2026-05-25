@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply m-0 h-full min-h-full w-full overflow-hidden bg-[#141414];
+  }
+
+  canvas {
+    @apply block h-full w-full;
+    cursor: inherit;
+  }
+}
