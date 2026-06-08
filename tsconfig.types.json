@@ -6,7 +6,11 @@
     "emitDeclarationOnly": true,
     "declarationMap": false,
     "outDir": "dist/types",
-    "rootDir": "src"
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["src/index.ts", "src/components"]
 }
