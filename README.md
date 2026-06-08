@@ -16,9 +16,33 @@ MediaRig 是一个 React 组件库，用于构建交互式媒体效果控制组�
 
 ## 安装
 
+### npm 包安装
+
 ```bash
 npm install media-rig three @react-three/fiber @react-three/drei
 ```
+
+### shadcn 源码安装
+
+如果你希望像 shadcn/ui 一样把组件源码下载安装到项目目录里，可以使用 shadcn CLI 从 GitHub registry 安装：
+
+```bash
+npx shadcn@latest add your-name/media-rig/light-sphere
+```
+
+安装后组件源码会写入：
+
+```txt
+components/media-rig/light-sphere/
+```
+
+默认演示图片会写入：
+
+```txt
+public/assets/photo-texture2.png
+```
+
+发布到 GitHub 前，请把根目录 [`registry.json`](./registry.json) 里的 `homepage` 和上面的 `your-name/media-rig` 替换成真实仓库地址。公开仓库可直接作为 shadcn GitHub registry 使用。
 
 ## 使用
 
@@ -90,6 +114,8 @@ src/
 ```
 
 组件库代码位于 `src/components`，仅用于预览的界面位于 `src/preview`。
+
+根目录的 `registry.json` 用于 shadcn 源码安装，会把 `src/components/light-sphere` 复制到用户项目的 `components/media-rig/light-sphere`。
 
 ## 构建
 

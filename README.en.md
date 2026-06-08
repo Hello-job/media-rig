@@ -16,9 +16,33 @@ If your Markdown environment does not render the video, open [`public/assets/202
 
 ## Install
 
+### npm package
+
 ```bash
 npm install media-rig three @react-three/fiber @react-three/drei
 ```
+
+### shadcn source install
+
+If you want to install the component source into your project like shadcn/ui, use the shadcn CLI with this GitHub registry:
+
+```bash
+npx shadcn@latest add your-name/media-rig/light-sphere
+```
+
+The component source will be written to:
+
+```txt
+components/media-rig/light-sphere/
+```
+
+The default demo image will be written to:
+
+```txt
+public/assets/photo-texture2.png
+```
+
+Before publishing the repository, replace `homepage` in [`registry.json`](./registry.json) and `your-name/media-rig` above with the real GitHub repository. A public repository with a root `registry.json` can be used directly as a shadcn GitHub registry.
 
 ## Usage
 
@@ -90,6 +114,8 @@ src/
 ```
 
 Library code lives under `src/components`. Preview-only UI lives under `src/preview`.
+
+The root `registry.json` powers shadcn source installs by copying `src/components/light-sphere` into `components/media-rig/light-sphere` in the user's project.
 
 ## Build
 
