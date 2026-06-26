@@ -17,62 +17,62 @@
         {
           "path": "src/components/light-sphere/index.ts",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/index.ts"
+          "target": "components/light-sphere/index.ts"
         },
         {
           "path": "src/components/light-sphere/LightSphere.tsx",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/LightSphere.tsx"
+          "target": "components/light-sphere/LightSphere.tsx"
         },
         {
           "path": "src/components/light-sphere/LightSphere.constants.ts",
           "type": "registry:lib",
-          "target": "components/media-rig/light-sphere/LightSphere.constants.ts"
+          "target": "components/light-sphere/LightSphere.constants.ts"
         },
         {
           "path": "src/components/light-sphere/LightSphere.types.ts",
           "type": "registry:lib",
-          "target": "components/media-rig/light-sphere/LightSphere.types.ts"
+          "target": "components/light-sphere/LightSphere.types.ts"
         },
         {
           "path": "src/components/light-sphere/hooks/useLightDrag.ts",
           "type": "registry:hook",
-          "target": "components/media-rig/light-sphere/hooks/useLightDrag.ts"
+          "target": "components/light-sphere/hooks/useLightDrag.ts"
         },
         {
           "path": "src/components/light-sphere/parts/Beam.tsx",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/parts/Beam.tsx"
+          "target": "components/light-sphere/parts/Beam.tsx"
         },
         {
           "path": "src/components/light-sphere/parts/GlassSphere.tsx",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/parts/GlassSphere.tsx"
+          "target": "components/light-sphere/parts/GlassSphere.tsx"
         },
         {
           "path": "src/components/light-sphere/parts/LightHandle.tsx",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/parts/LightHandle.tsx"
+          "target": "components/light-sphere/parts/LightHandle.tsx"
         },
         {
           "path": "src/components/light-sphere/parts/LightSphereScene.tsx",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/parts/LightSphereScene.tsx"
+          "target": "components/light-sphere/parts/LightSphereScene.tsx"
         },
         {
           "path": "src/components/light-sphere/parts/PhotoPlane.tsx",
           "type": "registry:component",
-          "target": "components/media-rig/light-sphere/parts/PhotoPlane.tsx"
+          "target": "components/light-sphere/parts/PhotoPlane.tsx"
         },
         {
           "path": "src/components/light-sphere/shaders/index.ts",
           "type": "registry:lib",
-          "target": "components/media-rig/light-sphere/shaders/index.ts"
+          "target": "components/light-sphere/shaders/index.ts"
         },
         {
           "path": "src/components/light-sphere/utils/geometry.ts",
           "type": "registry:lib",
-          "target": "components/media-rig/light-sphere/utils/geometry.ts"
+          "target": "components/light-sphere/utils/geometry.ts"
         },
         {
           "path": "public/assets/photo-texture2.png",

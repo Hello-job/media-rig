@@ -12,5 +12,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["src/index.ts", "src/components"]
+  "include": ["src/index.ts", "src/components", "src/vite-env.d.ts"]
 }

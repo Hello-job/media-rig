@@ -33,7 +33,7 @@ npx shadcn@latest add your-name/media-rig/light-sphere
 安装后组件源码会写入：
 
 ```txt
-components/media-rig/light-sphere/
+components/light-sphere/
 ```
 
 默认演示图片会写入：
@@ -115,7 +115,7 @@ src/
 
 组件库代码位于 `src/components`，仅用于预览的界面位于 `src/preview`。
 
-根目录的 `registry.json` 用于 shadcn 源码安装，会把 `src/components/light-sphere` 复制到用户项目的 `components/media-rig/light-sphere`。
+根目录的 `registry.json` 用于 shadcn 源码安装，会把 `src/components/light-sphere` 复制到用户项目的 `components/light-sphere`。
 
 ## 构建
 

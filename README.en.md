@@ -33,7 +33,7 @@ npx shadcn@latest add your-name/media-rig/light-sphere
 The component source will be written to:
 
 ```txt
-components/media-rig/light-sphere/
+components/light-sphere/
 ```
 
 The default demo image will be written to:
@@ -115,7 +115,7 @@ src/
 
 Library code lives under `src/components`. Preview-only UI lives under `src/preview`.
 
-The root `registry.json` powers shadcn source installs by copying `src/components/light-sphere` into `components/media-rig/light-sphere` in the user's project.
+The root `registry.json` powers shadcn source installs by copying `src/components/light-sphere` into `components/light-sphere` in the user's project.
 
 ## Build
 
