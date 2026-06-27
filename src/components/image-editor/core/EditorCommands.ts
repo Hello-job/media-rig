@@ -18,6 +18,47 @@ function editable(object: FabricObject) {
   return object as EditableFabricObject;
 }
 
+type Point = { x: number; y: number };
+
+export function createDirectionalArrow(
+  start: Point,
+  end: Point,
+  color = "#ff2d20",
+  strokeWidth = 6,
+) {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const length = Math.max(Math.hypot(dx, dy), 1);
+  const headSize = Math.max(18, strokeWidth * 3.5);
+  const shaft = new Line([0, 0, Math.max(length - headSize * 0.55, 1), 0], {
+    stroke: color,
+    strokeWidth,
+    strokeLineCap: "round",
+    originX: "left",
+    originY: "center",
+  });
+  const head = new Triangle({
+    width: headSize,
+    height: headSize,
+    fill: color,
+    angle: 90,
+    left: length - headSize / 2,
+    top: 0,
+    originX: "center",
+    originY: "center",
+  });
+  const arrow = new Group([shaft, head], {
+    left: start.x,
+    top: start.y,
+    angle: (Math.atan2(dy, dx) * 180) / Math.PI,
+    originX: "left",
+    originY: "center",
+  });
+  const editableArrow = ensureEditorMetadata(arrow, "arrow", "箭头") as Group & EditableFabricObject;
+  editableArrow.setCoords();
+  return editableArrow;
+}
+
 export function createEditorCommands(canvas: Canvas) {
   const selected = () => canvas.getActiveObjects().map(editable);
 
@@ -103,22 +144,12 @@ export function createEditorCommands(canvas: Canvas) {
       );
     },
     addArrow() {
-      const line = new Line([-120, 0, 105, 0], { stroke: "#111111", strokeWidth: 4 });
-      const head = new Triangle({
-        width: 24,
-        height: 28,
-        fill: "#111111",
-        angle: 90,
-        left: 120,
-        top: 0,
-        originX: "center",
-        originY: "center",
-      });
-      return addObject(
-        new Group([line, head], { originX: "center", originY: "center" }),
-        "arrow",
-        "箭头",
-      );
+      const arrow = createDirectionalArrow({ x: 380, y: 400 }, { x: 620, y: 400 });
+      canvas.add(arrow);
+      arrow.setCoords();
+      canvas.setActiveObject(arrow);
+      canvas.requestRenderAll();
+      return arrow.id;
     },
     async duplicateSelection() {
       const objects = selected();

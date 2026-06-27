@@ -1,6 +1,6 @@
 import { Rect } from "fabric";
 import { describe, expect, it, vi } from "vitest";
-import { createEditorCommands } from "./EditorCommands";
+import { createDirectionalArrow, createEditorCommands } from "./EditorCommands";
 
 function canvasDouble(objects: any[] = []) {
   return {
@@ -26,6 +26,21 @@ function canvasDouble(objects: any[] = []) {
 }
 
 describe("EditorCommands", () => {
+  it("creates a red directional arrow whose tip follows the release point", () => {
+    const arrow = createDirectionalArrow({ x: 40, y: 60 }, { x: 140, y: 160 });
+    const [shaft, head] = arrow.getObjects();
+
+    expect(arrow).toMatchObject({
+      left: 40,
+      top: 60,
+      angle: 45,
+      editorType: "arrow",
+      name: "箭头",
+    });
+    expect(shaft).toMatchObject({ stroke: "#ff2d20", strokeWidth: 6 });
+    expect(head).toMatchObject({ fill: "#ff2d20" });
+  });
+
   it("adds centered text with stable editor metadata", () => {
     const canvas = canvasDouble();
     const commands = createEditorCommands(canvas as never);

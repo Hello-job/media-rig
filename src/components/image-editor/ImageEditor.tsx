@@ -9,6 +9,7 @@ import { useEditorKeyboard } from "./hooks/useEditorKeyboard";
 import { useImageEditorController } from "./hooks/useImageEditorController";
 import LayersPanel from "./panels/LayersPanel";
 import BottomToolbar from "./toolbars/BottomToolbar";
+import PaintToolbar from "./toolbars/PaintToolbar";
 import SelectionToolbar from "./toolbars/SelectionToolbar";
 import TopToolbar from "./toolbars/TopToolbar";
 import "./ImageEditor.css";
@@ -121,6 +122,7 @@ const ImageEditor = forwardRef<ImageEditorHandle, ImageEditorProps>(function Ima
         </div>
       </main>
       <SelectionToolbar selected={controller.selectedObjects} actions={actions} />
+      {state.activeTool === "draw" ? <PaintToolbar state={state} actions={actions} /> : null}
       {state.activeTool === "crop" ? (
         <div className="image-editor__crop-toolbar" role="toolbar" aria-label="裁剪设置">
           <span>拖动图片调整裁剪区域</span>

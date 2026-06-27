@@ -6,6 +6,8 @@ import ImageEditor from "./ImageEditor";
 const { actions, controller } = vi.hoisted(() => {
   const actions = {
     setTool: vi.fn(),
+    setPaintMode: vi.fn(),
+    setDrawColor: vi.fn(),
     toggleLayers: vi.fn(),
     setZoom: vi.fn(),
     fitToViewport: vi.fn(),
@@ -61,6 +63,9 @@ const { actions, controller } = vi.hoisted(() => {
       },
       state: {
         activeTool: "select",
+        paintMode: "brush",
+        drawColor: "#ff2d20",
+        drawWidth: 6,
         selectedIds: [],
         zoom: 1,
         canUndo: false,
@@ -82,6 +87,9 @@ vi.mock("./hooks/useImageEditorController", () => ({
 describe("ImageEditor", () => {
   beforeEach(() => {
     for (const action of Object.values(actions)) action.mockClear();
+    controller.state.activeTool = "select";
+    controller.state.paintMode = "brush";
+    controller.state.drawColor = "#ff2d20";
   });
 
   it("renders the complete MVP editor chrome", () => {
@@ -107,6 +115,29 @@ describe("ImageEditor", () => {
     expect(actions.addRect).toHaveBeenCalledOnce();
     expect(actions.toggleLayers).toHaveBeenCalledOnce();
     expect(actions.setCanvasSize).toHaveBeenCalledWith(1024, 576);
+  });
+
+  it("opens the paint palette with brush, eraser, and a red color control", async () => {
+    const user = userEvent.setup();
+    controller.state.activeTool = "draw";
+    render(<ImageEditor />);
+
+    expect(screen.getByRole("toolbar", { name: "绘色板设置" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "画笔" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByLabelText("画笔颜色")).toHaveValue("#ff2d20");
+    await user.click(screen.getByRole("button", { name: "橡皮擦" }));
+    fireEvent.change(screen.getByLabelText("画笔颜色"), { target: { value: "#14b8a6" } });
+
+    expect(actions.setPaintMode).toHaveBeenCalledWith("eraser");
+    expect(actions.setDrawColor).toHaveBeenCalledWith("#14b8a6");
+  });
+
+  it("enters drag-to-point arrow mode instead of inserting a preset arrow", async () => {
+    const user = userEvent.setup();
+    render(<ImageEditor />);
+    await user.click(screen.getByRole("button", { name: "箭头" }));
+    expect(actions.setTool).toHaveBeenCalledWith("arrow");
+    expect(actions.addArrow).not.toHaveBeenCalled();
   });
 
   it("imports dropped and pasted images through the same action", () => {

@@ -11,6 +11,7 @@ import {
   type ExportOptions,
   type ImageEditorDocument,
   type ImageEditorProps,
+  type ImageEditorPaintMode,
   type ImageEditorState,
   type ImageEditorTool,
 } from "../ImageEditor.types";
@@ -20,9 +21,10 @@ import {
   serializeCanvas,
   validateDocument,
 } from "../core/DocumentSerializer";
-import { createEditorCommands } from "../core/EditorCommands";
+import { createDirectionalArrow, createEditorCommands } from "../core/EditorCommands";
 import { downloadBlob, exportCanvas } from "../core/ExportService";
 import { HistoryManager } from "../core/HistoryManager";
+import { eraseDrawingTarget } from "../core/PaintTools";
 import {
   addImageToCanvas,
   fitImageToCanvas,
@@ -70,6 +72,9 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
   const [selectedObjects, setSelectedObjects] = useState<EditorObject[]>([]);
   const [state, setState] = useState<ImageEditorState>({
     activeTool: "select",
+    paintMode: "brush",
+    drawColor: "#ff2d20",
+    drawWidth: 6,
     selectedIds: [],
     zoom: 1,
     canUndo: false,
@@ -78,12 +83,19 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     isLoading: false,
     layersOpen: false,
   });
+  const stateRef = useRef(state);
+  stateRef.current = state;
   const historyRef = useRef(
     new HistoryManager<ImageEditorDocument>(props.historyLimit ?? DEFAULT_HISTORY_LIMIT),
   );
   const restoringRef = useRef(false);
   const snapDisabledRef = useRef(false);
   const cropRef = useRef<CropSession | null>(null);
+  const arrowGestureRef = useRef<{
+    start: { x: number; y: number };
+    preview: FabricObject;
+  } | null>(null);
+  const eraserChangedRef = useRef(false);
   const { canvas, canvasElementRef, viewportRef, zoom, setZoom, fitToViewport } = useFabricCanvas(
     document.canvas,
   );
@@ -212,12 +224,93 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
         top: (target.top ?? 0) + snapped.top - bounds.top,
       });
     };
+    const scenePoint = (event: any) => canvas.getScenePoint(event.e);
+    const mouseDownHandler = (event: any) => {
+      const current = stateRef.current;
+      if (current.activeTool === "arrow") {
+        const start = scenePoint(event);
+        const preview = createDirectionalArrow(
+          start,
+          { x: start.x + 1, y: start.y },
+          "#ff2d20",
+          current.drawWidth,
+        );
+        preview.set({ selectable: false, evented: false, opacity: 0.85 });
+        canvas.discardActiveObject();
+        canvas.add(preview);
+        arrowGestureRef.current = { start, preview };
+        canvas.requestRenderAll();
+        return;
+      }
+      if (current.activeTool === "draw" && current.paintMode === "eraser") {
+        const target = event.target ?? canvas.findTarget(event.e);
+        eraserChangedRef.current = eraseDrawingTarget(canvas, target);
+      }
+    };
+    const mouseMoveHandler = (event: any) => {
+      const gesture = arrowGestureRef.current;
+      if (gesture) {
+        const end = scenePoint(event);
+        canvas.remove(gesture.preview);
+        const preview = createDirectionalArrow(
+          gesture.start,
+          end,
+          "#ff2d20",
+          stateRef.current.drawWidth,
+        );
+        preview.set({ selectable: false, evented: false, opacity: 0.85 });
+        canvas.add(preview);
+        arrowGestureRef.current = { ...gesture, preview };
+        canvas.requestRenderAll();
+        return;
+      }
+      const current = stateRef.current;
+      if (current.activeTool === "draw" && current.paintMode === "eraser") {
+        const target = event.target ?? canvas.findTarget(event.e);
+        eraserChangedRef.current =
+          eraseDrawingTarget(canvas, target) || eraserChangedRef.current;
+      }
+    };
+    const mouseUpHandler = (event: any) => {
+      const gesture = arrowGestureRef.current;
+      if (gesture) {
+        const end = scenePoint(event);
+        canvas.remove(gesture.preview);
+        arrowGestureRef.current = null;
+        if (Math.hypot(end.x - gesture.start.x, end.y - gesture.start.y) >= 4) {
+          const arrow = createDirectionalArrow(
+            gesture.start,
+            end,
+            "#ff2d20",
+            stateRef.current.drawWidth,
+          );
+          canvas.add(arrow);
+          canvas.setActiveObject(arrow);
+          arrow.setCoords();
+          canvas.requestRenderAll();
+          commitCanvas();
+          syncSelection();
+        }
+        canvas.selection = true;
+        canvas.defaultCursor = "default";
+        stateRef.current = { ...stateRef.current, activeTool: "select" };
+        setState((current) => ({ ...current, activeTool: "select" }));
+        return;
+      }
+      if (eraserChangedRef.current) {
+        eraserChangedRef.current = false;
+        commitCanvas();
+      }
+    };
     canvas.on("selection:created", selectionHandler);
     canvas.on("selection:updated", selectionHandler);
     canvas.on("selection:cleared", selectionHandler);
     canvas.on("object:modified", modifiedHandler);
     canvas.on("path:created", pathHandler);
     canvas.on("object:moving", movingHandler);
+    canvas.on("mouse:down", mouseDownHandler);
+    canvas.on("mouse:move", mouseMoveHandler);
+    canvas.on("mouse:up", mouseUpHandler);
     canvas.on("text:editing:exited" as any, modifiedHandler);
     return () => {
       active = false;
@@ -227,7 +320,12 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
       canvas.off("object:modified", modifiedHandler);
       canvas.off("path:created", pathHandler);
       canvas.off("object:moving", movingHandler);
+      canvas.off("mouse:down", mouseDownHandler);
+      canvas.off("mouse:move", mouseMoveHandler);
+      canvas.off("mouse:up", mouseUpHandler);
       canvas.off("text:editing:exited" as any, modifiedHandler);
+      if (arrowGestureRef.current) canvas.remove(arrowGestureRef.current.preview);
+      arrowGestureRef.current = null;
     };
   }, [canvas, commitCanvas, reportError, syncHistoryState, syncSelection]);
 
@@ -270,15 +368,44 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
   const actions = useMemo(() => ({
     setTool(tool: ImageEditorTool) {
       if (canvas) {
-        canvas.isDrawingMode = tool === "draw";
-        if (tool === "draw") {
+        const paintMode = stateRef.current.paintMode;
+        canvas.isDrawingMode = tool === "draw" && paintMode === "brush";
+        canvas.selection = tool !== "draw" && tool !== "arrow";
+        canvas.defaultCursor = tool === "draw" || tool === "arrow" ? "crosshair" : "default";
+        if (tool === "draw" || tool === "arrow") {
+          canvas.discardActiveObject();
+          canvas.requestRenderAll();
+          syncSelection();
+        }
+        if (tool === "draw" && paintMode === "brush") {
           const brush = new PencilBrush(canvas);
-          brush.color = "#111111";
-          brush.width = 4;
+          brush.color = stateRef.current.drawColor;
+          brush.width = stateRef.current.drawWidth;
           canvas.freeDrawingBrush = brush;
         }
       }
+      stateRef.current = { ...stateRef.current, activeTool: tool };
       setState((current) => ({ ...current, activeTool: tool }));
+    },
+    setPaintMode(mode: ImageEditorPaintMode) {
+      if (canvas) {
+        canvas.selection = false;
+        canvas.isDrawingMode = mode === "brush";
+        canvas.defaultCursor = mode === "brush" ? "crosshair" : "cell";
+        if (mode === "brush") {
+          const brush = new PencilBrush(canvas);
+          brush.color = stateRef.current.drawColor;
+          brush.width = stateRef.current.drawWidth;
+          canvas.freeDrawingBrush = brush;
+        }
+      }
+      stateRef.current = { ...stateRef.current, paintMode: mode };
+      setState((current) => ({ ...current, paintMode: mode }));
+    },
+    setDrawColor(color: string) {
+      if (canvas?.freeDrawingBrush) canvas.freeDrawingBrush.color = color;
+      stateRef.current = { ...stateRef.current, drawColor: color };
+      setState((current) => ({ ...current, drawColor: color }));
     },
     toggleLayers() {
       setState((current) => ({ ...current, layersOpen: !current.layersOpen }));

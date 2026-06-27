@@ -20,6 +20,8 @@ export type ImageEditorTool =
   | "image"
   | "crop";
 
+export type ImageEditorPaintMode = "brush" | "eraser";
+
 export type ImageEditorCanvas = {
   width: number;
   height: number;
@@ -43,6 +45,9 @@ export type ImageEditorDocument = {
 
 export type ImageEditorState = {
   activeTool: ImageEditorTool;
+  paintMode: ImageEditorPaintMode;
+  drawColor: string;
+  drawWidth: number;
   selectedIds: string[];
   zoom: number;
   canUndo: boolean;

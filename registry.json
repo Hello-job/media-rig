@@ -132,6 +132,11 @@
           "target": "components/image-editor/core/EditorCommands.ts"
         },
         {
+          "path": "src/components/image-editor/core/PaintTools.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/PaintTools.ts"
+        },
+        {
           "path": "src/components/image-editor/core/ImageService.ts",
           "type": "registry:lib",
           "target": "components/image-editor/core/ImageService.ts"
@@ -175,6 +180,11 @@
           "path": "src/components/image-editor/toolbars/BottomToolbar.tsx",
           "type": "registry:component",
           "target": "components/image-editor/toolbars/BottomToolbar.tsx"
+        },
+        {
+          "path": "src/components/image-editor/toolbars/PaintToolbar.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/toolbars/PaintToolbar.tsx"
         },
         {
           "path": "src/components/image-editor/toolbars/SelectionToolbar.tsx",
