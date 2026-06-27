@@ -1,6 +1,6 @@
 import { Canvas, FabricObject } from "fabric";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { clampZoom, fitViewport, type Size } from "../utils/geometry";
+import { clampZoom, editorFitPadding, fitViewport, type Size } from "../utils/geometry";
 
 let defaultsConfigured = false;
 
@@ -19,7 +19,7 @@ export function useFabricCanvas(documentSize: Size) {
     const viewport = viewportRef.current;
     if (!viewport) return;
     const bounds = viewport.getBoundingClientRect();
-    setZoomState(fitViewport(bounds, documentSize));
+    setZoomState(fitViewport(bounds, documentSize, editorFitPadding(bounds.height)));
   }, [documentSize.height, documentSize.width]);
 
   useEffect(() => {

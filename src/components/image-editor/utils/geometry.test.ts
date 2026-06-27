@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampZoom, containSize, coverSize, fitViewport } from "./geometry";
+import { clampZoom, containSize, coverSize, editorFitPadding, fitViewport } from "./geometry";
 
 describe("geometry", () => {
   it("fits a canvas inside the viewport padding", () => {
@@ -11,6 +11,11 @@ describe("geometry", () => {
   it("clamps zoom to the supported range", () => {
     expect(clampZoom(0.01)).toBe(0.1);
     expect(clampZoom(12)).toBe(8);
+  });
+
+  it("reserves vertical room for floating editor controls", () => {
+    expect(editorFitPadding(948)).toBeCloseTo(161.16);
+    expect(editorFitPadding(200)).toBe(48);
   });
 
   it("calculates contain and cover sizes without changing aspect ratio", () => {

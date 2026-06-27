@@ -4,6 +4,10 @@ export function clampZoom(value: number) {
   return Math.min(8, Math.max(0.1, value));
 }
 
+export function editorFitPadding(viewportHeight: number) {
+  return Math.max(48, viewportHeight * 0.17);
+}
+
 export function fitViewport(viewport: Size, canvas: Size, padding = 48) {
   const availableWidth = Math.max(1, viewport.width - padding * 2);
   const availableHeight = Math.max(1, viewport.height - padding * 2);

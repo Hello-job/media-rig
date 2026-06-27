@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Check, FolderOpen, Layers3, Shapes, Type, X } from "lucide-react";
 import {
   forwardRef,
   useImperativeHandle,
@@ -63,8 +63,10 @@ const ImageEditor = forwardRef<ImageEditorHandle, ImageEditorProps>(function Ima
     >
       <TopToolbar document={controller.document} actions={actions} onClose={props.onClose} />
       <aside className="image-editor__left-rail" aria-label="素材和图层">
-        <button type="button" onClick={() => fileInputRef.current?.click()}>图片</button>
-        <button type="button" onClick={actions.toggleLayers}>图层</button>
+        <button type="button" aria-label="图片素材" title="图片素材" onClick={() => fileInputRef.current?.click()}><FolderOpen size={21} /></button>
+        <button type="button" aria-label="图层面板" title="图层面板" onClick={actions.toggleLayers}><Layers3 size={21} /></button>
+        <button type="button" aria-label="添加图形" title="添加图形" onClick={actions.addRect}><Shapes size={21} /></button>
+        <button type="button" aria-label="添加文本图层" title="添加文本图层" onClick={() => actions.addText()}><Type size={21} /></button>
       </aside>
       <LayersPanel
         open={state.layersOpen}
