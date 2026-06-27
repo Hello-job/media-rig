@@ -195,6 +195,43 @@
   border-radius: 50%;
   cursor: pointer;
 }
+.image-editor__paint-settings {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  display: grid;
+  width: 280px;
+  box-sizing: border-box;
+  gap: 18px;
+  padding: 18px;
+  transform: translateX(-50%);
+  background: #34353c;
+  border: 1px solid #4b4d55;
+  border-radius: 16px;
+  box-shadow: 0 18px 42px rgb(0 0 0 / 0.34);
+}
+.image-editor__paint-settings label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 12px;
+  color: var(--editor-text);
+  font-size: 14px;
+  font-weight: 650;
+}
+.image-editor__paint-settings output {
+  color: var(--editor-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.image-editor__paint-settings input[type="range"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 24px;
+  margin: 0;
+  accent-color: var(--editor-accent);
+  cursor: pointer;
+}
 
 .image-editor__number-control { display: flex; align-items: center; gap: 8px; padding: 0 10px; }
 .image-editor__number-control span { color: var(--editor-muted); font-size: 12px; }

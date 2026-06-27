@@ -48,6 +48,7 @@ export type ImageEditorState = {
   paintMode: ImageEditorPaintMode;
   drawColor: string;
   drawWidth: number;
+  drawOpacity: number;
   selectedIds: string[];
   zoom: number;
   canUndo: boolean;

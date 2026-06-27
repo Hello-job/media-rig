@@ -8,6 +8,8 @@ const { actions, controller } = vi.hoisted(() => {
     setTool: vi.fn(),
     setPaintMode: vi.fn(),
     setDrawColor: vi.fn(),
+    setDrawWidth: vi.fn(),
+    setDrawOpacity: vi.fn(),
     toggleLayers: vi.fn(),
     setZoom: vi.fn(),
     fitToViewport: vi.fn(),
@@ -65,7 +67,8 @@ const { actions, controller } = vi.hoisted(() => {
         activeTool: "select",
         paintMode: "brush",
         drawColor: "#ff2d20",
-        drawWidth: 6,
+        drawWidth: 4,
+        drawOpacity: 1,
         selectedIds: [],
         zoom: 1,
         canUndo: false,
@@ -90,6 +93,8 @@ describe("ImageEditor", () => {
     controller.state.activeTool = "select";
     controller.state.paintMode = "brush";
     controller.state.drawColor = "#ff2d20";
+    controller.state.drawWidth = 4;
+    controller.state.drawOpacity = 1;
   });
 
   it("renders the complete MVP editor chrome", () => {
@@ -100,6 +105,9 @@ describe("ImageEditor", () => {
     expect(screen.getByRole("complementary", { name: "素材和图层" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "添加文本" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "添加图片" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "矩形" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "椭圆" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "直线" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "撤销" })).toBeDisabled();
     expect(screen.queryByText("AI 生图")).not.toBeInTheDocument();
   });
@@ -125,11 +133,21 @@ describe("ImageEditor", () => {
     expect(screen.getByRole("toolbar", { name: "绘色板设置" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "画笔" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByLabelText("画笔颜色")).toHaveValue("#ff2d20");
+    expect(screen.getByRole("slider", { name: "画笔大小" })).toHaveValue("4");
+    expect(screen.getByRole("slider", { name: "画笔不透明度" })).toHaveValue("100");
     await user.click(screen.getByRole("button", { name: "橡皮擦" }));
     fireEvent.change(screen.getByLabelText("画笔颜色"), { target: { value: "#14b8a6" } });
+    fireEvent.change(screen.getByRole("slider", { name: "画笔大小" }), {
+      target: { value: "18" },
+    });
+    fireEvent.change(screen.getByRole("slider", { name: "画笔不透明度" }), {
+      target: { value: "45" },
+    });
 
     expect(actions.setPaintMode).toHaveBeenCalledWith("eraser");
     expect(actions.setDrawColor).toHaveBeenCalledWith("#14b8a6");
+    expect(actions.setDrawWidth).toHaveBeenCalledWith(18);
+    expect(actions.setDrawOpacity).toHaveBeenCalledWith(0.45);
   });
 
   it("enters drag-to-point arrow mode instead of inserting a preset arrow", async () => {

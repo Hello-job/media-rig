@@ -24,7 +24,7 @@ import {
 import { createDirectionalArrow, createEditorCommands } from "../core/EditorCommands";
 import { downloadBlob, exportCanvas } from "../core/ExportService";
 import { HistoryManager } from "../core/HistoryManager";
-import { eraseDrawingTarget } from "../core/PaintTools";
+import { applyEraserStroke, colorWithOpacity } from "../core/PaintTools";
 import {
   addImageToCanvas,
   fitImageToCanvas,
@@ -74,7 +74,8 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     activeTool: "select",
     paintMode: "brush",
     drawColor: "#ff2d20",
-    drawWidth: 6,
+    drawWidth: 4,
+    drawOpacity: 1,
     selectedIds: [],
     zoom: 1,
     canUndo: false,
@@ -95,13 +96,27 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     start: { x: number; y: number };
     preview: FabricObject;
   } | null>(null);
-  const eraserChangedRef = useRef(false);
   const { canvas, canvasElementRef, viewportRef, zoom, setZoom, fitToViewport } = useFabricCanvas(
     document.canvas,
   );
   const zoomRef = useRef(zoom);
   zoomRef.current = zoom;
   const commands = useMemo(() => (canvas ? createEditorCommands(canvas) : null), [canvas]);
+
+  const configurePaintBrush = useCallback(
+    (mode: ImageEditorPaintMode) => {
+      if (!canvas) return;
+      const brush = new PencilBrush(canvas);
+      brush.color =
+        mode === "eraser"
+          ? "rgba(255,255,255,0.65)"
+          : colorWithOpacity(stateRef.current.drawColor, stateRef.current.drawOpacity);
+      brush.width = stateRef.current.drawWidth;
+      canvas.freeDrawingBrush = brush;
+      canvas.isDrawingMode = true;
+    },
+    [canvas],
+  );
 
   const reportError = useCallback(
     (error: unknown, fallbackCode: ImageEditorError["code"] = "CANVAS_INIT_FAILED") => {
@@ -201,6 +216,14 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     const modifiedHandler = () => commitCanvas();
     const pathHandler = (event: any) => {
       if (!event.path) return;
+      if (stateRef.current.paintMode === "eraser") {
+        void applyEraserStroke(canvas, event.path)
+          .then((changed) => {
+            if (changed) commitCanvas();
+          })
+          .catch(reportError);
+        return;
+      }
       ensureEditorMetadata(event.path, "drawing", "画笔");
       commitCanvas();
     };
@@ -242,10 +265,6 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
         canvas.requestRenderAll();
         return;
       }
-      if (current.activeTool === "draw" && current.paintMode === "eraser") {
-        const target = event.target ?? canvas.findTarget(event.e);
-        eraserChangedRef.current = eraseDrawingTarget(canvas, target);
-      }
     };
     const mouseMoveHandler = (event: any) => {
       const gesture = arrowGestureRef.current;
@@ -263,12 +282,6 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
         arrowGestureRef.current = { ...gesture, preview };
         canvas.requestRenderAll();
         return;
-      }
-      const current = stateRef.current;
-      if (current.activeTool === "draw" && current.paintMode === "eraser") {
-        const target = event.target ?? canvas.findTarget(event.e);
-        eraserChangedRef.current =
-          eraseDrawingTarget(canvas, target) || eraserChangedRef.current;
       }
     };
     const mouseUpHandler = (event: any) => {
@@ -296,10 +309,6 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
         stateRef.current = { ...stateRef.current, activeTool: "select" };
         setState((current) => ({ ...current, activeTool: "select" }));
         return;
-      }
-      if (eraserChangedRef.current) {
-        eraserChangedRef.current = false;
-        commitCanvas();
       }
     };
     canvas.on("selection:created", selectionHandler);
@@ -369,7 +378,7 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     setTool(tool: ImageEditorTool) {
       if (canvas) {
         const paintMode = stateRef.current.paintMode;
-        canvas.isDrawingMode = tool === "draw" && paintMode === "brush";
+        canvas.isDrawingMode = tool === "draw";
         canvas.selection = tool !== "draw" && tool !== "arrow";
         canvas.defaultCursor = tool === "draw" || tool === "arrow" ? "crosshair" : "default";
         if (tool === "draw" || tool === "arrow") {
@@ -377,12 +386,7 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
           canvas.requestRenderAll();
           syncSelection();
         }
-        if (tool === "draw" && paintMode === "brush") {
-          const brush = new PencilBrush(canvas);
-          brush.color = stateRef.current.drawColor;
-          brush.width = stateRef.current.drawWidth;
-          canvas.freeDrawingBrush = brush;
-        }
+        if (tool === "draw") configurePaintBrush(paintMode);
       }
       stateRef.current = { ...stateRef.current, activeTool: tool };
       setState((current) => ({ ...current, activeTool: tool }));
@@ -390,22 +394,29 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     setPaintMode(mode: ImageEditorPaintMode) {
       if (canvas) {
         canvas.selection = false;
-        canvas.isDrawingMode = mode === "brush";
+        canvas.isDrawingMode = true;
         canvas.defaultCursor = mode === "brush" ? "crosshair" : "cell";
-        if (mode === "brush") {
-          const brush = new PencilBrush(canvas);
-          brush.color = stateRef.current.drawColor;
-          brush.width = stateRef.current.drawWidth;
-          canvas.freeDrawingBrush = brush;
-        }
+        configurePaintBrush(mode);
       }
       stateRef.current = { ...stateRef.current, paintMode: mode };
       setState((current) => ({ ...current, paintMode: mode }));
     },
     setDrawColor(color: string) {
-      if (canvas?.freeDrawingBrush) canvas.freeDrawingBrush.color = color;
       stateRef.current = { ...stateRef.current, drawColor: color };
       setState((current) => ({ ...current, drawColor: color }));
+      if (stateRef.current.paintMode === "brush") configurePaintBrush("brush");
+    },
+    setDrawWidth(width: number) {
+      const drawWidth = Math.min(40, Math.max(1, width));
+      stateRef.current = { ...stateRef.current, drawWidth };
+      setState((current) => ({ ...current, drawWidth }));
+      if (canvas?.freeDrawingBrush) canvas.freeDrawingBrush.width = drawWidth;
+    },
+    setDrawOpacity(opacity: number) {
+      const drawOpacity = Math.min(1, Math.max(0.1, opacity));
+      stateRef.current = { ...stateRef.current, drawOpacity };
+      setState((current) => ({ ...current, drawOpacity }));
+      if (stateRef.current.paintMode === "brush") configurePaintBrush("brush");
     },
     toggleLayers() {
       setState((current) => ({ ...current, layersOpen: !current.layersOpen }));
@@ -622,6 +633,7 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
     canvas,
     commands,
     commitCanvas,
+    configurePaintBrush,
     fitToViewport,
     props.maxImageSize,
     props.onExport,

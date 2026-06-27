@@ -40,6 +40,32 @@ export default function PaintToolbar({ state, actions }: PaintToolbarProps) {
           onChange={(event) => actions.setDrawColor(event.target.value)}
         />
       </label>
+      <div className="image-editor__paint-settings" role="group" aria-label="画笔参数">
+        <label>
+          <span>画笔宽度</span>
+          <output>{state.drawWidth}px</output>
+          <input
+            type="range"
+            aria-label="画笔大小"
+            min={1}
+            max={40}
+            value={state.drawWidth}
+            onChange={(event) => actions.setDrawWidth(Number(event.target.value))}
+          />
+        </label>
+        <label>
+          <span>不透明度</span>
+          <output>{Math.round(state.drawOpacity * 100)}%</output>
+          <input
+            type="range"
+            aria-label="画笔不透明度"
+            min={10}
+            max={100}
+            value={Math.round(state.drawOpacity * 100)}
+            onChange={(event) => actions.setDrawOpacity(Number(event.target.value) / 100)}
+          />
+        </label>
+      </div>
     </div>
   );
 }

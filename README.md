@@ -83,7 +83,7 @@ export default function App() {
 
 ## ImageEditor 图片编辑器
 
-`ImageEditor` 是一个基于 Fabric.js 的单画布编辑器，内置图片、文本、图形、绘色板、图层、裁剪、撤销重做、JSON 持久化和 PNG/JPEG 导出。绘色板支持红色默认画笔、颜色选择和仅擦除手绘笔迹的橡皮擦；箭头工具通过拖拽确定方向，箭头尖端落在松手位置并默认使用红色。
+`ImageEditor` 是一个基于 Fabric.js 的单画布编辑器，内置图片、文本、图形、绘色板、图层、裁剪、撤销重做、JSON 持久化和 PNG/JPEG 导出。绘色板支持红色默认画笔、1–40 px 宽度、10%–100% 不透明度、颜色选择和仅擦除轨迹经过区域的局部橡皮擦；底部基础图形入口精简为矩形，箭头通过拖拽确定方向并默认使用红色。
 
 ```tsx
 import { useRef } from "react";

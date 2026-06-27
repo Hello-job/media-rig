@@ -1,9 +1,7 @@
 import {
-  Circle,
   Expand,
   ImagePlus,
   Layers3,
-  Minus,
   MousePointer2,
   Palette,
   Redo2,
@@ -34,8 +32,6 @@ export default function BottomToolbar({
     <div className="image-editor__bottom-toolbar" role="toolbar" aria-label="编辑工具">
       <ToolButton label="选择工具" icon={MousePointer2} active={state.activeTool === "select"} onClick={() => actions.setTool("select")} />
       <ToolButton label="矩形" icon={RectangleHorizontal} active={state.activeTool === "rect"} onClick={() => actions.addRect()} />
-      <ToolButton label="椭圆" icon={Circle} active={state.activeTool === "ellipse"} onClick={() => actions.addEllipse()} />
-      <ToolButton label="直线" icon={Minus} active={state.activeTool === "line"} onClick={() => actions.addLine()} />
       <ToolButton label="箭头" icon={MoveUpRight} active={state.activeTool === "arrow"} onClick={() => actions.setTool("arrow")} />
       <ToolButton label="绘色板" icon={Palette} active={state.activeTool === "draw"} onClick={() => actions.setTool("draw")} />
       <ToolButton label="添加文本" icon={Type} onClick={() => actions.addText()} />

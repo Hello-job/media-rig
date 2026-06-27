@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ImageEditorDocument } from "../ImageEditor.types";
 import { useImageEditorController } from "./useImageEditorController";
@@ -36,6 +36,17 @@ describe("useImageEditorController", () => {
     const { result } = renderHook(() => useImageEditorController({ initialDocument: initial }));
     result.current.document.canvas.background = "#ffffff";
     expect(initial.canvas.background).toBe("#123456");
+  });
+
+  it("exposes clamped paint width and opacity settings", () => {
+    const { result } = renderHook(() => useImageEditorController());
+    expect(result.current.state).toMatchObject({ drawWidth: 4, drawOpacity: 1 });
+
+    act(() => result.current.actions.setDrawWidth(99));
+    act(() => result.current.actions.setDrawOpacity(0));
+
+    expect(result.current.state.drawWidth).toBe(40);
+    expect(result.current.state.drawOpacity).toBe(0.1);
   });
 
   it("prefers a valid stored document when storage is enabled", () => {
