@@ -1,0 +1,210 @@
+.image-editor {
+  --editor-bg: #0b0b0d;
+  --editor-surface: #27282d;
+  --editor-surface-hover: #34363c;
+  --editor-border: #41434a;
+  --editor-text: #f5f5f6;
+  --editor-muted: #a6a8af;
+  --editor-accent: #2b9df4;
+  position: relative;
+  display: grid;
+  grid-template-rows: 76px minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  color: var(--editor-text);
+  background: var(--editor-bg);
+  font-family: "Geist Variable", sans-serif;
+  outline: none;
+}
+
+.image-editor button,
+.image-editor select,
+.image-editor input {
+  font: inherit;
+}
+
+.image-editor button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 10px;
+  color: var(--editor-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.image-editor button:hover:not(:disabled) { background: var(--editor-surface-hover); }
+.image-editor button:disabled { opacity: 0.36; cursor: not-allowed; }
+.image-editor button.is-active { color: white; background: var(--editor-accent); }
+.image-editor button:focus-visible,
+.image-editor select:focus-visible,
+.image-editor input:focus-visible { outline: 2px solid #8ecbff; outline-offset: 2px; }
+
+.image-editor__topbar {
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+}
+
+.image-editor__canvas-controls,
+.image-editor__top-actions,
+.image-editor__bottom-toolbar,
+.image-editor__selection-toolbar,
+.image-editor__crop-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.image-editor__canvas-controls select,
+.image-editor__dimension,
+.image-editor__color-control,
+.image-editor__number-control {
+  min-height: 44px;
+  color: var(--editor-text);
+  background: var(--editor-surface);
+  border: 1px solid var(--editor-border);
+  border-radius: 12px;
+}
+
+.image-editor__canvas-controls select { padding: 0 34px 0 14px; }
+.image-editor__dimension { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; }
+.image-editor__dimension span { color: var(--editor-muted); font-size: 12px; }
+.image-editor__dimension input { width: 64px; color: var(--editor-text); background: transparent; border: 0; outline: 0; }
+.image-editor__dimension-separator { color: var(--editor-muted); }
+.image-editor__color-control { display: inline-grid; width: 44px; place-items: center; }
+.image-editor__color-control input { width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; overflow: hidden; }
+.image-editor__text-button { border-color: var(--editor-border) !important; }
+
+.image-editor__left-rail {
+  position: absolute;
+  z-index: 18;
+  top: 50%;
+  left: 24px;
+  display: grid;
+  gap: 4px;
+  width: 72px;
+  padding: 12px 8px;
+  transform: translateY(-50%);
+  background: var(--editor-surface);
+  border: 1px solid var(--editor-border);
+  border-radius: 28px;
+}
+
+.image-editor__left-rail button { font-size: 12px; }
+
+.image-editor__workspace {
+  position: relative;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--editor-bg);
+}
+
+.image-editor__canvas-stage {
+  position: relative;
+  flex: 0 0 auto;
+  transform-origin: center;
+  background-color: white;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.42);
+}
+
+.image-editor__canvas-stage .canvas-container { width: 100% !important; height: 100% !important; }
+.image-editor__canvas-stage canvas { display: block; }
+
+.image-editor__bottom-toolbar,
+.image-editor__selection-toolbar,
+.image-editor__crop-toolbar {
+  position: absolute;
+  z-index: 22;
+  left: 50%;
+  max-width: calc(100% - 220px);
+  padding: 8px 10px;
+  transform: translateX(-50%);
+  overflow-x: auto;
+  background: var(--editor-surface);
+  border: 1px solid var(--editor-border);
+  border-radius: 16px;
+  box-shadow: 0 14px 40px rgb(0 0 0 / 0.28);
+}
+
+.image-editor__bottom-toolbar { bottom: 24px; }
+.image-editor__selection-toolbar { top: 86px; }
+.image-editor__crop-toolbar { bottom: 86px; }
+.image-editor__toolbar-divider { width: 1px; height: 32px; margin: 0 4px; flex: 0 0 auto; background: var(--editor-border); }
+.image-editor__zoom-value { min-width: 48px; color: var(--editor-muted); font-size: 12px; text-align: center; }
+
+.image-editor__number-control { display: flex; align-items: center; gap: 8px; padding: 0 10px; }
+.image-editor__number-control span { color: var(--editor-muted); font-size: 12px; }
+.image-editor__number-control input { width: 54px; color: var(--editor-text); background: transparent; border: 0; }
+
+.image-editor__layers-panel {
+  position: absolute;
+  z-index: 19;
+  top: 88px;
+  bottom: 88px;
+  left: 108px;
+  width: 260px;
+  padding: 14px;
+  overflow: auto;
+  background: var(--editor-surface);
+  border: 1px solid var(--editor-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 55px rgb(0 0 0 / 0.32);
+}
+
+.image-editor__panel-title { margin: 2px 4px 12px; font-size: 14px; font-weight: 650; }
+.image-editor__layer-list { display: grid; gap: 6px; }
+.image-editor__layer-list > div { display: grid; grid-template-columns: minmax(0, 1fr) 36px 36px; align-items: center; border: 1px solid transparent; border-radius: 10px; }
+.image-editor__layer-list > div.is-selected { background: #343b47; border-color: #4b6e91; }
+.image-editor__layer-name { justify-content: space-between !important; min-width: 0; }
+.image-editor__layer-name span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.image-editor__layer-name small { color: var(--editor-muted); }
+.image-editor__layer-list p { padding: 24px 8px; color: var(--editor-muted); font-size: 13px; line-height: 1.5; }
+
+.image-editor__busy {
+  position: absolute;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(5 5 7 / 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.image-editor__announcer,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 960px) {
+  .image-editor { grid-template-rows: 64px minmax(0, 1fr); }
+  .image-editor__topbar { padding: 10px 12px; }
+  .image-editor__dimension,
+  .image-editor__text-button { display: none; }
+  .image-editor__left-rail { left: 12px; width: 58px; }
+  .image-editor__bottom-toolbar,
+  .image-editor__selection-toolbar { max-width: calc(100% - 96px); }
+}
