@@ -80,6 +80,133 @@
           "target": "public/assets/photo-texture2.png"
         }
       ]
+    },
+    {
+      "name": "image-editor",
+      "type": "registry:component",
+      "title": "Image Editor",
+      "description": "A full-featured Fabric.js image editor with layers, history, cropping, and export.",
+      "dependencies": [
+        "fabric",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/image-editor/index.ts",
+          "type": "registry:component",
+          "target": "components/image-editor/index.ts"
+        },
+        {
+          "path": "src/components/image-editor/ImageEditor.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/ImageEditor.tsx"
+        },
+        {
+          "path": "src/components/image-editor/ImageEditor.types.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/ImageEditor.types.ts"
+        },
+        {
+          "path": "src/components/image-editor/ImageEditor.constants.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/ImageEditor.constants.ts"
+        },
+        {
+          "path": "src/components/image-editor/ImageEditor.css",
+          "type": "registry:style",
+          "target": "components/image-editor/ImageEditor.css"
+        },
+        {
+          "path": "src/components/image-editor/core/DocumentSerializer.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/DocumentSerializer.ts"
+        },
+        {
+          "path": "src/components/image-editor/core/HistoryManager.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/HistoryManager.ts"
+        },
+        {
+          "path": "src/components/image-editor/core/EditorCommands.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/EditorCommands.ts"
+        },
+        {
+          "path": "src/components/image-editor/core/ImageService.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/ImageService.ts"
+        },
+        {
+          "path": "src/components/image-editor/core/CropSession.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/CropSession.ts"
+        },
+        {
+          "path": "src/components/image-editor/core/ExportService.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/ExportService.ts"
+        },
+        {
+          "path": "src/components/image-editor/core/SnapGuides.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/core/SnapGuides.ts"
+        },
+        {
+          "path": "src/components/image-editor/hooks/useFabricCanvas.ts",
+          "type": "registry:hook",
+          "target": "components/image-editor/hooks/useFabricCanvas.ts"
+        },
+        {
+          "path": "src/components/image-editor/hooks/useImageEditorController.ts",
+          "type": "registry:hook",
+          "target": "components/image-editor/hooks/useImageEditorController.ts"
+        },
+        {
+          "path": "src/components/image-editor/hooks/useEditorKeyboard.ts",
+          "type": "registry:hook",
+          "target": "components/image-editor/hooks/useEditorKeyboard.ts"
+        },
+        {
+          "path": "src/components/image-editor/toolbars/TopToolbar.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/toolbars/TopToolbar.tsx"
+        },
+        {
+          "path": "src/components/image-editor/toolbars/BottomToolbar.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/toolbars/BottomToolbar.tsx"
+        },
+        {
+          "path": "src/components/image-editor/toolbars/SelectionToolbar.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/toolbars/SelectionToolbar.tsx"
+        },
+        {
+          "path": "src/components/image-editor/panels/LayersPanel.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/panels/LayersPanel.tsx"
+        },
+        {
+          "path": "src/components/image-editor/controls/ColorControl.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/controls/ColorControl.tsx"
+        },
+        {
+          "path": "src/components/image-editor/controls/NumberControl.tsx",
+          "type": "registry:component",
+          "target": "components/image-editor/controls/NumberControl.tsx"
+        },
+        {
+          "path": "src/components/image-editor/utils/editorObject.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/utils/editorObject.ts"
+        },
+        {
+          "path": "src/components/image-editor/utils/geometry.ts",
+          "type": "registry:lib",
+          "target": "components/image-editor/utils/geometry.ts"
+        }
+      ]
     }
   ]
 }
