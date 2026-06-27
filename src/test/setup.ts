@@ -18,6 +18,7 @@ Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
   value: vi.fn(() => ({
     clearRect: vi.fn(),
     drawImage: vi.fn(),
+    measureText: vi.fn((text: string) => ({ width: text.length * 10 })),
     getImageData: vi.fn(() => ({ data: new Uint8ClampedArray(4) })),
     putImageData: vi.fn(),
     setTransform: vi.fn(),
