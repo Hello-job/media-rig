@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import DirectorStagePreview from "./pages/DirectorStagePreview";
+import ImageEditorPreview from "./pages/ImageEditorPreview";
 import LightSpherePreview from "./pages/LightSpherePreview";
 import "./styles.css";
 
@@ -13,4 +14,10 @@ if (!root) {
 const params = new URLSearchParams(window.location.search);
 const demo = params.get("demo");
 
-createRoot(root).render(demo === "light" ? <LightSpherePreview /> : <DirectorStagePreview />);
+createRoot(root).render(
+  demo === "light"
+    ? <LightSpherePreview />
+    : demo === "editor"
+      ? <ImageEditorPreview />
+      : <DirectorStagePreview />,
+);

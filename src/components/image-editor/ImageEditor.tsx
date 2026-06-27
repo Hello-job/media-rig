@@ -76,6 +76,7 @@ const ImageEditor = forwardRef<ImageEditorHandle, ImageEditorProps>(function Ima
         ref={controller.viewportRef}
         className="image-editor__workspace"
         data-testid="image-editor-workspace"
+        tabIndex={0}
         onDragOver={(event) => event.preventDefault()}
         onDrop={(event) => {
           event.preventDefault();
