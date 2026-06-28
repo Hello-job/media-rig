@@ -9,7 +9,7 @@
   html,
   body,
   #root {
-    @apply m-0 h-full min-h-full w-full overflow-hidden bg-[#141414];
+    @apply m-0 min-h-full w-full bg-white;
   }
 
   canvas {
@@ -20,10 +20,249 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-[#0a0a0a];
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .preview-page {
+    min-height: 100vh;
+    background: #ffffff;
+    padding: 64px 32px 88px;
+  }
+
+  .preview-page__content {
+    width: min(1480px, 100%);
+    margin: 0 auto;
+  }
+
+  .preview-page__header {
+    max-width: 760px;
+    margin-bottom: 38px;
+  }
+
+  .preview-page__header h1 {
+    margin: 0;
+    color: #0a0a0a;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+  }
+
+  .preview-page__header > p:not(.preview-page__eyebrow) {
+    max-width: 680px;
+    margin: 14px 0 0;
+    color: #737373;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .preview-page__eyebrow {
+    margin: 0 0 12px;
+    color: #8a8a8a;
+    font-size: 13px;
+    font-weight: 580;
+    letter-spacing: 0.01em;
+  }
+
+  .component-preview {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e4e4e4;
+    border-radius: 14px;
+    background: #ffffff;
+  }
+
+  .component-preview__stage {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .component-preview__stage--director {
+    height: 760px;
+    background: #fbfbfa;
+  }
+
+  .component-preview__stage--light {
+    height: min(760px, max(620px, calc(100vh - 210px)));
+    background: #141414;
+  }
+
+  .component-preview__code {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid #e4e4e4;
+    background: #f8f8f8;
+  }
+
+  .component-preview__code-collapsed {
+    position: relative;
+    height: 104px;
+    overflow: hidden;
+  }
+
+  .component-preview__code-expanded {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .component-preview__pre {
+    max-height: 288px;
+    margin: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 14px 18px 18px 0;
+    color: #27272a;
+    background: transparent;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 14px;
+    line-height: 1.75;
+    outline: none;
+    scrollbar-width: thin;
+    tab-size: 2;
+  }
+
+  .component-preview__pre:focus-visible {
+    box-shadow: inset 0 0 0 2px #a3a3a3;
+  }
+
+  .component-preview__code-line {
+    display: grid;
+    min-width: max-content;
+    grid-template-columns: 54px minmax(0, 1fr);
+    white-space: pre;
+  }
+
+  .component-preview__line-number {
+    color: #a3a3a3;
+    text-align: center;
+    user-select: none;
+  }
+
+  .component-preview__code-reveal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 16px;
+  }
+
+  .component-preview__code-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      #f8f8f8 18%,
+      color-mix(in oklab, #f8f8f8 68%, transparent) 58%,
+      transparent 100%
+    );
+  }
+
+  .component-preview__view-code,
+  .component-preview__copy-button {
+    border: 1px solid #dedede;
+    background: #ffffff;
+    color: #171717;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+
+  .component-preview__view-code {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 540;
+    line-height: 1;
+  }
+
+  .component-preview__copy-button {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 2;
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 8px;
+  }
+
+  .component-preview__copy-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .component-preview__view-code:hover,
+  .component-preview__copy-button:hover {
+    border-color: #cfcfcf;
+    background: #eeeeee;
+  }
+
+  .component-preview__view-code:focus-visible,
+  .component-preview__copy-button:focus-visible {
+    outline: 3px solid rgba(23, 23, 23, 0.18);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1180px) {
+    .preview-page {
+      padding-inline: 24px;
+    }
+
+    .component-preview__stage--director {
+      height: 820px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .preview-page {
+      padding: 36px 16px 56px;
+    }
+
+    .preview-page__header {
+      margin-bottom: 28px;
+    }
+
+    .preview-page__header h1 {
+      font-size: 2.25rem;
+    }
+
+    .preview-page__header > p:not(.preview-page__eyebrow) {
+      font-size: 16px;
+    }
+
+    .component-preview {
+      border-radius: 12px;
+    }
+
+    .component-preview__stage--director {
+      height: 980px;
+    }
+
+    .component-preview__stage--light {
+      height: 820px;
+    }
+
+    .component-preview__pre {
+      font-size: 13px;
+    }
   }
 }
 

@@ -24,6 +24,7 @@
     "build:lib": "vite build --config vite.lib.config.ts && npm run build:types",
     "build:types": "tsc -p tsconfig.types.json",
     "build:preview": "vite build",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build:lib",
     "preview": "vite preview --host 0.0.0.0"
@@ -56,15 +57,19 @@
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
     "@tailwindcss/vite": "^4.3.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^18.3.29",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^29.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^4.3.0",
     "three": "^0.168.0",
     "typescript": "^6.0.3",
-    "vite": "^5.4.14"
+    "vite": "^5.4.14",
+    "vitest": "^4.1.9"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",

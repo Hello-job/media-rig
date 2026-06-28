@@ -81,7 +81,7 @@ export default function LightSpherePreview() {
     ].join(" ");
 
   return (
-    <div className="grid h-screen w-screen grid-cols-[1fr_380px] bg-[#141414] max-[720px]:grid-cols-1 max-[720px]:grid-rows-[1fr_auto]">
+    <div className="grid h-full min-h-0 w-full grid-cols-[1fr_380px] bg-[#141414] max-[720px]:grid-cols-1 max-[720px]:grid-rows-[1fr_auto]">
       <div className="relative overflow-hidden">
         <div
           className="absolute left-1/2 top-[26px] z-[4] grid h-[82px] w-[min(330px,calc(100%-52px))] -translate-x-1/2 grid-cols-2 gap-2 rounded-3xl border border-white/[0.08] bg-[#1c1c1c]/90 p-2"
