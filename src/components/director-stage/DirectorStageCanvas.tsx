@@ -51,7 +51,7 @@ function ViewController({
   activeCamera?: DirectorCamera;
   orbitEnabled?: boolean;
 }) {
-  const { camera, gl } = useThree();
+  const { camera } = useThree();
 
   useEffect(() => {
     const perspectiveCamera = camera as THREE.PerspectiveCamera;
@@ -70,7 +70,6 @@ function ViewController({
 
   return (
     <OrbitControls
-      args={[camera, gl.domElement]}
       enabled={viewMode !== "camera" && orbitEnabled}
       enableDamping
       dampingFactor={0.08}

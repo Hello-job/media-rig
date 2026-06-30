@@ -7,8 +7,9 @@ import type {
   DirectorPropType,
   JointAngles,
 } from "./DirectorStage.types";
+import defaultCharacterModelUrl from "./assets/static-mixamo-rigged.glb?url";
 
-export const DEFAULT_CHARACTER_MODEL_URL = "/assets/static-mixamo-rigged.glb";
+export const DEFAULT_CHARACTER_MODEL_URL = defaultCharacterModelUrl;
 
 export const DIRECTOR_COLORS = [
   "#4f8ef7",

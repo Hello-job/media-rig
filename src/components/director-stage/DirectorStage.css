@@ -122,6 +122,15 @@
   grid-template-columns: 280px minmax(520px, 1fr) 340px;
 }
 
+.director-stage.is-fullscreen .director-stage__body {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.director-stage.is-fullscreen .director-stage__rail,
+.director-stage.is-fullscreen .director-stage__inspector {
+  display: none;
+}
+
 .director-stage__rail,
 .director-stage__inspector {
   min-height: 0;

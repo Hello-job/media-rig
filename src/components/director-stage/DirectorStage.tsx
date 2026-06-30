@@ -196,7 +196,7 @@ export default function DirectorStage({
   };
 
   const aspectNumber = ratioToNumber(aspectRatio);
-  const stageClassName = ["director-stage", className].filter(Boolean).join(" ");
+  const stageClassName = ["director-stage", isFullscreen ? "is-fullscreen" : "", className].filter(Boolean).join(" ");
 
   return (
     <div className={stageClassName} style={style} ref={rootRef}>
