@@ -31,11 +31,11 @@ function copySourceWithSelection(source: string) {
 
 function SourceCode({ source }: SourceCodeProps) {
   return (
-    <pre className="component-preview__pre" tabIndex={0}>
+    <pre className="m-0 max-h-80 overflow-auto overscroll-contain bg-transparent pb-5 pr-5 pt-4 font-mono text-[13px] leading-7 text-[#d8d9d3] outline-none [scrollbar-width:thin] [tab-size:2] focus-visible:shadow-[inset_0_0_0_2px_rgba(223,255,87,0.5)]" tabIndex={0}>
       <code>
         {source.split("\n").map((line, index) => (
-          <span className="component-preview__code-line" key={`${index}-${line}`}>
-            <span className="component-preview__line-number" aria-hidden="true">
+          <span className="grid min-w-max grid-cols-[54px_minmax(0,1fr)] whitespace-pre" key={`${index}-${line}`}>
+            <span className="select-none text-center text-white/25" aria-hidden="true">
               {index + 1}
             </span>
             <span>{line || " "}</span>
@@ -76,51 +76,46 @@ export default function ComponentPreview({
   };
 
   return (
-    <main className="preview-page" aria-labelledby={titleId}>
-      <div className="preview-page__content">
-        <header className="preview-page__header">
-          <p className="preview-page__eyebrow">Components</p>
-          <h1 id={titleId}>{title}</h1>
-          <p>{description}</p>
-        </header>
-
-        <section className="component-preview" aria-label={`${title} component preview`}>
-          <div className={["component-preview__stage", stageClassName].filter(Boolean).join(" ")}>
-            {children}
-          </div>
-
-          <div className="component-preview__code" data-expanded={isCodeVisible}>
-            {isCodeVisible ? (
-              <div className="component-preview__code-expanded">
-                <button
-                  type="button"
-                  className="component-preview__copy-button"
-                  aria-label={isCopied ? "Copied" : "Copy source"}
-                  title={isCopied ? "Copied" : "Copy source"}
-                  onClick={copySource}
-                >
-                  {isCopied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
-                </button>
-                <SourceCode source={source} />
-              </div>
-            ) : (
-              <div className="component-preview__code-collapsed">
-                <SourceCode source={sourcePreview} />
-                <div className="component-preview__code-reveal">
-                  <div className="component-preview__code-gradient" aria-hidden="true" />
-                  <button
-                    type="button"
-                    className="component-preview__view-code"
-                    onClick={() => setIsCodeVisible(true)}
-                  >
-                    View Code
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+    <section
+      className="relative flex w-full flex-col overflow-hidden rounded-2xl border border-white/[0.09] bg-[#151713] shadow-[0_22px_64px_rgba(0,0,0,0.34)] max-[760px]:rounded-xl"
+      aria-labelledby={titleId}
+      aria-label={`${title} component preview`}
+    >
+      <h3 id={titleId} className="sr-only">{title}: {description}</h3>
+      <div className={["relative min-w-0 w-full overflow-hidden", stageClassName].filter(Boolean).join(" ")}>
+        {children}
       </div>
-    </main>
+
+      <div className="relative overflow-hidden border-t border-white/10 bg-[#171914]" data-expanded={isCodeVisible}>
+        {isCodeVisible ? (
+          <div className="relative overflow-hidden">
+            <button
+              type="button"
+              className="absolute right-3.5 top-3 z-10 grid size-8 place-items-center rounded-lg border border-white/10 bg-white/[0.06] text-white/50 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#dfff57] [&_svg]:size-4"
+              aria-label={isCopied ? "Copied" : "Copy source"}
+              title={isCopied ? "Copied" : "Copy source"}
+              onClick={copySource}
+            >
+              {isCopied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+            </button>
+            <SourceCode source={source} />
+          </div>
+        ) : (
+          <div className="relative h-28 overflow-hidden">
+            <SourceCode source={sourcePreview} />
+            <div className="absolute inset-0 flex items-center justify-center pb-3">
+              <div className="absolute inset-0 bg-[linear-gradient(to_top,#171914_18%,rgba(23,25,20,0.78)_58%,transparent_100%)]" aria-hidden="true" />
+              <button
+                type="button"
+                className="relative z-10 inline-flex h-8 items-center justify-center rounded-lg border border-white/15 bg-[#22251e] px-3.5 text-xs font-semibold text-white/70 transition hover:border-[#dfff57]/40 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#dfff57]"
+                onClick={() => setIsCodeVisible(true)}
+              >
+                View Code
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

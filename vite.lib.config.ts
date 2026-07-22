@@ -1,15 +1,22 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+const entryPath = (path: string) => decodeURIComponent(new URL(path, import.meta.url).pathname);
+
 export default defineConfig({
   plugins: [react()],
   publicDir: false,
   build: {
     lib: {
-      entry: new URL("./src/index.ts", import.meta.url).pathname,
+      entry: {
+        index: entryPath("./src/index.ts"),
+        "light-sphere": entryPath("./src/components/light-sphere/index.ts"),
+        "image-angle-rig": entryPath("./src/components/image-angle-rig/index.ts"),
+        "director-stage": entryPath("./src/components/director-stage/index.ts"),
+      },
       name: "ReactImageEffects",
       formats: ["es", "cjs"],
-      fileName: (format) => `index.${format === "es" ? "mjs" : "cjs"}`,
+      fileName: (format, entryName) => `${entryName}.${format === "es" ? "mjs" : "cjs"}`,
     },
     rollupOptions: {
       external: [

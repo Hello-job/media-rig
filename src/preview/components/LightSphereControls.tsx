@@ -40,18 +40,18 @@ export default function LightSphereControls({
 }: LightSphereControlsProps) {
   const brightness = Math.round(config.intensity * 100);
   const sliderBaseClass = [
-    "h-[7px] w-full cursor-pointer appearance-none rounded-full outline-none",
-    "[&::-moz-range-thumb]:h-[29px] [&::-moz-range-thumb]:w-[29px] [&::-moz-range-thumb]:cursor-pointer",
+    "h-[5px] w-full cursor-pointer appearance-none rounded-full outline-none",
+    "[&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:cursor-pointer",
     "[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white/85",
     "[&::-moz-range-thumb]:bg-[#f4f4f4] [&::-moz-range-thumb]:shadow-[0_1px_5px_rgba(0,0,0,0.42)]",
-    "[&::-webkit-slider-thumb]:h-[29px] [&::-webkit-slider-thumb]:w-[29px] [&::-webkit-slider-thumb]:cursor-pointer",
+    "[&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:cursor-pointer",
     "[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full",
     "[&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white/85 [&::-webkit-slider-thumb]:bg-[#f4f4f4]",
     "[&::-webkit-slider-thumb]:shadow-[0_1px_5px_rgba(0,0,0,0.42)]",
   ].join(" ");
-  const sectionClass = "flex flex-col gap-3.5";
-  const titleClass = "whitespace-nowrap text-[25px] font-extrabold leading-none text-white/90";
-  const readoutClass = "flex min-w-[86px] items-center justify-end gap-2 whitespace-nowrap text-[23px] font-extrabold text-white/90";
+  const sectionClass = "flex flex-col gap-2.5";
+  const titleClass = "whitespace-nowrap text-base font-bold leading-none text-white/90";
+  const readoutClass = "flex min-w-[68px] items-center justify-end gap-1.5 whitespace-nowrap text-[15px] font-bold text-white/90";
 
   const handleBrightnessChange = (value: number) => {
     onChange({ ...config, intensity: value / 100 });
@@ -62,11 +62,11 @@ export default function LightSphereControls({
   };
 
   return (
-    <div className="flex flex-col gap-[18px]">
-      <div className="flex min-h-10 items-center justify-between">
-        <h2 className="m-0 text-[28px] font-extrabold leading-none tracking-normal text-white/90">全局</h2>
+    <div className="flex flex-col gap-4">
+      <div className="flex min-h-8 items-center justify-between">
+        <h2 className="m-0 text-xl font-extrabold leading-none tracking-normal text-white/90">全局</h2>
         <button
-          className="inline-flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 text-[38px] leading-none text-white/35 hover:text-white/70"
+          className="inline-flex size-7 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 text-[28px] leading-none text-white/35 hover:text-white/70"
           type="button"
           aria-label="关闭面板"
         >
@@ -76,7 +76,7 @@ export default function LightSphereControls({
 
       <div className={sectionClass}>
         <span className={titleClass}>亮度</span>
-        <div className="flex min-w-0 items-center gap-5">
+        <div className="flex min-w-0 items-center gap-3">
           <input
             type="range"
             min={0}
@@ -89,7 +89,7 @@ export default function LightSphereControls({
             aria-label="亮度"
           />
           <span className={readoutClass}>
-            <span className="shrink-0 text-[22px] font-medium text-white/40" aria-hidden="true">
+            <span className="shrink-0 text-base font-medium text-white/40" aria-hidden="true">
               ☼
             </span>
             {brightness} %
@@ -99,7 +99,7 @@ export default function LightSphereControls({
 
       <div className={sectionClass}>
         <span className={titleClass}>色温</span>
-        <div className="flex min-w-0 items-center gap-5">
+        <div className="flex min-w-0 items-center gap-3">
           <input
             type="range"
             min={2400}
@@ -110,8 +110,8 @@ export default function LightSphereControls({
             className={`${sliderBaseClass} bg-[linear-gradient(to_right,#ff8d15_0%,#ffd7a5_34%,#ffffff_50%,#87adff_100%)]`}
             aria-label="色温"
           />
-          <span className={`${readoutClass} min-w-[122px]`}>
-            <span className="shrink-0 text-[22px] font-medium text-white/40" aria-hidden="true">
+          <span className={`${readoutClass} min-w-[92px]`}>
+            <span className="shrink-0 text-base font-medium text-white/40" aria-hidden="true">
               ♨
             </span>
             {colorTemperature} K
@@ -121,12 +121,12 @@ export default function LightSphereControls({
 
       <div className={sectionClass}>
         <span className={titleClass}>主光源</span>
-        <div className="grid grid-cols-3 gap-x-7 gap-y-3">
+        <div className="grid grid-cols-3 gap-x-3 gap-y-1.5">
           {POSITIONS.map((pos) => (
             <button
               key={pos.key}
               className={[
-                "min-h-[43px] cursor-pointer rounded-[14px] border-0 bg-transparent px-2.5 text-2xl font-extrabold text-white/50",
+                "min-h-8 cursor-pointer rounded-xl border-0 bg-transparent px-2 text-[15px] font-bold text-white/50",
                 "transition-colors duration-150 hover:bg-white/[0.035] hover:text-white/85",
                 activePosition === pos.key ? "bg-[#121212]/35 text-white/95" : "",
               ].join(" ")}

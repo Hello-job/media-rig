@@ -15,3 +15,6 @@ pnpm-debug.log*
 
 coverage/
 .worktrees/
+
+# Local visual QA artifacts
+docs/references/
