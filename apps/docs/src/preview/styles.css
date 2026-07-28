@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@source "../../../../packages/media-rig/src/**/*.{ts,tsx}";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: "Geist Variable", sans-serif;
+  --color-ring: var(--ring);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  --background: oklch(0.16 0.01 120);
+  --foreground: oklch(0.95 0.008 100);
+  --border: oklch(0.3 0.01 110);
+  --ring: oklch(0.72 0.18 120);
+  --radius: 0.625rem;
+}
+
+@layer base {
+  * {
+    @apply box-border border-border outline-ring/50;
+  }
+
+  html,
+  body,
+  #root {
+    @apply m-0 min-h-full w-full;
+  }
+
+  html {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+
+  body {
+    @apply overflow-x-hidden bg-background;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  canvas {
+    @apply block h-full w-full;
+    cursor: inherit;
+  }
+}

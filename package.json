@@ -1,113 +1,25 @@
 {
-  "name": "media-rig",
+  "name": "media-rig-workspace",
   "version": "0.2.0",
-  "description": "React components for interactive media effect controls.",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    },
-    "./light-sphere": {
-      "types": "./dist/types/components/light-sphere/index.d.ts",
-      "import": "./dist/light-sphere.mjs",
-      "require": "./dist/light-sphere.cjs"
-    },
-    "./image-angle-rig": {
-      "types": "./dist/types/components/image-angle-rig/index.d.ts",
-      "import": "./dist/image-angle-rig.mjs",
-      "require": "./dist/image-angle-rig.cjs"
-    },
-    "./director-stage": {
-      "types": "./dist/types/components/director-stage/index.d.ts",
-      "import": "./dist/director-stage.mjs",
-      "require": "./dist/director-stage.cjs"
-    },
-    "./image-editor": {
-      "types": "./dist/types/components/image-editor/index.d.ts",
-      "import": "./dist/image-editor.mjs",
-      "require": "./dist/image-editor.cjs"
-    },
-    "./style.css": "./dist/style.css"
-  },
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "files": [
-    "dist",
-    "README.md",
-    "README.en.md"
+  "private": true,
+  "description": "MediaRig component library and documentation workspace.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "npm run build:lib",
-    "build:lib": "vite build --config vite.lib.config.ts && npm run build:types",
-    "build:registry": "shadcn build",
-    "build:site": "npm run build:registry && vite build --outDir dist/client && node scripts/finalize-site-build.mjs",
-    "build:types": "tsc -p tsconfig.types.json",
-    "build:preview": "npm run build:registry && vite build",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build:lib",
-    "preview": "vite preview --host 0.0.0.0"
-  },
-  "keywords": [
-    "react",
-    "media",
-    "image",
-    "visual-effects",
-    "controls",
-    "three",
-    "threejs",
-    "react-three-fiber",
-    "lighting",
-    "3d"
-  ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "peerDependencies": {
-    "@react-three/drei": ">=9",
-    "@react-three/fiber": ">=8",
-    "fabric": ">=7",
-    "react": ">=18",
-    "react-dom": ">=18",
-    "three": ">=0.160"
+    "dev": "npm run dev --workspace @media-rig/docs",
+    "build": "npm run build --workspace media-rig",
+    "build:lib": "npm run build --workspace media-rig",
+    "build:types": "npm run build:types --workspace media-rig",
+    "build:registry": "shadcn build registry.json --output apps/docs/public/r",
+    "build:preview": "npm run build --workspace @media-rig/docs",
+    "build:site": "npm run build:registry && npm run build:site --workspace @media-rig/docs && node scripts/finalize-site-build.mjs",
+    "test": "npm run test --workspace media-rig && npm run test --workspace @media-rig/docs",
+    "typecheck": "npm run typecheck --workspace media-rig && npm run typecheck --workspace @media-rig/docs",
+    "preview": "npm run preview --workspace @media-rig/docs"
   },
   "devDependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
-    "@tailwindcss/vite": "^4.3.0",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^4.3.4",
-    "fabric": "^7.4.0",
-    "jsdom": "^29.1.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "shadcn": "^4.10.0",
-    "tailwindcss": "^4.3.0",
-    "three": "^0.168.0",
-    "typescript": "^6.0.3",
-    "vite": "^5.4.14",
-    "vitest": "^4.1.9"
-  },
-  "dependencies": {
-    "@fontsource-variable/geist": "^5.2.9",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^1.17.0",
-    "radix-ui": "^1.5.0",
-    "tailwind-merge": "^3.6.0",
-    "tw-animate-css": "^1.4.0"
+    "shadcn": "^4.10.0"
   }
 }

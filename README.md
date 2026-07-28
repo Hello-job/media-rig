@@ -2,7 +2,7 @@
 
 中文 | [English](./README.en.md)
 
-MediaRig 是一个 React 组件库，用于构建交互式媒体效果控制组件。
+MediaRig 是一个 React 媒体组件库 workspace：`packages/media-rig` 负责可发布组件包，`apps/docs` 负责对外官网、文档和在线预览。
 
 当前组件包括用于图片布光预览的 `LightSphere`、用于图片透视调整的 `ImageAngleRig`，以及用于角色、道具与机位编排的 `DirectorStage`。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
 
@@ -48,7 +48,7 @@ components/<component-name>/
 public/assets/photo-texture2.png
 ```
 
-Registry 定义位于根目录 [`registry.json`](./registry.json)，运行 `npm run build:registry` 会生成 `public/r/*.json`。
+Registry 定义位于根目录 [`registry.json`](./registry.json)，运行 `npm run build:registry` 会生成 `apps/docs/public/r/*.json`。
 
 ## 使用
 
@@ -148,7 +148,7 @@ export default function App() {
 
 常用属性包括 `initialDocument`、`storageKey`、`maxImageSize`、`historyLimit`、`onChange`、`onSave`、`onExport`、`onClose` 和 `onError`。组件 ref 提供 `addImage`、`addText`、`loadDocument`、`getDocument`、`undo`、`redo`、`fitToViewport` 与 `exportImage`。
 
-本地预览：`http://localhost:5173/?demo=editor`。
+本地预览：`http://localhost:5173/components/image-editor`。
 
 ## 本地开发
 
@@ -162,37 +162,23 @@ npm run dev
 ## 项目结构
 
 ```txt
-src/
-  components/
-    index.ts
-    light-sphere/
-      LightSphere.tsx
-      LightSphere.constants.ts
-      LightSphere.types.ts
-      index.ts
-      hooks/
-      parts/
-      shaders/
-      utils/
-    image-angle-rig/
-      ImageAngleRig.tsx
-      ImageAngleRig.types.ts
-      parts/
-    director-stage/
-      DirectorStage.tsx
-      DirectorStage.types.ts
-      parts/
-  preview/
-    components/
-    pages/
-    main.tsx
-    styles.css
-  index.ts
+apps/
+  docs/
+    src/preview/
+    public/
+packages/
+  media-rig/
+    src/components/
+      light-sphere/
+      image-angle-rig/
+      director-stage/
+      image-editor/
+registry.json
 ```
 
-组件库代码位于 `src/components`，仅用于预览的界面位于 `src/preview`。
+组件库与官网是两个独立 workspace。官网开发不会混入 npm 包产物，组件包也不依赖文档站代码。
 
-根目录的 `registry.json` 用于 shadcn 源码安装，目前包含 `light-sphere`、`image-angle-rig` 和 `director-stage`。
+根目录的 `registry.json` 用于 shadcn 源码安装，目前包含四个组件；构建结果写入 `apps/docs/public/r` 并随官网发布。
 
 ## 构建
 
@@ -220,5 +206,5 @@ npm run build:registry
 2. 运行 `npm run typecheck`。
 3. 运行 `npm run build:lib`。
 4. 运行 `npm pack --dry-run` 检查发布文件。
-5. 使用 `npm login` 登录。
-6. 使用 `npm publish --access public` 发布。
+5. 进入 `packages/media-rig` 后使用 `npm login` 登录。
+6. 在组件包目录使用 `npm publish --access public` 发布。

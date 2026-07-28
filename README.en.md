@@ -27,7 +27,7 @@ npm install media-rig three @react-three/fiber @react-three/drei
 If you want to install the component source into your project like shadcn/ui, use the shadcn CLI with this GitHub registry:
 
 ```bash
-npx shadcn@latest add your-name/media-rig/light-sphere
+npx shadcn@latest add https://media-rig-angle-preview.luchang0905.chatgpt.site/r/light-sphere.json
 ```
 
 The component source will be written to:
@@ -42,7 +42,7 @@ The default demo image will be written to:
 public/assets/photo-texture2.png
 ```
 
-Before publishing the repository, replace `homepage` in [`registry.json`](./registry.json) and `your-name/media-rig` above with the real GitHub repository. A public repository with a root `registry.json` can be used directly as a shadcn GitHub registry.
+The root [`registry.json`](./registry.json) is compiled into the public Docs app, so users can install components directly from the deployed registry URL.
 
 ## Usage
 
@@ -107,7 +107,7 @@ The parent must provide stable dimensions. PNG, JPEG, WebP, and static GIF are s
 
 Common props include `initialDocument`, `storageKey`, `maxImageSize`, `historyLimit`, `onChange`, `onSave`, `onExport`, `onClose`, and `onError`. The component ref exposes `addImage`, `addText`, `loadDocument`, `getDocument`, `undo`, `redo`, `fitToViewport`, and `exportImage`.
 
-Local preview: `http://localhost:5173/?demo=editor`.
+Local preview: `http://localhost:5173/components/image-editor`.
 
 ## Local Development
 
@@ -121,29 +121,23 @@ Open `http://localhost:5173/` to use the preview/configuration UI.
 ## Project Structure
 
 ```txt
-src/
-  components/
-    index.ts
-    light-sphere/
-      LightSphere.tsx
-      LightSphere.constants.ts
-      LightSphere.types.ts
-      index.ts
-      hooks/
-      parts/
-      shaders/
-      utils/
-  preview/
-    components/
-    pages/
-    main.tsx
-    styles.css
-  index.ts
+apps/
+  docs/
+    src/preview/
+    public/
+packages/
+  media-rig/
+    src/components/
+      light-sphere/
+      image-angle-rig/
+      director-stage/
+      image-editor/
+registry.json
 ```
 
-Library code lives under `src/components`. Preview-only UI lives under `src/preview`.
+The npm component package and public documentation site are independent workspaces in the same repository.
 
-The root `registry.json` powers shadcn source installs by copying `src/components/light-sphere` into `components/light-sphere` in the user's project.
+The root `registry.json` builds all component installers into `apps/docs/public/r`.
 
 ## Build
 

@@ -1,0 +1,97 @@
+{
+  "name": "media-rig",
+  "version": "0.2.0",
+  "description": "React components for interactive media effect controls.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./light-sphere": {
+      "types": "./dist/types/components/light-sphere/index.d.ts",
+      "import": "./dist/light-sphere.mjs",
+      "require": "./dist/light-sphere.cjs"
+    },
+    "./image-angle-rig": {
+      "types": "./dist/types/components/image-angle-rig/index.d.ts",
+      "import": "./dist/image-angle-rig.mjs",
+      "require": "./dist/image-angle-rig.cjs"
+    },
+    "./director-stage": {
+      "types": "./dist/types/components/director-stage/index.d.ts",
+      "import": "./dist/director-stage.mjs",
+      "require": "./dist/director-stage.cjs"
+    },
+    "./image-editor": {
+      "types": "./dist/types/components/image-editor/index.d.ts",
+      "import": "./dist/image-editor.mjs",
+      "require": "./dist/image-editor.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "vite build --config vite.lib.config.ts && npm run build:types",
+    "build:types": "tsc -p tsconfig.types.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "media",
+    "image",
+    "visual-effects",
+    "controls",
+    "three",
+    "threejs",
+    "fabric"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "@react-three/drei": ">=9",
+    "@react-three/fiber": ">=8",
+    "fabric": ">=7",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160"
+  },
+  "dependencies": {
+    "lucide-react": "^1.17.0"
+  },
+  "devDependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@tailwindcss/vite": "^4.3.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "fabric": "^7.4.0",
+    "jsdom": "^29.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.0",
+    "three": "^0.168.0",
+    "typescript": "^6.0.3",
+    "vite": "^5.4.14",
+    "vitest": "^4.1.9"
+  }
+}
