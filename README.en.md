@@ -81,6 +81,34 @@ The parent container must have a stable width and height.
 | `onLightMove` | `(position) => void` | `undefined` |
 | `onLightSettle` | `(position) => void` | `undefined` |
 
+## ImageEditor
+
+`ImageEditor` is a Fabric.js-powered single-canvas editor with images, text, shapes, free drawing, layers, cropping, undo/redo, JSON persistence, and PNG/JPEG export.
+
+```tsx
+import { useRef } from "react";
+import { ImageEditor, type ImageEditorHandle } from "media-rig";
+
+export default function App() {
+  const editorRef = useRef<ImageEditorHandle>(null);
+  return (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <ImageEditor
+        ref={editorRef}
+        storageKey="my-image-editor"
+        onSave={(document) => console.log(document)}
+      />
+    </div>
+  );
+}
+```
+
+The parent must provide stable dimensions. PNG, JPEG, WebP, and static GIF are supported by default, with a 15 MB per-file limit. Remote images must allow cross-origin reads or browser export will be blocked.
+
+Common props include `initialDocument`, `storageKey`, `maxImageSize`, `historyLimit`, `onChange`, `onSave`, `onExport`, `onClose`, and `onError`. The component ref exposes `addImage`, `addText`, `loadDocument`, `getDocument`, `undo`, `redo`, `fitToViewport`, and `exportImage`.
+
+Local preview: `http://localhost:5173/?demo=editor`.
+
 ## Local Development
 
 ```bash

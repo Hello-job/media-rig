@@ -13,6 +13,7 @@ export default defineConfig({
         "light-sphere": entryPath("./src/components/light-sphere/index.ts"),
         "image-angle-rig": entryPath("./src/components/image-angle-rig/index.ts"),
         "director-stage": entryPath("./src/components/director-stage/index.ts"),
+        "image-editor": entryPath("./src/components/image-editor/index.ts"),
       },
       name: "ReactImageEffects",
       formats: ["es", "cjs"],
@@ -25,6 +26,7 @@ export default defineConfig({
         "three",
         "@react-three/fiber",
         "@react-three/drei",
+        "fabric",
       ],
       output: {
         exports: "named",
@@ -34,6 +36,7 @@ export default defineConfig({
           three: "THREE",
           "@react-three/fiber": "ReactThreeFiber",
           "@react-three/drei": "ReactThreeDrei",
+          fabric: "fabric",
         },
       },
     },

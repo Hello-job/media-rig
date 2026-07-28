@@ -1,6 +1,7 @@
 import { lazy, type LazyExoticComponent, type ComponentType } from "react";
 import directorStageSource from "./pages/DirectorStagePreview.tsx?raw";
 import imageAngleRigSource from "./pages/ImageAngleRigPreview.tsx?raw";
+import imageEditorSource from "./pages/ImageEditorPreview.tsx?raw";
 import lightSphereSource from "./pages/LightSpherePreview.tsx?raw";
 
 export type ComponentStatus = "Stable" | "Beta";
@@ -13,11 +14,11 @@ export type ComponentApiProp = {
 };
 
 export type MediaComponentMeta = {
-  slug: "light-sphere" | "image-angle-rig" | "director-stage";
-  legacyDemo: "light" | "angle" | "director";
+  slug: "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor";
+  legacyDemo: "light" | "angle" | "director" | "editor";
   title: string;
   eyebrow: string;
-  category: "Image" | "Lighting" | "Scene";
+  category: "Image" | "Lighting" | "Scene" | "Editor";
   status: ComponentStatus;
   description: string;
   summary: string;
@@ -35,8 +36,34 @@ export type MediaComponentMeta = {
 const LightSpherePreview = lazy(() => import("./pages/LightSpherePreview"));
 const ImageAngleRigPreview = lazy(() => import("./pages/ImageAngleRigPreview"));
 const DirectorStagePreview = lazy(() => import("./pages/DirectorStagePreview"));
+const ImageEditorPreview = lazy(() => import("./pages/ImageEditorPreview"));
 
 export const mediaComponents: MediaComponentMeta[] = [
+  {
+    slug: "image-editor",
+    legacyDemo: "editor",
+    title: "Image Editor",
+    eyebrow: "Canvas editing",
+    category: "Editor",
+    status: "Beta",
+    description: "集成图片导入、裁剪、绘制、擦除、图形、文本、图层与导出的深色画布编辑器。",
+    summary: "面向媒体工作流的可嵌入式图片编辑工作台。",
+    packagePath: "media-rig/image-editor",
+    registryName: "image-editor",
+    dependencies: ["fabric", "lucide-react"],
+    tags: ["Canvas", "Crop", "Paint", "Layers"],
+    previewClassName: "max-w-[1240px]",
+    stageClassName: "h-[720px] bg-[#0b0b0d] max-[900px]:h-[820px]",
+    source: imageEditorSource,
+    preview: ImageEditorPreview,
+    api: [
+      { name: "initialDocument", type: "ImageEditorDocument", defaultValue: "空白画布", description: "初始化画布、对象和图层。" },
+      { name: "storageKey", type: "string | false", defaultValue: "false", description: "启用本地文档持久化。" },
+      { name: "onChange", type: "(document) => void", defaultValue: "undefined", description: "编辑文档变化时触发。" },
+      { name: "onExport", type: "(blob) => void", defaultValue: "undefined", description: "完成图片导出时触发。" },
+      { name: "onError", type: "(error) => void", defaultValue: "undefined", description: "导入、画布或导出失败时触发。" },
+    ],
+  },
   {
     slug: "image-angle-rig",
     legacyDemo: "angle",

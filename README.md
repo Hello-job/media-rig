@@ -122,6 +122,34 @@ export default function App() {
 | `onLightMove` | `(position) => void` | `undefined` |
 | `onLightSettle` | `(position) => void` | `undefined` |
 
+## ImageEditor 图片编辑器
+
+`ImageEditor` 是一个基于 Fabric.js 的单画布编辑器，内置图片、文本、图形、绘色板、图层、裁剪、撤销重做、JSON 持久化和 PNG/JPEG 导出。绘色板支持红色默认画笔、1–40 px 宽度、10%–100% 不透明度、颜色选择和仅擦除轨迹经过区域的局部橡皮擦；底部基础图形入口精简为矩形，箭头通过拖拽确定方向并默认使用红色。
+
+```tsx
+import { useRef } from "react";
+import { ImageEditor, type ImageEditorHandle } from "media-rig";
+
+export default function App() {
+  const editorRef = useRef<ImageEditorHandle>(null);
+  return (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <ImageEditor
+        ref={editorRef}
+        storageKey="my-image-editor"
+        onSave={(document) => console.log(document)}
+      />
+    </div>
+  );
+}
+```
+
+父容器需要提供稳定宽高。默认支持 PNG、JPEG、WebP 和静态 GIF，单文件上限为 15 MB。远程图片必须允许跨域读取，否则浏览器会阻止导出。
+
+常用属性包括 `initialDocument`、`storageKey`、`maxImageSize`、`historyLimit`、`onChange`、`onSave`、`onExport`、`onClose` 和 `onError`。组件 ref 提供 `addImage`、`addText`、`loadDocument`、`getDocument`、`undo`、`redo`、`fitToViewport` 与 `exportImage`。
+
+本地预览：`http://localhost:5173/?demo=editor`。
+
 ## 本地开发
 
 ```bash

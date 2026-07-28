@@ -81,6 +81,18 @@ function LibraryFrame({ activeSlug, children }: { activeSlug?: string; children:
 }
 
 function ComponentMotif({ slug }: { slug: MediaComponentMeta["slug"] }) {
+  if (slug === "image-editor") {
+    return (
+      <div className="relative h-52 overflow-hidden bg-[#0b0b0d]">
+        <div className="absolute inset-x-8 top-6 h-7 rounded-lg border border-white/10 bg-white/[0.045]" />
+        <div className="absolute bottom-5 left-5 top-16 w-10 rounded-xl border border-white/10 bg-white/[0.055]" />
+        <div className="absolute bottom-8 left-20 right-8 top-16 grid place-items-center rounded-xl border border-white/[0.08] bg-[#111310]">
+          <div className="h-20 w-28 rotate-[-3deg] rounded-lg bg-[linear-gradient(135deg,#dfff57,#587328)] shadow-[0_18px_35px_rgba(0,0,0,0.45)]" />
+        </div>
+      </div>
+    );
+  }
+
   if (slug === "image-angle-rig") {
     return (
       <div className="relative grid h-52 place-items-center overflow-hidden bg-[#121410]">
