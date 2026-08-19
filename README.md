@@ -10,7 +10,7 @@ MediaRig 是一个 React 媒体组件库 workspace：`packages/media-rig` 负责
 
 ## 在线组件目录
 
-打开 [MediaRig 组件目录](https://media-rig-angle-preview.luchang0905.chatgpt.site/) 查看组件列表、实时预览、安装命令、核心 API 和源码示例。
+打开 [MediaRig 组件目录](https://media-rig.vercel.app/) 查看组件列表、实时预览、安装命令、核心 API 和源码示例。
 
 ## 视频演示
 
@@ -31,9 +31,10 @@ npm install media-rig three @react-three/fiber @react-three/drei
 如果你希望像 shadcn/ui 一样把组件源码下载安装到项目目录里，可以直接使用在线 Registry：
 
 ```bash
-npx shadcn@latest add https://media-rig-angle-preview.luchang0905.chatgpt.site/r/light-sphere.json
-npx shadcn@latest add https://media-rig-angle-preview.luchang0905.chatgpt.site/r/image-angle-rig.json
-npx shadcn@latest add https://media-rig-angle-preview.luchang0905.chatgpt.site/r/director-stage.json
+npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
+npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
 ```
 
 安装后对应组件源码会写入：

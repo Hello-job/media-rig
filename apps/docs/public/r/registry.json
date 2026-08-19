@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "media-rig",
-  "homepage": "https://media-rig-angle-preview.luchang0905.chatgpt.site",
+  "homepage": "https://media-rig.vercel.app",
   "items": [
     {
       "name": "light-sphere",

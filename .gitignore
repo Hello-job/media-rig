@@ -20,3 +20,4 @@ coverage/
 # Local visual QA artifacts
 docs/references/
 design-qa*.png
+.vercel

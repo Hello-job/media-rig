@@ -8,6 +8,10 @@ The first component is `LightSphere`, a Three.js-powered light controller for im
 
 This component library also helps developers save tokens and avoid rebuilding the same interaction patterns from scratch.
 
+## Live Component Catalog
+
+Open the [MediaRig component catalog](https://media-rig.vercel.app/) to browse every component, try the live previews, copy installation commands, and review the core APIs.
+
 ## Demo Video
 
 <video src="./public/assets/20260525-184216.mp4" controls muted playsinline width="100%"></video>
@@ -27,7 +31,10 @@ npm install media-rig three @react-three/fiber @react-three/drei
 If you want to install the component source into your project like shadcn/ui, use the shadcn CLI with this GitHub registry:
 
 ```bash
-npx shadcn@latest add https://media-rig-angle-preview.luchang0905.chatgpt.site/r/light-sphere.json
+npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
+npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
 ```
 
 The component source will be written to:

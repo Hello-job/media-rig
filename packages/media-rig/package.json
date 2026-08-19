@@ -2,6 +2,14 @@
   "name": "media-rig",
   "version": "0.2.0",
   "description": "React components for interactive media effect controls.",
+  "homepage": "https://media-rig.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hello-job/media-rig.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hello-job/media-rig/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
