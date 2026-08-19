@@ -33,7 +33,12 @@ export default function BottomToolbar({
       <ToolButton label="选择工具" icon={MousePointer2} active={state.activeTool === "select"} onClick={() => actions.setTool("select")} />
       <ToolButton label="矩形" icon={RectangleHorizontal} active={state.activeTool === "rect"} onClick={() => actions.addRect()} />
       <ToolButton label="箭头" icon={MoveUpRight} active={state.activeTool === "arrow"} onClick={() => actions.setTool("arrow")} />
-      <ToolButton label="绘色板" icon={Palette} active={state.activeTool === "draw"} onClick={() => actions.setTool("draw")} />
+      <ToolButton
+        label={state.activeTool === "draw" ? "收起绘色板" : "绘色板"}
+        icon={Palette}
+        active={state.activeTool === "draw"}
+        onClick={() => actions.setTool(state.activeTool === "draw" ? "select" : "draw")}
+      />
       <ToolButton label="添加文本" icon={Type} onClick={() => actions.addText()} />
       <ToolButton label="添加图片" icon={ImagePlus} onClick={onChooseImage} />
       <span className="image-editor__toolbar-divider" />

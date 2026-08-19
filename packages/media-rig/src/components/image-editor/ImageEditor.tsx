@@ -60,7 +60,6 @@ const ImageEditor = forwardRef<ImageEditorHandle, ImageEditorProps>(function Ima
       role="application"
       aria-label="图片编辑器"
       tabIndex={-1}
-      onPointerDown={() => rootRef.current?.focus()}
     >
       <TopToolbar document={controller.document} actions={actions} onClose={props.onClose} />
       <aside className="image-editor__left-rail" aria-label="素材和图层">

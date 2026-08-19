@@ -233,8 +233,8 @@
   cursor: pointer;
 }
 
-.image-editor__number-control { display: flex; align-items: center; gap: 8px; padding: 0 10px; }
-.image-editor__number-control span { color: var(--editor-muted); font-size: 12px; }
+.image-editor__number-control { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; padding: 0 10px; }
+.image-editor__number-control span { flex: 0 0 auto; color: var(--editor-muted); font-size: 12px; white-space: nowrap; }
 .image-editor__number-control input { width: 54px; color: var(--editor-text); background: transparent; border: 0; }
 
 .image-editor__layers-panel {

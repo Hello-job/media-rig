@@ -121,7 +121,7 @@ export const POSE_PRESETS: Array<{ id: string; label: string; joints: JointAngle
 export const DEFAULT_ENVIRONMENT: DirectorEnvironment = {
   showGround: true,
   groundOpacity: 0.3,
-  skyColor: "#f8f8f7",
+  skyColor: "#161616",
 };
 
 export const defaultCharacter = (index: number): DirectorCharacter => ({

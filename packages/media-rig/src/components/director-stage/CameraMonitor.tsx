@@ -41,25 +41,25 @@ function MonitorScene({ camera, composition }: CameraMonitorProps) {
 
   return (
     <>
-      <color attach="background" args={["#f4f4f3"]} />
+      <color attach="background" args={[skyColor]} />
       <fog attach="fog" args={[skyColor, 10, 22]} />
       <CameraViewController camera={camera} />
       <ambientLight intensity={0.7} />
-      <hemisphereLight args={["#ffffff", "#d2c8b6", 1.4]} />
+      <hemisphereLight args={["#ffffff", "#111111", 1.25]} />
       <directionalLight castShadow intensity={2} position={[4.5, 6, 4]} />
       {composition.environment.showGround ? (
         <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.006, 0]}>
           <planeGeometry args={[42, 42]} />
-          <meshStandardMaterial color="#ededeb" roughness={0.82} metalness={0.02} />
+          <meshStandardMaterial color="#1b1b1b" roughness={0.82} metalness={0.02} />
         </mesh>
       ) : null}
       <Grid
         args={[16, 16]}
-        cellColor="#e1e1df"
+        cellColor="#2d2d2d"
         cellSize={0.5}
         fadeDistance={14}
         fadeStrength={1.4}
-        sectionColor="#d0d0cc"
+        sectionColor="#484848"
         sectionSize={2}
       />
       {composition.characters.filter((character) => character.visible).map((character) => (

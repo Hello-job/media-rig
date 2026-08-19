@@ -150,6 +150,16 @@ describe("ImageEditor", () => {
     expect(actions.setDrawOpacity).toHaveBeenCalledWith(0.45);
   });
 
+  it("collapses the paint palette when the active palette button is clicked again", async () => {
+    const user = userEvent.setup();
+    controller.state.activeTool = "draw";
+    render(<ImageEditor />);
+
+    await user.click(screen.getByRole("button", { name: "收起绘色板" }));
+
+    expect(actions.setTool).toHaveBeenCalledWith("select");
+  });
+
   it("enters drag-to-point arrow mode instead of inserting a preset arrow", async () => {
     const user = userEvent.setup();
     render(<ImageEditor />);

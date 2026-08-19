@@ -46,7 +46,7 @@ const SAMPLE_SEED: ParsedSceneSeed = {
   environment: {
     showGround: true,
     groundOpacity: 0.3,
-    skyColor: "#f8f8f7",
+    skyColor: "#161616",
   },
 };
 
@@ -54,7 +54,7 @@ export default function DirectorStage({
   className,
   style,
   initialComposition,
-  storageKey = "media-rig-director-stage-minimax-light-v6",
+  storageKey = "media-rig-director-stage-dark-v2",
   onCompositionChange,
   onCapture,
 }: DirectorStageProps) {

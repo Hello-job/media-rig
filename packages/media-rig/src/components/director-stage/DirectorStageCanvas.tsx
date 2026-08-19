@@ -101,7 +101,7 @@ function StageScene({
       <fog attach="fog" args={[skyColor, 8, 18]} />
       <ViewController viewMode={viewMode} activeCamera={activeCamera} orbitEnabled={orbitEnabled} />
       <ambientLight intensity={0.78} />
-      <hemisphereLight args={["#ffffff", "#d8d1c4", 1.35]} />
+      <hemisphereLight args={["#ffffff", "#111111", 1.25]} />
       <directionalLight
         castShadow
         intensity={2.1}
@@ -117,16 +117,16 @@ function StageScene({
         {composition.environment.showGround ? (
           <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.006, 0]}>
             <planeGeometry args={[42, 42]} />
-            <meshStandardMaterial color="#f6f6f4" roughness={0.82} metalness={0.02} transparent opacity={Math.max(0.75, composition.environment.groundOpacity)} />
+            <meshStandardMaterial color="#1b1b1b" roughness={0.82} metalness={0.02} transparent opacity={Math.max(0.82, composition.environment.groundOpacity)} />
           </mesh>
         ) : null}
         <Grid
           args={[18, 18]}
-          cellColor="#e9e9e7"
+          cellColor="#2d2d2d"
           cellSize={0.5}
           fadeDistance={16}
           fadeStrength={1.1}
-          sectionColor="#d8d8d3"
+          sectionColor="#484848"
           sectionSize={2}
         />
         {composition.characters.filter((character) => character.visible).map((character) => (

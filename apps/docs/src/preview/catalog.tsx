@@ -128,7 +128,7 @@ export const mediaComponents: MediaComponentMeta[] = [
     dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react"],
     tags: ["Scene", "Camera", "Transform"],
     previewClassName: "max-w-[1240px]",
-    stageClassName: "h-[680px] bg-[#fbfbfa] max-[1180px]:h-[760px] max-[760px]:h-[920px]",
+    stageClassName: "h-[680px] bg-[#121212] max-[1180px]:h-[760px] max-[760px]:h-[920px]",
     source: directorStageSource,
     preview: DirectorStagePreview,
     api: [

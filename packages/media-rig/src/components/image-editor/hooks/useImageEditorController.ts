@@ -376,6 +376,8 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
 
   const actions = useMemo(() => ({
     setTool(tool: ImageEditorTool) {
+      stateRef.current = { ...stateRef.current, activeTool: tool };
+      setState((current) => ({ ...current, activeTool: tool }));
       if (canvas) {
         const paintMode = stateRef.current.paintMode;
         canvas.isDrawingMode = tool === "draw";
@@ -388,8 +390,6 @@ export function useImageEditorController(props: ImageEditorProps = {}) {
         }
         if (tool === "draw") configurePaintBrush(paintMode);
       }
-      stateRef.current = { ...stateRef.current, activeTool: tool };
-      setState((current) => ({ ...current, activeTool: tool }));
     },
     setPaintMode(mode: ImageEditorPaintMode) {
       if (canvas) {
