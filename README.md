@@ -2,11 +2,15 @@
 
 中文 | [English](./README.en.md)
 
-MediaRig 是一个 React 组件库，用于构建交互式媒体效果控制组件。
+MediaRig 是一个 React 媒体组件库 workspace：`packages/media-rig` 负责可发布组件包，`apps/docs` 负责对外官网、文档和在线预览。
 
-当前第一个组件是 `LightSphere`：一个基于 Three.js 的灯光控制器，可用于图片布光预览。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
+当前组件包括用于图片布光预览的 `LightSphere`、用于图片透视调整的 `ImageAngleRig`，以及用于角色、道具与机位编排的 `DirectorStage`。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
 
 这个组件库也希望帮助开发者节省 token，避免在相似场景里重复造轮子。
+
+## 在线组件目录
+
+打开 [MediaRig 组件目录](https://media-rig.vercel.app/) 查看组件列表、实时预览、安装命令、核心 API 和源码示例。
 
 ## 视频演示
 
@@ -24,16 +28,19 @@ npm install media-rig three @react-three/fiber @react-three/drei
 
 ### shadcn 源码安装
 
-如果你希望像 shadcn/ui 一样把组件源码下载安装到项目目录里，可以使用 shadcn CLI 从 GitHub registry 安装：
+如果你希望像 shadcn/ui 一样把组件源码下载安装到项目目录里，可以直接使用在线 Registry：
 
 ```bash
-npx shadcn@latest add your-name/media-rig/light-sphere
+npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
+npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
 ```
 
-安装后组件源码会写入：
+安装后对应组件源码会写入：
 
 ```txt
-components/media-rig/light-sphere/
+components/<component-name>/
 ```
 
 默认演示图片会写入：
@@ -42,12 +49,12 @@ components/media-rig/light-sphere/
 public/assets/photo-texture2.png
 ```
 
-发布到 GitHub 前，请把根目录 [`registry.json`](./registry.json) 里的 `homepage` 和上面的 `your-name/media-rig` 替换成真实仓库地址。公开仓库可直接作为 shadcn GitHub registry 使用。
+Registry 定义位于根目录 [`registry.json`](./registry.json)，运行 `npm run build:registry` 会生成 `apps/docs/public/r/*.json`。
 
 ## 使用
 
 ```jsx
-import { LightSphere } from "media-rig";
+import { LightSphere } from "media-rig/light-sphere";
 
 export default function App() {
   return (
@@ -65,6 +72,41 @@ export default function App() {
 
 父级容器需要提供稳定的宽度和高度。
 
+### 图片多角度调整
+
+`ImageAngleRig` 会把输入图片居中裁成正方形并贴在圆角实体方块的正面，其他面带有方向字母；横拖与竖拖会保持单轴，明确的斜向拖动会同时调整旋转和倾斜，也可以通过旋转、倾斜、整体方块缩放滑杆和广角开关精调。
+
+```jsx
+import { ImageAngleRig } from "media-rig/image-angle-rig";
+
+export default function App() {
+  return (
+    <div style={{ width: 860, height: 520 }}>
+      <ImageAngleRig
+        imageUrl="/your-image.png"
+        defaultValue={{ yaw: 34, pitch: -25, zoom: 0 }}
+        onChange={(value) => console.log(value)}
+        actionInput={{ imageId: "image-01" }}
+        onAction={({ value, input }) => console.log(value, input)}
+      />
+    </div>
+  );
+}
+```
+
+| 属性 | 类型 | 默认值 |
+| --- | --- | --- |
+| `imageUrl` | `string` | `"/assets/photo-texture2.png"` |
+| `value` | `Partial<ImageAngleState>` | `undefined` |
+| `defaultValue` | `Partial<ImageAngleState>` | `{ yaw: 34, pitch: -25, zoom: 0, wideAngle: false }` |
+| `onChange` | `(value) => void` | `undefined` |
+| `onChangeEnd` | `(value) => void` | `undefined` |
+| `actionButton` | `ComponentType<ImageAngleActionButtonProps>` | 默认“确认调整”按钮 |
+| `actionInput` | `unknown` | `undefined` |
+| `onAction` | `({ value, input }, event) => void` | `undefined` |
+| `dragAxisLockThreshold` | `number` | `8` |
+| `title` | `string` | `"拖拽图片调整角度"` |
+
 ## 属性
 
 | 属性 | 类型 | 默认值 |
@@ -81,6 +123,34 @@ export default function App() {
 | `onLightMove` | `(position) => void` | `undefined` |
 | `onLightSettle` | `(position) => void` | `undefined` |
 
+## ImageEditor 图片编辑器
+
+`ImageEditor` 是一个基于 Fabric.js 的单画布编辑器，内置图片、文本、图形、绘色板、图层、裁剪、撤销重做、JSON 持久化和 PNG/JPEG 导出。绘色板支持红色默认画笔、1–40 px 宽度、10%–100% 不透明度、颜色选择和仅擦除轨迹经过区域的局部橡皮擦；底部基础图形入口精简为矩形，箭头通过拖拽确定方向并默认使用红色。
+
+```tsx
+import { useRef } from "react";
+import { ImageEditor, type ImageEditorHandle } from "media-rig";
+
+export default function App() {
+  const editorRef = useRef<ImageEditorHandle>(null);
+  return (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <ImageEditor
+        ref={editorRef}
+        storageKey="my-image-editor"
+        onSave={(document) => console.log(document)}
+      />
+    </div>
+  );
+}
+```
+
+父容器需要提供稳定宽高。默认支持 PNG、JPEG、WebP 和静态 GIF，单文件上限为 15 MB。远程图片必须允许跨域读取，否则浏览器会阻止导出。
+
+常用属性包括 `initialDocument`、`storageKey`、`maxImageSize`、`historyLimit`、`onChange`、`onSave`、`onExport`、`onClose` 和 `onError`。组件 ref 提供 `addImage`、`addText`、`loadDocument`、`getDocument`、`undo`、`redo`、`fitToViewport` 与 `exportImage`。
+
+本地预览：`http://localhost:5173/components/image-editor`。
+
 ## 本地开发
 
 ```bash
@@ -93,29 +163,23 @@ npm run dev
 ## 项目结构
 
 ```txt
-src/
-  components/
-    index.ts
-    light-sphere/
-      LightSphere.tsx
-      LightSphere.constants.ts
-      LightSphere.types.ts
-      index.ts
-      hooks/
-      parts/
-      shaders/
-      utils/
-  preview/
-    components/
-    pages/
-    main.tsx
-    styles.css
-  index.ts
+apps/
+  docs/
+    src/preview/
+    public/
+packages/
+  media-rig/
+    src/components/
+      light-sphere/
+      image-angle-rig/
+      director-stage/
+      image-editor/
+registry.json
 ```
 
-组件库代码位于 `src/components`，仅用于预览的界面位于 `src/preview`。
+组件库与官网是两个独立 workspace。官网开发不会混入 npm 包产物，组件包也不依赖文档站代码。
 
-根目录的 `registry.json` 用于 shadcn 源码安装，会把 `src/components/light-sphere` 复制到用户项目的 `components/media-rig/light-sphere`。
+根目录的 `registry.json` 用于 shadcn 源码安装，目前包含四个组件；构建结果写入 `apps/docs/public/r` 并随官网发布。
 
 ## 构建
 
@@ -131,11 +195,17 @@ npm run build:lib
 npm run build:preview
 ```
 
+仅构建 shadcn Registry：
+
+```bash
+npm run build:registry
+```
+
 ## 发布检查清单
 
 1. 确认 `license` 和 `author` 字段。
 2. 运行 `npm run typecheck`。
 3. 运行 `npm run build:lib`。
 4. 运行 `npm pack --dry-run` 检查发布文件。
-5. 使用 `npm login` 登录。
-6. 使用 `npm publish --access public` 发布。
+5. 进入 `packages/media-rig` 后使用 `npm login` 登录。
+6. 在组件包目录使用 `npm publish --access public` 发布。

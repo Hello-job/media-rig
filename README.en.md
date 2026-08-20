@@ -8,6 +8,10 @@ The first component is `LightSphere`, a Three.js-powered light controller for im
 
 This component library also helps developers save tokens and avoid rebuilding the same interaction patterns from scratch.
 
+## Live Component Catalog
+
+Open the [MediaRig component catalog](https://media-rig.vercel.app/) to browse every component, try the live previews, copy installation commands, and review the core APIs.
+
 ## Demo Video
 
 <video src="./public/assets/20260525-184216.mp4" controls muted playsinline width="100%"></video>
@@ -27,13 +31,16 @@ npm install media-rig three @react-three/fiber @react-three/drei
 If you want to install the component source into your project like shadcn/ui, use the shadcn CLI with this GitHub registry:
 
 ```bash
-npx shadcn@latest add your-name/media-rig/light-sphere
+npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
+npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
 ```
 
 The component source will be written to:
 
 ```txt
-components/media-rig/light-sphere/
+components/light-sphere/
 ```
 
 The default demo image will be written to:
@@ -42,7 +49,7 @@ The default demo image will be written to:
 public/assets/photo-texture2.png
 ```
 
-Before publishing the repository, replace `homepage` in [`registry.json`](./registry.json) and `your-name/media-rig` above with the real GitHub repository. A public repository with a root `registry.json` can be used directly as a shadcn GitHub registry.
+The root [`registry.json`](./registry.json) is compiled into the public Docs app, so users can install components directly from the deployed registry URL.
 
 ## Usage
 
@@ -81,6 +88,34 @@ The parent container must have a stable width and height.
 | `onLightMove` | `(position) => void` | `undefined` |
 | `onLightSettle` | `(position) => void` | `undefined` |
 
+## ImageEditor
+
+`ImageEditor` is a Fabric.js-powered single-canvas editor with images, text, shapes, free drawing, layers, cropping, undo/redo, JSON persistence, and PNG/JPEG export.
+
+```tsx
+import { useRef } from "react";
+import { ImageEditor, type ImageEditorHandle } from "media-rig";
+
+export default function App() {
+  const editorRef = useRef<ImageEditorHandle>(null);
+  return (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <ImageEditor
+        ref={editorRef}
+        storageKey="my-image-editor"
+        onSave={(document) => console.log(document)}
+      />
+    </div>
+  );
+}
+```
+
+The parent must provide stable dimensions. PNG, JPEG, WebP, and static GIF are supported by default, with a 15 MB per-file limit. Remote images must allow cross-origin reads or browser export will be blocked.
+
+Common props include `initialDocument`, `storageKey`, `maxImageSize`, `historyLimit`, `onChange`, `onSave`, `onExport`, `onClose`, and `onError`. The component ref exposes `addImage`, `addText`, `loadDocument`, `getDocument`, `undo`, `redo`, `fitToViewport`, and `exportImage`.
+
+Local preview: `http://localhost:5173/components/image-editor`.
+
 ## Local Development
 
 ```bash
@@ -93,29 +128,23 @@ Open `http://localhost:5173/` to use the preview/configuration UI.
 ## Project Structure
 
 ```txt
-src/
-  components/
-    index.ts
-    light-sphere/
-      LightSphere.tsx
-      LightSphere.constants.ts
-      LightSphere.types.ts
-      index.ts
-      hooks/
-      parts/
-      shaders/
-      utils/
-  preview/
-    components/
-    pages/
-    main.tsx
-    styles.css
-  index.ts
+apps/
+  docs/
+    src/preview/
+    public/
+packages/
+  media-rig/
+    src/components/
+      light-sphere/
+      image-angle-rig/
+      director-stage/
+      image-editor/
+registry.json
 ```
 
-Library code lives under `src/components`. Preview-only UI lives under `src/preview`.
+The npm component package and public documentation site are independent workspaces in the same repository.
 
-The root `registry.json` powers shadcn source installs by copying `src/components/light-sphere` into `components/media-rig/light-sphere` in the user's project.
+The root `registry.json` builds all component installers into `apps/docs/public/r`.
 
 ## Build
 

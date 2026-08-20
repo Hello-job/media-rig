@@ -1,69 +1,25 @@
 {
-  "name": "media-rig",
-  "version": "0.1.0",
-  "description": "React components for interactive media effect controls.",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "README.en.md"
+  "name": "media-rig-workspace",
+  "version": "0.2.0",
+  "private": true,
+  "description": "MediaRig component library and documentation workspace.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "npm run build:lib",
-    "build:lib": "vite build --config vite.lib.config.ts && npm run build:types",
-    "build:types": "tsc -p tsconfig.types.json",
-    "build:preview": "vite build",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build:lib",
-    "preview": "vite preview --host 0.0.0.0"
-  },
-  "keywords": [
-    "react",
-    "media",
-    "image",
-    "visual-effects",
-    "controls",
-    "three",
-    "threejs",
-    "react-three-fiber",
-    "lighting",
-    "3d"
-  ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "peerDependencies": {
-    "@react-three/drei": ">=9",
-    "@react-three/fiber": ">=8",
-    "react": ">=18",
-    "react-dom": ">=18",
-    "three": ">=0.160"
+    "dev": "npm run dev --workspace @media-rig/docs",
+    "build": "npm run build --workspace media-rig",
+    "build:lib": "npm run build --workspace media-rig",
+    "build:types": "npm run build:types --workspace media-rig",
+    "build:registry": "shadcn build registry.json --output apps/docs/public/r",
+    "build:preview": "npm run build --workspace @media-rig/docs",
+    "build:site": "npm run build:registry && npm run build:site --workspace @media-rig/docs && node scripts/finalize-site-build.mjs",
+    "test": "npm run test --workspace media-rig && npm run test --workspace @media-rig/docs",
+    "typecheck": "npm run typecheck --workspace media-rig && npm run typecheck --workspace @media-rig/docs",
+    "preview": "npm run preview --workspace @media-rig/docs"
   },
   "devDependencies": {
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.17.10",
-    "@tailwindcss/vite": "^4.3.0",
-    "@types/react": "^18.3.29",
-    "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^4.3.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^4.3.0",
-    "three": "^0.168.0",
-    "typescript": "^6.0.3",
-    "vite": "^5.4.14"
+    "shadcn": "^4.10.0"
   }
 }
