@@ -240,6 +240,52 @@
       ]
     },
     {
+      "name": "layer-separator",
+      "type": "registry:component",
+      "title": "Layer Separator",
+      "description": "An embeddable layer-separation workspace with region selection, async processing, and editable layer composition.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "packages/media-rig/src/components/layer-separator/index.ts",
+          "type": "registry:component",
+          "target": "components/layer-separator/index.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.tsx",
+          "type": "registry:component",
+          "target": "components/layer-separator/LayerSeparator.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.types.ts",
+          "type": "registry:lib",
+          "target": "components/layer-separator/LayerSeparator.types.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.utils.ts",
+          "type": "registry:lib",
+          "target": "components/layer-separator/LayerSeparator.utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.css",
+          "type": "registry:style",
+          "target": "components/layer-separator/LayerSeparator.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/parts/SelectionStage.tsx",
+          "type": "registry:component",
+          "target": "components/layer-separator/parts/SelectionStage.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/parts/CompositionStage.tsx",
+          "type": "registry:component",
+          "target": "components/layer-separator/parts/CompositionStage.tsx"
+        }
+      ]
+    },
+    {
       "name": "image-editor",
       "type": "registry:component",
       "title": "Image Editor",

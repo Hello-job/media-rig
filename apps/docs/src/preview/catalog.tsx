@@ -2,6 +2,7 @@ import { lazy, type LazyExoticComponent, type ComponentType } from "react";
 import directorStageSource from "./pages/DirectorStagePreview.tsx?raw";
 import imageAngleRigSource from "./pages/ImageAngleRigPreview.tsx?raw";
 import imageEditorSource from "./pages/ImageEditorPreview.tsx?raw";
+import layerSeparatorSource from "./pages/LayerSeparatorPreview.tsx?raw";
 import lightSphereSource from "./pages/LightSpherePreview.tsx?raw";
 
 export type ComponentStatus = "Stable" | "Beta";
@@ -14,8 +15,8 @@ export type ComponentApiProp = {
 };
 
 export type MediaComponentMeta = {
-  slug: "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor";
-  legacyDemo: "light" | "angle" | "director" | "editor";
+  slug: "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
+  legacyDemo: "light" | "angle" | "director" | "editor" | "layers";
   title: string;
   eyebrow: string;
   category: "Image" | "Lighting" | "Scene" | "Editor";
@@ -37,8 +38,35 @@ const LightSpherePreview = lazy(() => import("./pages/LightSpherePreview"));
 const ImageAngleRigPreview = lazy(() => import("./pages/ImageAngleRigPreview"));
 const DirectorStagePreview = lazy(() => import("./pages/DirectorStagePreview"));
 const ImageEditorPreview = lazy(() => import("./pages/ImageEditorPreview"));
+const LayerSeparatorPreview = lazy(() => import("./pages/LayerSeparatorPreview"));
 
 export const mediaComponents: MediaComponentMeta[] = [
+  {
+    slug: "layer-separator",
+    legacyDemo: "layers",
+    title: "Layer Separator",
+    eyebrow: "AI layer decomposition",
+    category: "Image",
+    status: "Beta",
+    description: "提供框选提示、自动拆分、异步进度和分离结果编排的图层分离工作台；模型请求由宿主应用接入。",
+    summary: "把单张图片拆成可独立移动、旋转、翻转和合并的透明图层。",
+    packagePath: "media-rig/layer-separator",
+    registryName: "layer-separator",
+    dependencies: ["lucide-react"],
+    tags: ["Layers", "Selection", "Async", "Composition"],
+    previewClassName: "max-w-[1180px]",
+    stageClassName: "h-[680px] bg-[#090a0b] p-5 max-[780px]:h-[900px] max-[520px]:p-0",
+    source: layerSeparatorSource,
+    preview: LayerSeparatorPreview,
+    api: [
+      { name: "imageUrl", type: "string", defaultValue: "required", description: "等待拆分的源图片地址。" },
+      { name: "onSeparate", type: "(request) => Promise<result>", defaultValue: "undefined", description: "接入任意图层分离服务，并返回背景与透明图层。" },
+      { name: "result", type: "LayerSeparatorResult | null", defaultValue: "undefined", description: "受控的分层结果与图层变换。" },
+      { name: "onResultChange", type: "(result) => void", defaultValue: "undefined", description: "移动、旋转、翻转或显隐图层时触发。" },
+      { name: "onMerge", type: "(blob, result) => void", defaultValue: "undefined", description: "浏览器合成 PNG 后触发。" },
+      { name: "locale", type: '"zh-CN" | "en-US"', defaultValue: '"zh-CN"', description: "内置界面语言。" },
+    ],
+  },
   {
     slug: "image-editor",
     legacyDemo: "editor",

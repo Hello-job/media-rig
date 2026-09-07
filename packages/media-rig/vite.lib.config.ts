@@ -15,6 +15,7 @@ export default defineConfig({
         "image-angle-rig": entryPath("./src/components/image-angle-rig/index.ts"),
         "director-stage": entryPath("./src/components/director-stage/index.ts"),
         "image-editor": entryPath("./src/components/image-editor/index.ts"),
+        "layer-separator": entryPath("./src/components/layer-separator/index.ts"),
       },
       name: "ReactImageEffects",
       formats: ["es", "cjs"],

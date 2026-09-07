@@ -4,7 +4,7 @@
 
 MediaRig 是一个 React 媒体组件库 workspace：`packages/media-rig` 负责可发布组件包，`apps/docs` 负责对外官网、文档和在线预览。
 
-当前组件包括用于图片布光预览的 `LightSphere`、用于图片透视调整的 `ImageAngleRig`，以及用于角色、道具与机位编排的 `DirectorStage`。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
+当前组件包括图片布光 `LightSphere`、透视调整 `ImageAngleRig`、场景编排 `DirectorStage`、图片编辑 `ImageEditor`，以及 AI 图层工作流 `LayerSeparator`。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
 
 这个组件库也希望帮助开发者节省 token，避免在相似场景里重复造轮子。
 
@@ -35,6 +35,7 @@ npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
 npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
 npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
 npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
+npx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
 ```
 
 安装后对应组件源码会写入：
@@ -151,6 +152,37 @@ export default function App() {
 
 本地预览：`http://localhost:5173/components/image-editor`。
 
+## LayerSeparator 图层分离
+
+`LayerSeparator` 提供框选、提示词、异步进度和分层结果编排；模型调用通过 `onSeparate` 交给宿主应用，所以组件不绑定特定 AI 服务。
+
+```tsx
+import { LayerSeparator } from "media-rig/layer-separator";
+import "media-rig/style.css";
+
+export default function App() {
+  return (
+    <LayerSeparator
+      imageUrl="/source.jpg"
+      aspectRatio={3 / 2}
+      onSeparate={async ({ selections, instruction, prompt }) => {
+        const response = await fetch("/api/separate-layers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ selections, instruction, prompt }),
+        });
+        return response.json();
+      }}
+      onMerge={(blob) => console.log(blob)}
+    />
+  );
+}
+```
+
+`onSeparate` 返回 `{ background, layers }`；每个图层接受透明图片 URL、可选 `contentBounds` 和 `transform`。远程图片需要允许 CORS 才能在浏览器中合并导出。
+
+本地预览：`http://localhost:5173/components/layer-separator`。
+
 ## 本地开发
 
 ```bash
@@ -174,12 +206,13 @@ packages/
       image-angle-rig/
       director-stage/
       image-editor/
+      layer-separator/
 registry.json
 ```
 
 组件库与官网是两个独立 workspace。官网开发不会混入 npm 包产物，组件包也不依赖文档站代码。
 
-根目录的 `registry.json` 用于 shadcn 源码安装，目前包含四个组件；构建结果写入 `apps/docs/public/r` 并随官网发布。
+根目录的 `registry.json` 用于 shadcn 源码安装，目前包含五个组件；构建结果写入 `apps/docs/public/r` 并随官网发布。
 
 ## 构建
 

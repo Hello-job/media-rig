@@ -40,6 +40,11 @@
       "import": "./dist/image-editor.mjs",
       "require": "./dist/image-editor.cjs"
     },
+    "./layer-separator": {
+      "types": "./dist/types/components/layer-separator/index.d.ts",
+      "import": "./dist/layer-separator.mjs",
+      "require": "./dist/layer-separator.cjs"
+    },
     "./style.css": "./dist/style.css"
   },
   "sideEffects": [

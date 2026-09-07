@@ -76,6 +76,7 @@ type CatalogLayout = "grid" | "list" | "matrix";
 const catalogCategories = ["All Components", "Image", "Lighting", "Scene", "Editor"] as const;
 
 const catalogPreviewPaths: Record<MediaComponentMeta["slug"], string> = {
+  "layer-separator": "/assets/layer-separator/scene.svg",
   "image-editor": "/assets/catalog/image-editor.jpg",
   "image-angle-rig": "/assets/catalog/image-angle-rig.jpg",
   "light-sphere": "/assets/catalog/light-sphere.jpg",
