@@ -220,3 +220,21 @@ allowBuilds:
 overrides:
   '@types/three': '^0.168.0'
 ```
+
+## MediaRig CLI
+
+The package now includes a `media-rig` binary. The currently published older npm version has no CLI: **short npx commands require publishing the new package first**. Until then use `pnpm cli` from this repository or the existing shadcn URL commands.
+
+```sh
+# After the CLI release
+npx media-rig@latest init
+npx media-rig@latest list
+npx media-rig@latest add image-annotation
+pnpm dlx media-rig@latest add light-sphere director-stage
+
+# Local development before publishing
+pnpm cli add image-annotation --cwd /path/to/react-app
+pnpm cli add director-stage --cwd /path/to/react-app --dry-run
+```
+
+Requires Node.js 22.12+ and npm/npx. The wrapper runs a tested, pinned shadcn CLI version and inherits its interactive installation flow and target package-manager detection. The consumer needs React 19, Tailwind CSS 4 and `components.json` (run `init` once). Options: `--cwd` / `-c`, `--yes` / `-y`, `--overwrite` / `-o`, and `--dry-run`. Overwrite is never enabled implicitly. See the pnpm 11 configuration above before installing Fabric or Three.js components.

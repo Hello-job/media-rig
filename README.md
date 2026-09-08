@@ -50,6 +50,32 @@ import { ImageAnnotation } from "media-rig/image-annotation";
 
 六组组件的导入路径分别为 `media-rig/light-sphere`、`media-rig/image-angle-rig`、`media-rig/director-stage`、`media-rig/image-editor`、`media-rig/image-annotation` 和 `media-rig/layer-separator`。也可以从 `media-rig` 统一导入。
 
+### MediaRig CLI
+
+项目已提供 `media-rig` CLI 入口，复用 shadcn 安装源码、样式与依赖。**npm 上当前的旧版本还没有 CLI；以下短命令需发布包含 CLI 的新版后才能使用。** 发布前可在本仓库通过 `pnpm cli` 测试。
+
+```bash
+# 新版发布后的调用方式
+npx media-rig@latest init
+npx media-rig@latest list
+npx media-rig@latest add image-annotation
+pnpm dlx media-rig@latest add light-sphere director-stage
+```
+
+```bash
+# 本地开发，无需发布 npm
+pnpm cli list
+pnpm cli init --cwd /path/to/react-app
+pnpm cli add image-annotation --cwd /path/to/react-app
+pnpm cli add director-stage --cwd /path/to/react-app --dry-run
+```
+
+支持 `--cwd` / `-c` 指定项目、`--yes` / `-y` 跳过安装确认、`--overwrite` / `-o` 显式覆盖现有源码、`--dry-run` 只预览变更。默认不会强制覆盖文件。`init` 创建 shadcn 配置，已有 `components.json` 时直接 `add`。
+
+CLI 需要 Node.js 22.12+ 和 npm/npx，会通过固定版本的 shadcn CLI 完成安装；安装过程需要联网，目标项目的依赖由 shadcn 按其包管理器处理。目标项目使用 React 19 / Tailwind CSS 4。pnpm 11 的 Fabric 原生构建及 Three.js 类型配置见下文。
+
+维护者发布前运行 `pnpm --filter media-rig run test:cli`、`pnpm build:lib` 和 `pnpm --filter media-rig pack` 验证发布包，再以具有该 npm 包发布权限的账号执行 `pnpm --filter media-rig publish --access public`。发布成功之前，文档站继续提供已可用的 shadcn URL 命令。
+
 ### shadcn 源码
 
 网站每个组件详情页都提供可复制的 shadcn CLI 命令，支持 pnpm、npm、yarn、bun，默认使用 pnpm。

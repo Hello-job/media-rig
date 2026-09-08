@@ -14,7 +14,8 @@
     "test": "pnpm --filter media-rig run test && pnpm --filter @media-rig/docs run test",
     "typecheck": "pnpm --filter media-rig run typecheck && pnpm --filter @media-rig/docs run typecheck",
     "preview": "pnpm --filter @media-rig/docs run preview",
-    "check:docs": "node scripts/check-docs.mjs"
+    "check:docs": "node scripts/check-docs.mjs",
+    "cli": "node packages/media-rig/cli/index.mjs"
   },
   "devDependencies": {
     "shadcn": "^4.10.0"

@@ -57,14 +57,16 @@
   ],
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "cli"
   ],
   "scripts": {
     "build": "vite build --config vite.lib.config.ts && pnpm run build:types",
     "build:types": "tsc -p tsconfig.types.json",
-    "test": "vitest run",
+    "test": "vitest run && pnpm run test:cli",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "test:cli": "node --test tests/cli.test.mjs"
   },
   "keywords": [
     "react",
@@ -90,6 +92,7 @@
     "three": ">=0.160"
   },
   "dependencies": {
+    "cross-spawn": "^7.0.6",
     "lucide-react": "^1.17.0"
   },
   "devDependencies": {
@@ -112,5 +115,11 @@
     "typescript": "^6.0.3",
     "vite": "^6.4.3",
     "vitest": "^4.1.9"
+  },
+  "bin": {
+    "media-rig": "./cli/index.mjs"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

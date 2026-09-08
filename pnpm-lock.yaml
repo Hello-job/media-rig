@@ -96,6 +96,9 @@ importers:
 
   packages/media-rig:
     dependencies:
+      cross-spawn:
+        specifier: ^7.0.6
+        version: 7.0.6
       lucide-react:
         specifier: ^1.17.0
         version: 1.22.0(react@19.2.7)
