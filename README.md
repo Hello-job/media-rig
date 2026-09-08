@@ -2,287 +2,292 @@
 
 中文 | [English](./README.en.md)
 
-MediaRig 是一个 React 媒体组件库 workspace：`packages/media-rig` 负责可发布组件包，`apps/docs` 负责对外官网、文档和在线预览。
+MediaRig 是一个面向图片编辑、视觉参数调整和三维场景编排的 React 组件库。它将常见的媒体交互封装为可复用组件，提供 TypeScript 类型、在线演示，以及 npm 包和 shadcn Registry 两种接入方式。
 
-当前组件包括图片布光 `LightSphere`、透视调整 `ImageAngleRig`、场景编排 `DirectorStage`、图片编辑 `ImageEditor`，以及 AI 图层工作流 `LayerSeparator`。项目目标是把常见的媒体配置体验沉淀为可复用、开箱即用的组件。
+[在线演示与文档](https://media-rig.vercel.app/) · [组件源码](./packages/media-rig/src/components) · [反馈问题](https://github.com/Hello-job/media-rig/issues)
 
-这个组件库也希望帮助开发者节省 token，避免在相似场景里重复造轮子。
+## 组件目录
 
-## 在线组件目录
+目前提供六组组件：
 
-打开 [MediaRig 组件目录](https://media-rig.vercel.app/) 查看组件列表、实时预览、安装命令、核心 API 和源码示例。
+| 组件 | 用途 | 在线演示 |
+| --- | --- | --- |
+| `LightSphere` / `LightSpherePanel` | 球面灯位预览，以及亮度、色温、方向和轮廓光参数配置 | [图片布光](https://media-rig.vercel.app/components/light-sphere) |
+| `ImageAngleRig` | 图片水平旋转、垂直倾斜、镜头推进和广角参数配置 | [图片视角](https://media-rig.vercel.app/components/image-angle-rig) |
+| `DirectorStage` | 角色与道具摆放、相机配置、运镜时间轴和画面捕获 | [3D 导演台](https://media-rig.vercel.app/components/director-stage) |
+| `ImageEditor` | 图片、文字、图形、涂绘、裁剪、图层管理和文档保存 | [图片编辑器](https://media-rig.vercel.app/components/image-editor) |
+| `ImageAnnotation` | 在原图上添加画笔、矩形和文字标注，合成导出 PNG | [图片涂鸦](https://media-rig.vercel.app/components/image-annotation) |
+| `LayerSeparator` | 框选主体、请求图层分离，以及透明图层的变换与合成 | [图层分离](https://media-rig.vercel.app/components/layer-separator) |
 
-## 视频演示
+`ImageEditor` 适合完整的图片编辑工作流；`ImageAnnotation` 适合嵌入已有页面，对单张图片进行轻量标注。
 
-<video src="./public/assets/20260525-184216.mp4" controls muted playsinline width="100%"></video>
-
-如果当前 Markdown 环境不显示视频，可以直接打开 [`public/assets/20260525-184216.mp4`](./public/assets/20260525-184216.mp4)。
+布光、视角调整和图层分离组件通过回调输出参数或请求。AI 模型调用、图片上传和业务数据保存由宿主应用接入。在线图层分离演示使用预置素材，并未连接在线分割模型。
 
 ## 安装
 
-### npm 包安装
+### npm 包
+
+在 React 项目中安装组件包：
 
 ```bash
-npm install media-rig three @react-three/fiber @react-three/drei
+npm install media-rig
 ```
 
-### shadcn 源码安装
+当前包声明了 React、React DOM、Three.js、React Three Fiber、Drei 和 Fabric.js 为 peer dependencies。请根据现有项目选择相互兼容的版本；本仓库使用 React 19、Fiber 9、Drei 10、Three.js 0.168 和 Fabric.js 7。
 
-如果你希望像 shadcn/ui 一样把组件源码下载安装到项目目录里，可以直接使用在线 Registry：
+以下命令适用于采用本仓库版本组合的新项目：
+
+```bash
+npm install media-rig react@^19 react-dom@^19 three@^0.168 @react-three/fiber@^9 @react-three/drei@^10 fabric@^7
+```
+
+在应用入口引入样式，并按组件子路径导入：
+
+```tsx
+import "media-rig/style.css";
+import { ImageAnnotation } from "media-rig/image-annotation";
+```
+
+六组组件的导入路径分别为 `media-rig/light-sphere`、`media-rig/image-angle-rig`、`media-rig/director-stage`、`media-rig/image-editor`、`media-rig/image-annotation` 和 `media-rig/layer-separator`。也可以从 `media-rig` 统一导入。
+
+### shadcn 源码
+
+如果需要直接修改组件实现，可以通过 Registry 将源码安装到项目中。选择需要的组件执行：
 
 ```bash
 npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
 npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
 npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
 npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
+npx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
 npx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
 ```
 
-安装后对应组件源码会写入：
+Registry 的源码目标目录为 `components/<component-name>/`，安装后从项目内对应路径导入。具体文件和依赖见 [`registry.json`](./registry.json)。业务图片通过 `imageUrl` 等属性传入，不应依赖文档站的示例素材路径。
 
-```txt
-components/<component-name>/
-```
+## 快速开始
 
-默认演示图片会写入：
-
-```txt
-public/assets/photo-texture2.png
-```
-
-Registry 定义位于根目录 [`registry.json`](./registry.json)，运行 `npm run build:registry` 会生成 `apps/docs/public/r/*.json`。
-
-## 使用
-
-```jsx
-import { LightSphere } from "media-rig/light-sphere";
-
-export default function App() {
-  return (
-    <div style={{ width: 432, height: 408 }}>
-      <LightSphere
-        imageUrl="/your-image.png"
-        color="#ffffff"
-        intensity={0.72}
-        spread={0.38}
-      />
-    </div>
-  );
-}
-```
-
-父级容器需要提供稳定的宽度和高度。
-
-### 3D 打光面板
-
-`LightSpherePanel` 提供与 tamen-web 一致的 560×320 双栏面板：200px 球面预览、透视/正面切换、亮度、色温、六个主光源方向、轮廓光输出选项和重置。默认亮度 50%、色温 5600K、前方主光源、透视视角、轮廓光开启。图片按原比例展示；拖动灯位后同步预设选中状态。
-
-```jsx
-import { LightSpherePanel } from "media-rig/light-sphere";
-
-<LightSpherePanel
-  imageUrl="/your-image.png"
-  onChange={(value) => console.log(value)}
-  onAction={({ value }) => console.log("应用打光方案", value)}
-/>
-```
-
-`value` / `defaultValue` 支持 `Partial<LightSpherePanelValue>`，包含 `position`、`intensity`（0–1）、`colorTemperature`（2400–10000）、`activePosition`、`viewMode`、`rimLightEnabled`。`onChangeEnd` 在操作完成时提交完整状态。轮廓光与 tamen-web 一样作为输出选项，不添加第二个预览光源。
-
-`onClose` 控制关闭入口；`actionButton`、`actionInput`、`actionLoading`、`actionDisabled` 与视角面板用法一致。应用按钮通过 `onAction` 回传方案，由宿主对接生成服务。原有 `LightSphere` 仍可作为独立 3D 预览使用。
-
-### 图片多角度调整
-
-`ImageAngleRig` 使用与 tamen-web 一致的 CSS 3D 六面方块（72px、1000px 透视），不依赖 Three.js 或 WebGL。输入图片居中裁成正方形贴在正面，其他面带有方向字母；整块预览区均可拖拽，移动 3px 后同时调整水平旋转和垂直倾斜，按预览区宽高计算灵敏度并取整。镜头推进为 0–10，对应 1–2 倍预览缩放；广角开关作为输出选项，不改变预览视野。重置恢复水平 30°、垂直 -20°、推进 0 和关闭广角。
-
-```jsx
-import { ImageAngleRig } from "media-rig/image-angle-rig";
-
-export default function App() {
-  return (
-    <div style={{ width: 560 }}>
-      <ImageAngleRig
-        imageUrl="/your-image.png"
-        defaultValue={{ yaw: 30, pitch: -20, zoom: 0 }}
-        onChange={(value) => console.log(value)}
-        actionInput={{ imageId: "image-01" }}
-        onAction={({ value, input }) => console.log(value, input)}
-      />
-    </div>
-  );
-}
-```
-
-| 属性 | 类型 | 默认值 |
-| --- | --- | --- |
-| `imageUrl` | `string` | `"/assets/photo-texture2.png"` |
-| `value` | `Partial<ImageAngleState>` | `undefined` |
-| `defaultValue` | `Partial<ImageAngleState>` | `{ yaw: 30, pitch: -20, zoom: 0, wideAngle: false }` |
-| `onChange` | `(value) => void` | `undefined` |
-| `onChangeEnd` | `(value) => void` | `undefined` |
-| `actionButton` | `ComponentType<ImageAngleActionButtonProps>` | 默认“确认调整”按钮 |
-| `actionInput` | `unknown` | `undefined` |
-| `onAction` | `({ value, input }, event) => void` | `undefined` |
-| `dragThreshold` | `number` | `3`（像素） |
-| `dragAxisLockThreshold` | `number` | 已弃用，作为 `dragThreshold` 的兼容别名 |
-| `actionLoading` | `boolean` | `false`，处理中禁用操作按钮 |
-| `actionDisabled` | `boolean` | `false` |
-| `onClose` | `() => void` | `undefined`，提供时显示关闭按钮 |
-| `title` | `string` | `"视角"` |
-
-拖拽、滑杆连续更新触发 `onChange`；结束操作触发一次 `onChangeEnd`，单击预览区不会提交。切换广角和重置立即提交。自定义 `actionButton` 会收到 `disabled` 和 `loading`，应将它们绑定到按钮的禁用和加载状态。`onClose` 由宿主管理组件显隐。
-
-## 属性
-
-| 属性 | 类型 | 默认值 |
-| --- | --- | --- |
-| `imageUrl` | `string` | `"/assets/photo-texture2.png"` |
-| `color` | `string` | `"#ff2200"` |
-| `spread` | `number` | `0.38` |
-| `intensity` | `number` | `0.72` |
-| `glowRadius` | `number` | `1.8` |
-| `glowIntensity` | `number` | `1.2` |
-| `baseLineOpacity` | `number` | `0.045` |
-| `sphereRadius` | `number` | `2.45` |
-| `targetPosition` | `{ x, y, z }` | `null` |
-| `onLightMove` | `(position) => void` | `undefined` |
-| `onLightSettle` | `(position) => void` | `undefined` |
-
-## ImageEditor 图片编辑器
-
-`ImageEditor` 是一个基于 Fabric.js 的单画布编辑器，内置图片、文本、图形、绘色板、图层、裁剪、撤销重做、JSON 持久化和 PNG/JPEG 导出。绘色板支持红色默认画笔、1–40 px 宽度、10%–100% 不透明度、颜色选择和仅擦除轨迹经过区域的局部橡皮擦；底部基础图形入口精简为矩形，箭头通过拖拽确定方向并默认使用红色。
+下面是一个可直接使用的图片涂鸦示例。将图片放到应用的 `public/scene.png`，保存时会下载保留原图尺寸的 PNG 文件。
 
 ```tsx
-import { useRef } from "react";
-import { ImageEditor, type ImageEditorHandle } from "media-rig";
-
-export default function App() {
-  const editorRef = useRef<ImageEditorHandle>(null);
-  return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <ImageEditor
-        ref={editorRef}
-        storageKey="my-image-editor"
-        onSave={(document) => console.log(document)}
-      />
-    </div>
-  );
-}
-```
-
-父容器需要提供稳定宽高。默认支持 PNG、JPEG、WebP 和静态 GIF，单文件上限为 15 MB。远程图片必须允许跨域读取，否则浏览器会阻止导出。
-
-常用属性包括 `initialDocument`、`storageKey`、`maxImageSize`、`historyLimit`、`onChange`、`onSave`、`onExport`、`onClose` 和 `onError`。组件 ref 提供 `addImage`、`addText`、`loadDocument`、`getDocument`、`undo`、`redo`、`fitToViewport` 与 `exportImage`。
-
-本地预览：`http://localhost:5173/components/image-editor`。
-
-## LayerSeparator 图层分离
-
-`LayerSeparator` 提供框选、提示词、异步进度和分层结果编排；模型调用通过 `onSeparate` 交给宿主应用，所以组件不绑定特定 AI 服务。
-
-```tsx
-import { LayerSeparator } from "media-rig/layer-separator";
+import { ImageAnnotation } from "media-rig/image-annotation";
 import "media-rig/style.css";
 
+function downloadImage(image: Blob) {
+  const url = URL.createObjectURL(image);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "annotated-image.png";
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export default function App() {
   return (
-    <LayerSeparator
-      imageUrl="/source.jpg"
-      aspectRatio={3 / 2}
-      onSeparate={async ({ selections, instruction, prompt }) => {
-        const response = await fetch("/api/separate-layers", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ selections, instruction, prompt }),
-        });
-        return response.json();
-      }}
-      onMerge={(blob) => console.log(blob)}
+    <div style={{ width: "100%", maxWidth: 1000, margin: "0 auto" }}>
+      <ImageAnnotation
+        imageUrl="/scene.png"
+        imageAlt="待标注的场景"
+        onSave={downloadImage}
+        onError={(error) => console.error(error)}
+      />
+    </div>
+  );
+}
+```
+
+组件支持画笔、矩形、可编辑文字、选择移动、缩放、旋转、颜色与粗细调节、删除、清空及撤销重做。`onSave` 支持异步回调；更换 `imageUrl` 会重置画布和历史。传入 `onCancel` 后显示退出按钮，并支持 Escape 退出。
+
+## 其他组件用法
+
+以下示例假设已在应用入口引入 `media-rig/style.css`。完整 API 与示例源码见各组件的在线文档。
+
+### 图片布光
+
+```tsx
+import { LightSpherePanel } from "media-rig/light-sphere";
+
+export default function LightingExample() {
+  return (
+    <LightSpherePanel
+      imageUrl="/scene.png"
+      onChange={(value) => console.log("当前布光参数", value)}
+      onAction={({ value }) => console.log("应用布光方案", value)}
     />
   );
 }
 ```
 
-`onSeparate` 返回 `{ background, layers }`；每个图层接受透明图片 URL、可选 `contentBounds` 和 `transform`。远程图片需要允许 CORS 才能在浏览器中合并导出。
+`LightSpherePanel` 集成球面预览和参数面板，支持 `value` / `defaultValue`、`onChange` 和 `onChangeEnd`。轮廓光是输出参数，不会在预览中增加第二个光源。如果只需要球面灯位交互，可单独使用 `LightSphere`。
 
-本地预览：`http://localhost:5173/components/layer-separator`。
+### 图片视角
+
+```tsx
+import { ImageAngleRig } from "media-rig/image-angle-rig";
+
+export default function AngleExample() {
+  return (
+    <ImageAngleRig
+      imageUrl="/scene.png"
+      defaultValue={{ yaw: 30, pitch: -20, zoom: 0, wideAngle: false }}
+      onChangeEnd={(value) => console.log("调整完成", value)}
+      onAction={({ value }) => console.log("应用视角参数", value)}
+    />
+  );
+}
+```
+
+预览采用 CSS 3D。拖拽和滑杆通过 `onChange` 连续输出参数，结束操作时触发 `onChangeEnd`。广角开关作为输出参数使用，不改变预览视野。
+
+### 3D 导演台
+
+```tsx
+import { DirectorStage } from "media-rig/director-stage";
+
+export default function DirectorExample() {
+  return (
+    <div style={{ width: "100%", height: "90vh", minHeight: 680 }}>
+      <DirectorStage
+        storageKey="my-director-stage"
+        onCompositionChange={(composition) => console.log(composition)}
+        onCapture={(dataUrl) => console.log("捕获画面", dataUrl)}
+      />
+    </div>
+  );
+}
+```
+
+支持角色与道具管理、相机视角、对象变换、运镜预设及时间轴。可通过 `initialComposition` 设置初始场景，通过 `storageKey` 配置本地保存键；传入 `false` 可关闭本地持久化。
+
+### 图片编辑器
+
+```tsx
+import { ImageEditor } from "media-rig/image-editor";
+
+export default function EditorExample() {
+  return (
+    <div style={{ width: "100%", height: "90vh", minHeight: 680 }}>
+      <ImageEditor
+        storageKey="my-image-editor"
+        onSave={(document) => console.log("编辑器文档", document)}
+      />
+    </div>
+  );
+}
+```
+
+`onSave` 返回编辑器文档，适合 JSON 持久化；图片导出通过 `onExport` 或组件 ref 的 `exportImage` 处理。`ImageEditorHandle` 还提供 `addImage`、`addText`、`loadDocument`、`getDocument`、`undo`、`redo` 和 `fitToViewport` 等方法。
+
+### 图层分离
+
+```tsx
+import {
+  LayerSeparator,
+  type LayerSeparatorResult,
+} from "media-rig/layer-separator";
+
+export default function LayerExample() {
+  return (
+    <LayerSeparator
+      imageUrl="/scene.png"
+      aspectRatio={3 / 2}
+      onSeparate={async (request) => {
+        // 由宿主实现此接口，并按 LayerSeparatorResult 返回结果。
+        const response = await fetch("/api/separate-layers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageUrl: "/scene.png", ...request }),
+        });
+        if (!response.ok) throw new Error("图层分离失败");
+        return (await response.json()) as LayerSeparatorResult;
+      }}
+      onMerge={(image) => console.log("合成 PNG", image)}
+    />
+  );
+}
+```
+
+`onSeparate` 接收选区、说明和生成的提示词，返回 `{ background, layers }`。物体图层使用透明图片 URL，可通过 `contentBounds` 描述主体范围，通过 `transform` 设置位置、缩放、旋转、翻转和显隐。框选列表会显示对应选区的缩略图。
+
+### 接入说明
+
+- 图片编辑器和导演台需要父容器提供明确的宽度与高度。
+- Canvas、WebGL 和图片导出功能在浏览器运行；使用服务端渲染框架时，应在客户端组件中挂载这些交互组件。
+- 需要合成或导出的跨域图片必须允许 CORS，否则浏览器无法读取像素。
+- 保存、上传、生成和关闭操作通过回调交给宿主处理。示例中的服务接口需要自行实现。
 
 ## 本地开发
+
+在仓库根目录执行：
 
 ```bash
 npm install
 npm run dev
 ```
 
-打开 `http://localhost:5173/` 使用预览和配置界面。
+以终端输出的地址为准，默认地址为 `http://localhost:5173/`。开发站点直接引用组件源码。
+
+| 命令 | 说明 |
+| --- | --- |
+| `npm run dev` | 启动文档站与组件预览 |
+| `npm run typecheck` | 检查组件包和文档站的 TypeScript 类型 |
+| `npm test` | 运行两个 workspace 的测试 |
+| `npm run build:lib` | 构建组件包及类型声明，输出到 `packages/media-rig/dist` |
+| `npm run build:preview` | 构建文档站前端，输出到 `dist/client` |
+| `npm run build:registry` | 根据 Registry 定义生成 `apps/docs/public/r/*.json` |
+| `npm run build:site` | 构建 Registry、文档站及部署产物 |
+| `npm run preview` | 本地预览文档站构建结果 |
 
 ## 项目结构
 
-```txt
-apps/
-  docs/
-    src/preview/
-    public/
-packages/
-  media-rig/
-    src/components/
-      light-sphere/
-      image-angle-rig/
-      director-stage/
-      image-editor/
-      layer-separator/
-registry.json
+```text
+media-rig/
+├── apps/docs/                 # 文档站、组件目录与在线演示
+│   ├── src/preview/
+│   └── public/                # 示例素材和生成的 Registry
+├── packages/media-rig/        # 可发布的 npm 组件包
+│   └── src/components/
+│       ├── light-sphere/
+│       ├── image-angle-rig/
+│       ├── director-stage/
+│       ├── image-editor/
+│       ├── image-annotation/
+│       └── layer-separator/
+├── scripts/                  # 构建产物处理脚本
+├── registry.json             # shadcn Registry 定义
+└── vercel.json               # 文档站部署配置
 ```
 
-组件库与官网是两个独立 workspace。官网开发不会混入 npm 包产物，组件包也不依赖文档站代码。
+项目使用 npm workspaces。组件包与文档站独立组织，文档站代码不会进入组件包构建产物。
 
-根目录的 `registry.json` 用于 shadcn 源码安装，目前包含五个组件；构建结果写入 `apps/docs/public/r` 并随官网发布。
+## 构建与发布
 
-## 构建
-
-构建 npm 包：
+提交前在仓库根目录执行：
 
 ```bash
+npm run typecheck
+npm test
 npm run build:lib
+npm run build:site
+npm pack --workspace media-rig --dry-run
 ```
 
-构建预览应用：
+文档站使用 Vercel 部署，构建命令为 `npm run build:site`，输出目录为 `dist/client`。当前生产站点随 `main` 分支更新。
+
+发布 npm 包前，更新 [`packages/media-rig/package.json`](./packages/media-rig/package.json) 中的版本及包元数据，并检查打包文件。具备 npm 发布权限后，在组件包目录执行：
 
 ```bash
-npm run build:preview
+cd packages/media-rig
+npm login
+npm publish --access public
 ```
 
-仅构建 shadcn Registry：
+网站部署与 npm 发包是两个独立流程；更新网站不会自动发布新的 npm 版本。
 
-```bash
-npm run build:registry
-```
+## 演示视频
 
-## 发布检查清单
+[查看演示视频](./apps/docs/public/assets/20260525-184216.mp4)。视频为阶段性录制，当前功能以在线演示为准。
 
-1. 确认 `license` 和 `author` 字段。
-2. 运行 `npm run typecheck`。
-3. 运行 `npm run build:lib`。
-4. 运行 `npm pack --dry-run` 检查发布文件。
-5. 进入 `packages/media-rig` 后使用 `npm login` 登录。
-6. 在组件包目录使用 `npm publish --access public` 发布。
+## 反馈与贡献
 
-### 图片涂鸦 ImageAnnotation
-
-独立的图片标注组件，参考 tamen-web 的标注工具，支持画笔、矩形、可编辑文字、选择移动/缩放/旋转、颜色、粗细、删除与撤销重做。
-
-```tsx
-import { ImageAnnotation } from "media-rig/image-annotation";
-import "media-rig/style.css";
-
-<ImageAnnotation
-  imageUrl="/scene.png"
-  onSave={async (png) => {
-    // png 是保留原图分辨率、包含全部标注的 PNG Blob。
-    await uploadImage(png);
-  }}
-  onCancel={() => setOpen(false)}
-/>
-```
-
-也可通过 `npx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json` 安装源码（依赖 Fabric.js 7+ 与 lucide-react）。更换 `imageUrl` 会重置标注；跨域原图需要支持 CORS。保存与上传由宿主回调处理，组件不绑定业务接口。
+欢迎通过 [Issues](https://github.com/Hello-job/media-rig/issues) 提交问题或建议。反馈问题时请附上复现步骤、浏览器与依赖版本，以及必要的截图。提交组件修改时，请同步更新示例、类型和 Registry 定义，并运行相关检查。
