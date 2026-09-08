@@ -16,6 +16,17 @@ const registry = JSON.parse(await readFile('registry.json', 'utf8'));
 for (const entry of registry.items) {
   const output = `apps/docs/public/r/${entry.name}.json`;
   const built = JSON.parse(await readFile(output, 'utf8'));
+  for (const asset of built.files.filter((file) => file.path.endsWith('.png'))) {
+    const data = (await readFile(asset.path)).toString('base64');
+    const assetUrl = '/' + asset.target.replace(/^public\//, '');
+    for (const file of built.files) {
+      if (file.content.includes(JSON.stringify(assetUrl))) {
+        file.content = 'import registryDefaultImage from "./registry-default-image";\n' + file.content.replaceAll(JSON.stringify(assetUrl), 'registryDefaultImage');
+      }
+    }
+    built.files.push({path: `registry/${entry.name}/registry-default-image.ts`, type: 'registry:lib', target: `@components/${entry.name}/registry-default-image.ts`, content: `export default "data:image/png;base64,${data}";\n`});
+  }
+  built.files = built.files.filter((file) => !file.path.endsWith('.png'));
   for (const file of built.files) {
     if (file.path.endsWith('/index.ts')) file.content = '"use client";\n\n' + file.content;
   }
