@@ -362,9 +362,19 @@ export default function LayerSeparator({
                   const top = Math.min(selection.y1, selection.y2);
                   const width = Math.max(0.001, Math.abs(selection.x2 - selection.x1));
                   const height = Math.max(0.001, Math.abs(selection.y2 - selection.y1));
+                  const thumbnailRatio = aspectRatio * width / height;
                   return (
                     <button key={selection.id} type="button" aria-label={`Remove selection ${index + 1}`} onClick={() => commitSelections(selections.filter((item) => item.id !== selection.id))}>
-                      <span style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: `${100 / width}% ${100 / height}%`, backgroundPosition: `${(-left / width) * 100}% ${(-top / height) * 100}%` }} />
+                      <span className="layer-separator__selection-thumbnail">
+                        <span style={{ width: Math.min(56, 56 * thumbnailRatio), height: Math.min(56, 56 / thumbnailRatio) }}>
+                          <img
+                            src={imageUrl}
+                            alt={locale === "zh-CN" ? `选区 ${index + 1} 缩略图` : `Selection ${index + 1} thumbnail`}
+                            draggable={false}
+                            style={{ width: `${100 / width}%`, height: `${100 / height}%`, left: `${-left / width * 100}%`, top: `${-top / height * 100}%` }}
+                          />
+                        </span>
+                      </span>
                       <strong>{String(index + 1).padStart(2, "0")}</strong><X size={13} />
                     </button>
                   );

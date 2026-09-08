@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Grid } from "@react-three/drei";
 import * as THREE from "three";
 import Mannequin from "./parts/Mannequin";
 import PropMesh from "./parts/PropMesh";
@@ -29,6 +28,7 @@ function CameraViewController({ camera: directorCamera }: { camera?: DirectorCam
       perspectiveCamera.position.copy(vectorFrom(directorCamera.position));
       perspectiveCamera.lookAt(vectorFrom(directorCamera.lookAt));
       perspectiveCamera.fov = directorCamera.fov;
+      perspectiveCamera.rotateZ(directorCamera.roll ?? 0);
     }
     perspectiveCamera.updateProjectionMatrix();
   }, [camera, directorCamera]);
@@ -42,26 +42,16 @@ function MonitorScene({ camera, composition }: CameraMonitorProps) {
   return (
     <>
       <color attach="background" args={[skyColor]} />
-      <fog attach="fog" args={[skyColor, 10, 22]} />
       <CameraViewController camera={camera} />
-      <ambientLight intensity={0.7} />
-      <hemisphereLight args={["#ffffff", "#111111", 1.25]} />
-      <directionalLight castShadow intensity={2} position={[4.5, 6, 4]} />
+      <ambientLight intensity={0.85} />
+      <directionalLight castShadow intensity={2.3} position={[7, 12, 5]} />
       {composition.environment.showGround ? (
         <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.006, 0]}>
           <planeGeometry args={[42, 42]} />
-          <meshStandardMaterial color="#1b1b1b" roughness={0.82} metalness={0.02} />
+          <meshStandardMaterial color="#15191f" roughness={0.92} metalness={0.02} transparent opacity={composition.environment.groundOpacity} />
         </mesh>
       ) : null}
-      <Grid
-        args={[16, 16]}
-        cellColor="#2d2d2d"
-        cellSize={0.5}
-        fadeDistance={14}
-        fadeStrength={1.4}
-        sectionColor="#484848"
-        sectionSize={2}
-      />
+        <gridHelper args={[40, 40, "#155e75", "#164e63"]} />
       {composition.characters.filter((character) => character.visible).map((character) => (
         <group
           key={character.id}

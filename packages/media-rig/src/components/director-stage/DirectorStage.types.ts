@@ -6,7 +6,7 @@ export type Vector3Like = {
   z: number;
 };
 
-export type DirectorBodyType = "mannequin" | "female" | "child" | "custom";
+export type DirectorBodyType = "mannequin" | "female" | "broad" | "muscular" | "slim" | "teen" | "child" | "chibi" | "custom";
 
 export type DirectorPropType =
   | "cube"
@@ -20,7 +20,9 @@ export type DirectorPropType =
   | "roundTable"
   | "bed"
   | "car"
-  | "column";
+  | "column"
+  | "crate"
+  | "floor-lamp";
 
 export type DirectorTransformMode = "translate" | "rotate" | "scale";
 
@@ -72,6 +74,7 @@ export type DirectorCamera = {
   position: Vector3Like;
   lookAt: Vector3Like;
   fov: number;
+  roll?: number;
   visible: boolean;
   locked: boolean;
 };
@@ -82,7 +85,19 @@ export type DirectorEnvironment = {
   skyColor: string;
 };
 
+export type DirectorCameraMotion = {
+  id: string;
+  cameraId: string;
+  label: string;
+  preset: import("./camera-motion-presets").DirectorCameraMotionPresetId;
+  duration: number;
+  start: number;
+  camera: DirectorCamera;
+  points: [number, number, number][];
+};
+
 export type DirectorComposition = {
+  cameraMotions?: DirectorCameraMotion[];
   characters: DirectorCharacter[];
   props: DirectorProp[];
   cameras: DirectorCamera[];
@@ -96,6 +111,7 @@ export type DirectorStageProps = {
   storageKey?: string | false;
   onCompositionChange?: (composition: DirectorComposition) => void;
   onCapture?: (dataUrl: string) => void;
+  onClose?: () => void;
 };
 
 export type DirectorSelection =
@@ -105,6 +121,7 @@ export type DirectorSelection =
   | null;
 
 export type ParsedSceneSeed = {
+  cameraMotions?: DirectorCameraMotion[];
   characters?: Array<Partial<DirectorCharacter>>;
   props?: Array<Partial<DirectorProp>>;
   cameras?: Array<Partial<DirectorCamera>>;

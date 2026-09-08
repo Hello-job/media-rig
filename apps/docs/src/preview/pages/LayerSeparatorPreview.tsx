@@ -4,27 +4,27 @@ import { LayerSeparator, type LayerSeparatorResult } from "media-rig";
 const RESULT: LayerSeparatorResult = {
   background: {
     id: "background",
-    name: "Architectural background",
-    url: "/assets/layer-separator/background.svg",
+    name: "暖光室内背景",
+    url: "/assets/layer-separator/background.png",
   },
   layers: [
     {
       id: "vase",
-      name: "Ceramic vase",
-      url: "/assets/layer-separator/vase.svg",
-      contentBounds: { x: 0.06, y: 0.2, width: 0.29, height: 0.71 },
+      name: "陶瓷花瓶与枝叶",
+      url: "/assets/layer-separator/vase.png",
+      contentBounds: { x: 0.0716, y: 0.2549, width: 0.2396, height: 0.6006 },
     },
     {
       id: "chair",
-      name: "Ochre chair",
-      url: "/assets/layer-separator/chair.svg",
-      contentBounds: { x: 0.44, y: 0.32, width: 0.4, height: 0.6 },
+      name: "棕色皮革休闲椅",
+      url: "/assets/layer-separator/chair.png",
+      contentBounds: { x: 0.3698, y: 0.4375, width: 0.3092, height: 0.458 },
     },
     {
       id: "lamp",
-      name: "Orb floor lamp",
-      url: "/assets/layer-separator/lamp.svg",
-      contentBounds: { x: 0.74, y: 0.12, width: 0.23, height: 0.75 },
+      name: "球形落地灯",
+      url: "/assets/layer-separator/lamp.png",
+      contentBounds: { x: 0.7767, y: 0.127, width: 0.0918, height: 0.7539 },
     },
   ],
 };
@@ -32,11 +32,12 @@ const RESULT: LayerSeparatorResult = {
 export default function LayerSeparatorPreview() {
   return (
     <LayerSeparator
-      imageUrl="/assets/layer-separator/scene.svg"
-      imageAlt="包含花瓶、椅子和落地灯的室内场景"
+      imageUrl="/assets/layer-separator/scene.png"
+      imageAlt="摄影风格的暖光室内场景，包含陶瓷花瓶、皮革休闲椅和球形落地灯"
+      labels={{ description: "摄影风格示例 · 使用预置图层体验拆分与合成" }}
       aspectRatio={3 / 2}
       defaultSelections={[
-        { id: "chair-selection", x1: 0.43, y1: 0.3, x2: 0.85, y2: 0.93 },
+        { id: "chair-selection", x1: 0.36, y1: 0.43, x2: 0.69, y2: 0.91 },
       ]}
       onSeparate={async () => {
         await new Promise((resolve) => window.setTimeout(resolve, 900));

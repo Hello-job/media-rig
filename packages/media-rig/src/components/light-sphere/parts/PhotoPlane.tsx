@@ -1,8 +1,10 @@
-import React, { useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
+
 import type { LightPositionRef, LightSphereViewMode } from "../LightSphere.types";
-import { photoPlaneVertex, photoPlaneFragment } from "../shaders";
+import { getPhotoPlaneSize } from "../utils/photo-plane-size";
+import { photoPlaneFragment, photoPlaneVertex } from "../shaders";
 
 type PhotoPlaneProps = {
   lightRef: LightPositionRef;
@@ -10,14 +12,27 @@ type PhotoPlaneProps = {
   viewMode?: LightSphereViewMode;
 };
 
-export default function PhotoPlane({ lightRef, imageUrl, viewMode = "front" }: PhotoPlaneProps) {
-  const texture = useMemo(
-    () => new THREE.TextureLoader().load(imageUrl),
-    [imageUrl],
-  );
+export default function PhotoPlane({
+  lightRef,
+  imageUrl,
+  viewMode = "front",
+}: PhotoPlaneProps) {
+  const texture = useLoader(THREE.TextureLoader, imageUrl);
   const material = useRef<THREE.ShaderMaterial>(null);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.anisotropy = 8;
+  const image = texture.image as HTMLImageElement;
+  const planeSize = getPhotoPlaneSize(
+    image.naturalWidth || image.width,
+    image.naturalHeight || image.height,
+  );
+  const uniforms = useMemo(
+    () => ({
+      uMap: { value: texture },
+      uLight: { value: lightRef.current.clone() },
+    }),
+    [lightRef, texture],
+  );
 
   useFrame(() => {
     if (material.current)
@@ -30,21 +45,19 @@ export default function PhotoPlane({ lightRef, imageUrl, viewMode = "front" }: P
       rotation={viewMode === "perspective" ? [0, -0.08, 0] : [0, -0.08, 0]}
     >
       <mesh castShadow receiveShadow>
-        <planeGeometry args={[1.12, 1.78, 96, 96]} />
+        <planeGeometry args={[planeSize.width, planeSize.height, 96, 96]} />
         <shaderMaterial
           ref={material}
-          transparent={false}
           side={THREE.DoubleSide}
-          uniforms={{
-            uMap: { value: texture },
-            uLight: { value: lightRef.current.clone() },
-          }}
+          uniforms={uniforms}
           vertexShader={photoPlaneVertex}
           fragmentShader={photoPlaneFragment}
         />
       </mesh>
       <mesh position={[0, 0, -0.018]}>
-        <boxGeometry args={[1.16, 1.82, 0.035]} />
+        <boxGeometry
+          args={[planeSize.width + 0.04, planeSize.height + 0.04, 0.035]}
+        />
         <meshStandardMaterial
           color="#111111"
           roughness={0.7}

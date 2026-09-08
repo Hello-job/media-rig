@@ -4,15 +4,9 @@ import { DirectorStage } from "media-rig";
 export default function DirectorStagePreview() {
   return (
     <DirectorStage
-      initialComposition={{
-        environment: {
-          showGround: true,
-          groundOpacity: 0.3,
-          skyColor: "#161616",
-        },
-      }}
+      onClose={() => { window.location.href = "/"; }}
       storageKey={false}
-      style={{ height: "100%", background: "#121212" }}
+      style={{ height: "100%", minHeight: 0, background: "#080808" }}
     />
   );
 }

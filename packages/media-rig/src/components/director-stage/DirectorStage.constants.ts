@@ -7,15 +7,21 @@ import type {
   DirectorPropType,
   JointAngles,
 } from "./DirectorStage.types";
-import defaultCharacterModelUrl from "./assets/static-mixamo-rigged.glb?url";
+import defaultCharacterModelUrl from "./assets/ue-mannequin-retopology.glb?url";
+import mixamoModelUrl from "./assets/static-mixamo-rigged.glb?url";
+
+export const CHARACTER_MODELS = [
+  { label: "UE Mannequin", url: defaultCharacterModelUrl },
+  { label: "Mixamo", url: mixamoModelUrl },
+];
 
 export const DEFAULT_CHARACTER_MODEL_URL = defaultCharacterModelUrl;
 
 export const DIRECTOR_COLORS = [
   "#4f8ef7",
-  "#f75353",
-  "#34c759",
-  "#ff9f0a",
+  "#e0524d",
+  "#12b886",
+  "#f2a900",
   "#af52de",
   "#ff2d55",
   "#5ac8fa",
@@ -35,6 +41,8 @@ export const PROP_OPTIONS: Array<{ type: DirectorPropType; label: string }> = [
   { type: "bed", label: "床" },
   { type: "car", label: "轿车" },
   { type: "column", label: "柱体" },
+  { type: "crate", label: "木箱" },
+  { type: "floor-lamp", label: "落地灯" },
 ];
 
 export const DEFAULT_JOINTS: JointAngles = {
@@ -120,19 +128,19 @@ export const POSE_PRESETS: Array<{ id: string; label: string; joints: JointAngle
 
 export const DEFAULT_ENVIRONMENT: DirectorEnvironment = {
   showGround: true,
-  groundOpacity: 0.3,
-  skyColor: "#161616",
+  groundOpacity: 1,
+  skyColor: "#060608",
 };
 
 export const defaultCharacter = (index: number): DirectorCharacter => ({
   id: `character-${crypto.randomUUID()}`,
-  label: index === 0 ? "CharacterA" : `Character${String.fromCharCode(65 + index)}`,
-  bodyType: index === 0 ? "custom" : "mannequin",
-  modelUrl: index === 0 ? DEFAULT_CHARACTER_MODEL_URL : undefined,
+  label: index === 0 ? "角色A" : `角色${String.fromCharCode(65 + index)}`,
+  bodyType: "mannequin",
+  modelUrl: DEFAULT_CHARACTER_MODEL_URL,
   animationMode: "static",
   color: DIRECTOR_COLORS[index % DIRECTOR_COLORS.length],
-  position: { x: -1.0 + index * 0.9, y: 0, z: -0.25 },
-  rotation: { x: 0, y: 18, z: 0 },
+  position: { x: index * 0.9, y: 0, z: 0 },
+  rotation: { x: 0, y: 0, z: 0 },
   scale: { x: 1, y: 1, z: 1 },
   jointAngles: index === 0 ? structuredClone(RELAXED_STAND_JOINTS) : structuredClone(DEFAULT_JOINTS),
   visible: true,
@@ -155,9 +163,9 @@ export const defaultProp = (index: number, propType: DirectorPropType = "cube"):
 
 export const defaultCamera = (index: number): DirectorCamera => ({
   id: `camera-${crypto.randomUUID()}`,
-  label: index === 0 ? "Camera1" : `Camera${index + 1}`,
-  position: { x: index % 2 === 0 ? 2.068 : 3.2, y: 2.865, z: 5.781 - index * 0.8 },
-  lookAt: { x: 0, y: 1.2, z: 0 },
+  label: `机位${index + 1}`,
+  position: { x: 0, y: 2.7, z: 9 },
+  lookAt: { x: 0, y: 1, z: 0 },
   fov: 50,
   visible: true,
   locked: false,
@@ -165,7 +173,14 @@ export const defaultCamera = (index: number): DirectorCamera => ({
 
 export const DEFAULT_COMPOSITION: DirectorComposition = {
   characters: [defaultCharacter(0)],
-  props: [defaultProp(0, "roundTable"), defaultProp(1, "car")],
+  props: [],
   cameras: [defaultCamera(0)],
   environment: DEFAULT_ENVIRONMENT,
 };
+
+export const BODY_TYPE_OPTIONS = [
+  { type: "mannequin", label: "男性素体" }, { type: "female", label: "女性素体" },
+  { type: "broad", label: "宽厚素体" }, { type: "muscular", label: "健壮素体" },
+  { type: "slim", label: "纤细素体" }, { type: "teen", label: "少年素体" },
+  { type: "child", label: "儿童素体" }, { type: "chibi", label: "二头身" },
+] as const;

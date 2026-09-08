@@ -63,9 +63,11 @@
 .layer-separator__panel-heading small { min-width: 22px; border: 1px solid var(--ls-line); border-radius: 999px; padding: 2px 7px; color: var(--ls-muted); font-size: 10px; text-align: center; }
 .layer-separator__edit-hint { margin: -5px 0 1px; color: var(--ls-muted); font-size: 10px; line-height: 1.55; }
 .layer-separator__selection-list { display: flex; min-height: 0; flex-wrap: wrap; gap: 7px; }
-.layer-separator__selection-list button { display: grid; height: 34px; cursor: pointer; grid-template-columns: 27px auto 14px; align-items: center; gap: 7px; border: 1px solid var(--ls-line); border-radius: 9px; background: var(--ls-raised); padding: 3px 7px 3px 3px; color: var(--ls-muted); }
+.layer-separator__selection-list button { display: grid; min-height: 64px; cursor: pointer; grid-template-columns: 56px auto 14px; align-items: center; gap: 7px; border: 1px solid var(--ls-line); border-radius: 9px; background: var(--ls-raised); padding: 3px 7px 3px 3px; color: var(--ls-muted); }
 .layer-separator__selection-list button:hover { border-color: var(--ls-line-strong); color: var(--ls-text); }
-.layer-separator__selection-list button > span { width: 27px; height: 27px; border-radius: 6px; background-repeat: no-repeat; }
+.layer-separator__selection-thumbnail { display: grid; width: 56px; height: 56px; place-items: center; overflow: hidden; border-radius: 6px; background: var(--ls-bg); }
+.layer-separator__selection-thumbnail > span { position: relative; display: block; overflow: hidden; }
+.layer-separator__selection-thumbnail img { position: absolute; display: block; max-width: none; object-fit: fill; pointer-events: none; }
 .layer-separator__selection-list strong { color: var(--ls-text); font-size: 10px; font-variant-numeric: tabular-nums; }
 .layer-separator__panel textarea { width: 100%; min-height: 116px; resize: vertical; border: 1px solid var(--ls-line); border-radius: 10px; background: var(--ls-raised); color: var(--ls-text); font-size: 11px; line-height: 1.55; padding: 11px 12px; }
 .layer-separator__panel textarea::placeholder { color: #656a73; }

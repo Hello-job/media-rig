@@ -1,10 +1,10 @@
-import React, { Suspense, useId, useMemo, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Aperture, RotateCcw } from "lucide-react";
+import React, { useId, useMemo, useRef, useState } from "react";
+import { ArrowUp, LoaderCircle, RotateCcw, X } from "lucide-react";
 import {
   DEFAULT_IMAGE_ANGLE_STATE,
   IMAGE_ANGLE_LIMITS,
   normalizeImageAngleState,
+  getImageAngleDragValue,
 } from "./ImageAngleRig.constants";
 import type {
   ImageAngleActionButtonProps,
@@ -16,41 +16,36 @@ import ImageAngleScene from "./parts/ImageAngleScene";
 type AngleKey = "yaw" | "pitch" | "zoom";
 
 const CONTROL_LABELS: Record<AngleKey, string> = {
-  yaw: "旋转",
-  pitch: "倾斜",
-  zoom: "缩放",
+  yaw: "水平旋转",
+  pitch: "垂直倾斜",
+  zoom: "镜头推进",
 };
 
 const ROOT_CLASS = [
-  "grid h-full min-h-[460px] w-full grid-rows-[auto_minmax(0,1fr)] overflow-hidden",
-  "rounded-[14px] border border-[#2b2d31] bg-[#101113] font-sans text-[#f4f5f7]",
-  "shadow-[0_18px_54px_rgba(0,0,0,0.28)] max-[760px]:min-h-[700px]",
-].join(" ");
-
-const READOUT_CLASS = [
-  "min-w-[58px] rounded-md border border-[#303238] bg-[#18191c] text-center",
-  "font-mono text-[10px] leading-6 text-[#b8bbc2] tabular-nums",
+  "nodrag h-[320px] w-[560px] max-w-full overflow-hidden rounded-[20px]",
+  "border border-white/[0.08] bg-[#191919] font-sans text-white",
+  "shadow-[0_22px_70px_rgba(0,0,0,0.56)] max-[480px]:h-auto",
 ].join(" ");
 
 const RANGE_CLASS = [
-  "m-0 h-4 w-full cursor-ew-resize accent-[#f5f6f8]",
-  "focus-visible:rounded focus-visible:outline focus-visible:outline-2",
-  "focus-visible:outline-offset-4 focus-visible:outline-white/60",
+  "nodrag m-0 h-1 min-w-0 flex-1 cursor-pointer appearance-none rounded-full",
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60",
+  "[&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white",
+  "[&::-moz-range-thumb]:shadow-[0_1px_4px_rgba(0,0,0,0.45)]",
+  "[&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full",
+  "[&::-webkit-slider-thumb]:border-0 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_1px_4px_rgba(0,0,0,0.45)]",
 ].join(" ");
 
 const RESET_BUTTON_CLASS = [
-  "absolute bottom-4 left-4 z-10 inline-flex h-[34px] items-center justify-center gap-[7px]",
-  "rounded-lg border border-[#303238] bg-[#0d0e10]/80 px-3 text-[11px] font-[590] text-[#b9bcc3]",
-  "cursor-pointer backdrop-blur-[10px] transition-colors duration-150",
-  "hover:border-[#41444b] hover:bg-[#26282d] hover:text-[#f2f3f5]",
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white/70",
+  "absolute bottom-3 right-3 inline-flex cursor-pointer items-center gap-1 rounded-md px-1.5 py-1",
+  "text-[10px] text-white/30 transition-colors hover:bg-white/5 hover:text-white/60",
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60",
 ].join(" ");
 
 const ACTION_BUTTON_CLASS = [
-  "inline-flex h-9 min-w-[132px] cursor-pointer items-center justify-center rounded-[9px]",
-  "border border-[#f4f5f7] bg-[#f4f5f7] px-4 text-[11px] font-[680] text-[#17181b]",
-  "transition duration-150 hover:-translate-y-px hover:border-white hover:bg-white",
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white/70",
+  "inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white p-0 text-black shadow-sm",
+  "transition-colors hover:bg-white/85 disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/40",
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60",
 ].join(" ");
 
 function formatAngle(value: number) {
@@ -64,10 +59,10 @@ function formatControlValue(key: AngleKey, value: number) {
   return `${Object.is(rounded, -0) ? 0 : rounded}`;
 }
 
-function DefaultActionButton({ className, onClick }: ImageAngleActionButtonProps) {
+function DefaultActionButton({ className, onClick, disabled, loading }: ImageAngleActionButtonProps) {
   return (
-    <button type="button" className={className} onClick={onClick}>
-      确认调整
+    <button type="button" className={className} onClick={onClick} disabled={disabled} aria-busy={loading} aria-label={loading ? "处理中" : "确认调整"} title={loading ? "处理中" : "确认调整"}>
+      {loading ? <LoaderCircle size={14} className="animate-spin" aria-hidden="true" /> : <ArrowUp size={16} aria-hidden="true" />}
     </button>
   );
 }
@@ -81,8 +76,12 @@ export default function ImageAngleRig({
   actionButton: ActionButton = DefaultActionButton,
   actionInput,
   onAction,
-  dragAxisLockThreshold = 8,
-  title = "拖拽图片调整角度",
+  actionLoading = false,
+  actionDisabled = false,
+  onClose,
+  dragThreshold,
+  dragAxisLockThreshold,
+  title = "视角",
   className = "",
   style,
 }: ImageAngleRigProps) {
@@ -94,29 +93,91 @@ export default function ImageAngleRig({
     [internalValue, isControlled, value],
   );
 
+  const latestValue = useRef(currentValue);
+  latestValue.current = currentValue;
+  const dragStart = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+    value: ImageAngleState;
+    changed: boolean;
+  } | null>(null);
+  const pendingControl = useRef<AngleKey | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const threshold = Math.max(0, dragThreshold ?? dragAxisLockThreshold ?? 3);
+
   const updateValue = (nextValue: ImageAngleState) => {
+    latestValue.current = nextValue;
     if (!isControlled) setInternalValue(nextValue);
     onChange?.(nextValue);
   };
 
-  const commitValue = (nextValue: ImageAngleState) => {
-    onChangeEnd?.(nextValue);
+  const patchValue = (patch: Partial<ImageAngleState>, commit = false) => {
+    const nextValue = normalizeImageAngleState({ ...latestValue.current, ...patch });
+    updateValue(nextValue);
+    if (commit) onChangeEnd?.(nextValue);
   };
 
-  const patchValue = (patch: Partial<ImageAngleState>, commit = false) => {
-    const nextValue = normalizeImageAngleState({ ...currentValue, ...patch });
-    updateValue(nextValue);
-    if (commit) commitValue(nextValue);
+  const commitControl = (key: AngleKey) => {
+    if (pendingControl.current !== key) return;
+    pendingControl.current = null;
+    onChangeEnd?.(latestValue.current);
   };
 
   const reset = () => {
+    pendingControl.current = null;
     const nextValue = { ...DEFAULT_IMAGE_ANGLE_STATE };
     updateValue(nextValue);
-    commitValue(nextValue);
+    onChangeEnd?.(nextValue);
+  };
+
+  const startDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0 || dragStart.current) return;
+    event.preventDefault();
+    event.stopPropagation();
+    dragStart.current = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      value: latestValue.current,
+      changed: false,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragging(true);
+  };
+
+  const moveDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = dragStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (!start.changed && Math.hypot(deltaX, deltaY) < threshold) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const nextValue = getImageAngleDragValue(start.value, deltaX, deltaY, rect.width, rect.height);
+    if (nextValue.yaw === latestValue.current.yaw && nextValue.pitch === latestValue.current.pitch) return;
+    start.changed = true;
+    // Other controls may change during a captured drag; only patch its angles.
+    patchValue({ yaw: nextValue.yaw, pitch: nextValue.pitch });
+  };
+
+  const finishDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = dragStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    event.stopPropagation();
+    dragStart.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    setDragging(false);
+    if (start.changed) onChangeEnd?.(latestValue.current);
   };
 
   const handleAction: ImageAngleActionButtonProps["onClick"] = (event) => {
-    onAction?.({ value: currentValue, input: actionInput }, event);
+    event.stopPropagation();
+    if (actionLoading || actionDisabled) return;
+    onAction?.({ value: latestValue.current, input: actionInput }, event);
   };
 
   const rootClassName = [ROOT_CLASS, className].filter(Boolean).join(" ");
@@ -127,140 +188,120 @@ export default function ImageAngleRig({
       className={rootClassName}
       style={style}
       aria-label={title}
+      onPointerDown={(event) => event.stopPropagation()}
     >
-      <header className="flex min-h-16 items-center justify-between gap-5 border-b border-[#303238] px-[18px] py-3 pl-5 max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-2.5 max-[760px]:py-3.5">
-        <div>
-          <h2 className="m-0 text-sm font-[680] leading-[1.35] tracking-[-0.01em]">
-            {title}
-          </h2>
-          <p className="mt-[3px] text-[11px] leading-[1.35] text-[#999da6]">
-            在画布中拖拽，或使用参数精确调整
-          </p>
-        </div>
-        <div className="flex items-center gap-1" aria-label="当前角度">
-          <span className={READOUT_CLASS}>Y {formatAngle(currentValue.yaw)}</span>
-          <span className={READOUT_CLASS}>X {formatAngle(currentValue.pitch)}</span>
-          <span className={READOUT_CLASS}>S {formatControlValue("zoom", currentValue.zoom)}</span>
-        </div>
-      </header>
-
-      <div className="grid min-h-0 grid-cols-[minmax(0,1.28fr)_minmax(300px,0.72fr)] max-[760px]:grid-cols-1 max-[760px]:grid-rows-[minmax(300px,1fr)_auto]">
-        <div
-          data-slot="canvas-wrap"
-          className="relative min-h-0 min-w-0 overflow-hidden border-r border-[#303238] bg-[#151618] [&>div]:h-full [&>div]:w-full [&_canvas]:!block [&_canvas]:!h-full [&_canvas]:!w-full [&_canvas]:touch-none max-[760px]:border-r-0 max-[760px]:border-b"
-        >
-          <Canvas
-            camera={{ position: [0, 0.1, 7.4], fov: currentValue.wideAngle ? 52 : 34 }}
-            gl={{
-              antialias: true,
-              alpha: false,
-              powerPreference: "high-performance",
-            }}
-            dpr={[1, 1.5]}
+      <div className="grid h-full min-h-0 grid-cols-[minmax(0,300fr)_minmax(220px,260fr)] max-[480px]:grid-cols-1">
+        <div data-slot="canvas-wrap" className="relative min-h-0 min-w-0 overflow-hidden bg-[#20201f] max-[480px]:h-[240px]">
+          <div
+            data-slot="angle-drag-surface"
+            className="relative flex size-full touch-none select-none items-center justify-center overflow-hidden"
+            style={{ cursor: dragging ? "grabbing" : "grab", perspective: "1000px" }}
+            onPointerDown={startDrag}
+            onPointerMove={moveDrag}
+            onPointerUp={finishDrag}
+            onPointerCancel={finishDrag}
+            onLostPointerCapture={finishDrag}
           >
-            <Suspense fallback={null}>
-              <ImageAngleScene
-                imageUrl={imageUrl}
-                value={currentValue}
-                onChange={updateValue}
-                onChangeEnd={commitValue}
-                dragAxisLockThreshold={dragAxisLockThreshold}
-              />
-            </Suspense>
-          </Canvas>
+            <span className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-[9px] bg-black/20 px-3 py-1.5 text-[10px] font-semibold text-white/45">拖动调整视角</span>
+            <ImageAngleScene imageUrl={imageUrl} value={currentValue} />
+          </div>
           <button
             type="button"
             data-slot="canvas-reset"
+            aria-label="重置角度"
             className={RESET_BUTTON_CLASS}
-            onClick={reset}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={(event) => { event.stopPropagation(); reset(); }}
           >
-            <RotateCcw size={15} aria-hidden="true" />
-            重置角度
+            <RotateCcw size={12} aria-hidden="true" />
+            重置
           </button>
         </div>
 
-        <div className="flex min-h-0 min-w-0 flex-col bg-[#1b1c1f] px-6 pb-5 pt-6 max-[760px]:p-5">
-          <div className="grid gap-[25px] max-[760px]:gap-[18px]">
+        <aside className="flex min-h-0 min-w-0 flex-col border-l border-white/[0.06] bg-[#191919] px-3 pb-2.5 pt-2.5 max-[480px]:border-l-0 max-[480px]:border-t">
+          <header className="flex h-6 items-center justify-between">
+            <h2 className="m-0 text-[13px] font-bold leading-none text-white/90">{title}</h2>
+            {onClose ? (
+              <button
+                type="button"
+                aria-label="关闭多角度设置"
+                className="inline-flex size-6 cursor-pointer items-center justify-center rounded-full text-white/35 transition-colors hover:bg-white/5 hover:text-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60"
+                onClick={(event) => { event.stopPropagation(); onClose(); }}
+              >
+                <X size={14} aria-hidden="true" />
+              </button>
+            ) : null}
+          </header>
+
+          <div className="mt-2 flex min-h-0 flex-1 flex-col gap-2.5">
             {(Object.keys(CONTROL_LABELS) as AngleKey[]).map((key) => {
               const limits = IMAGE_ANGLE_LIMITS[key];
               const inputId = `image-angle-rig-${controlId}-${key}`;
+              const percentage = (currentValue[key] - limits.min) / (limits.max - limits.min) * 100;
               return (
-                <div key={key}>
-                  <div className="mb-2.5 flex items-center justify-between gap-3">
-                    <label
-                      className="text-xs font-[620] leading-[1.2] text-[#d9dbe0]"
-                      htmlFor={inputId}
-                    >
-                      {CONTROL_LABELS[key]}
-                    </label>
-                    <output
-                      className="min-w-[54px] text-right font-mono text-[11px] text-[#f4f5f7] tabular-nums"
-                      htmlFor={inputId}
-                    >
+                <div key={key} className="space-y-1.5">
+                  <label className="block text-xs font-semibold leading-none text-white/60" htmlFor={inputId}>
+                    {CONTROL_LABELS[key]}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      className={RANGE_CLASS}
+                      style={{ background: `linear-gradient(to right, rgba(255,255,255,0.72) 0 ${percentage}%, rgba(255,255,255,0.12) ${percentage}% 100%)` }}
+                      id={inputId}
+                      type="range"
+                      min={limits.min}
+                      max={limits.max}
+                      step={limits.step}
+                      value={currentValue[key]}
+                      aria-valuetext={formatControlValue(key, currentValue[key])}
+                      onChange={(event) => {
+                        pendingControl.current = key;
+                        patchValue({ [key]: Number(event.target.value) });
+                      }}
+                      onPointerUp={() => commitControl(key)}
+                      onPointerCancel={() => commitControl(key)}
+                      onKeyUp={(event) => {
+                        if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(event.key)) commitControl(key);
+                      }}
+                      onBlur={() => commitControl(key)}
+                    />
+                    <output className="flex h-7 min-w-[76px] items-center justify-center rounded-lg bg-white/[0.055] px-2 text-xs font-semibold text-white/90 tabular-nums" htmlFor={inputId}>
                       {formatControlValue(key, currentValue[key])}
                     </output>
-                  </div>
-                  <input
-                    className={RANGE_CLASS}
-                    id={inputId}
-                    type="range"
-                    min={limits.min}
-                    max={limits.max}
-                    step={limits.step}
-                    value={currentValue[key]}
-                    aria-valuetext={formatControlValue(key, currentValue[key])}
-                    onChange={(event) => patchValue({ [key]: Number(event.target.value) })}
-                    onPointerUp={(event) => commitValue(normalizeImageAngleState({
-                      ...currentValue,
-                      [key]: Number(event.currentTarget.value),
-                    }))}
-                    onKeyUp={(event) => commitValue(normalizeImageAngleState({
-                      ...currentValue,
-                      [key]: Number(event.currentTarget.value),
-                    }))}
-                  />
-                  <div className="mt-1 flex justify-between text-[9px] text-[#686c74] tabular-nums" aria-hidden="true">
-                    <span>{limits.min}{key === "zoom" ? "" : "°"}</span>
-                    <span>{limits.max}{key === "zoom" ? "" : "°"}</span>
                   </div>
                 </div>
               );
             })}
+
+            <div className="mt-0.5 flex items-center justify-between border-t border-white/[0.07] pt-2.5">
+              <span className="text-xs font-semibold text-white/80">广角镜头</span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={currentValue.wideAngle}
+                aria-label="广角镜头"
+                className="group relative h-[18px] w-8 cursor-pointer rounded-full border-0 bg-white/15 p-0 transition-colors aria-checked:bg-white/85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  patchValue({ wideAngle: !currentValue.wideAngle }, true);
+                }}
+              >
+                <span className="absolute left-0.5 top-0.5 size-3.5 rounded-full bg-white/60 shadow-sm transition-transform group-aria-checked:translate-x-3.5 group-aria-checked:bg-white" />
+              </button>
+            </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-[34px_minmax(0,1fr)_auto] items-center gap-2.5 border-t border-[#303238] pt-5">
-            <span className="grid size-[34px] place-items-center rounded-lg border border-[#303238] bg-[#202226] text-[#b7bac2]" aria-hidden="true">
-              <Aperture size={17} />
-            </span>
-            <span className="grid gap-[3px]">
-              <strong className="text-xs font-[620] leading-[1.2] text-[#d9dbe0]">
-                广角镜头
-              </strong>
-              <small className="text-[10px] leading-tight text-[#7f838c]">
-                加强画面的透视纵深
-              </small>
-            </span>
-            <button
-              type="button"
-              className="group relative h-[22px] w-[38px] cursor-pointer rounded-full border border-[#41444b] bg-[#292b30] p-0 transition-colors duration-150 aria-checked:border-[#f4f5f7] aria-checked:bg-[#f4f5f7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white/70"
-              role="switch"
-              aria-checked={currentValue.wideAngle}
-              aria-label="广角镜头"
-              onClick={() => patchValue({ wideAngle: !currentValue.wideAngle }, true)}
-            >
-              <span className="absolute left-[3px] top-[3px] size-3.5 rounded-full bg-[#f4f5f7] shadow-[0_1px_4px_rgba(0,0,0,0.36)] transition duration-150 group-aria-checked:translate-x-4 group-aria-checked:bg-[#17181b]" />
-            </button>
-          </div>
-
-          <div data-slot="action-slot" className="mt-auto flex justify-end max-[760px]:mt-5">
+          <div data-slot="action-slot" className="mt-auto flex justify-end pt-1.5">
             <ActionButton
               className={ACTION_BUTTON_CLASS}
               value={currentValue}
               input={actionInput}
               onClick={handleAction}
+              disabled={actionDisabled || actionLoading}
+              loading={actionLoading}
             />
           </div>
-        </div>
+        </aside>
       </div>
     </section>
   );

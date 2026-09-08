@@ -24,6 +24,7 @@ export type MediaComponentMeta = {
   description: string;
   summary: string;
   packagePath: string;
+  exportName?: string;
   registryName: string;
   dependencies: string[];
   tags: string[];
@@ -99,14 +100,14 @@ export const mediaComponents: MediaComponentMeta[] = [
     eyebrow: "Perspective control",
     category: "Image",
     status: "Stable",
-    description: "把图片安装在圆角实体方块上，通过拖拽和参数精确控制旋转、倾斜与整体缩放。",
+    description: "在整块预览区拖拽调整水平旋转与垂直倾斜，通过整数滑杆控制角度和镜头推进。",
     summary: "用于商品图、封面和视觉素材的多角度构图控制器。",
     packagePath: "media-rig/image-angle-rig",
     registryName: "image-angle-rig",
-    dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react"],
-    tags: ["Drag", "WebGL", "Controlled"],
+    dependencies: ["lucide-react"],
+    tags: ["Drag", "CSS 3D", "Controlled"],
     previewClassName: "max-w-[1040px]",
-    stageClassName: "h-[560px] bg-[#090a0b] p-5 max-[760px]:h-[760px] max-[760px]:p-3",
+    stageClassName: "h-[420px] bg-[#090a0b] p-5 max-[480px]:h-[620px] max-[480px]:p-3",
     source: imageAngleRigSource,
     preview: ImageAngleRigPreview,
     api: [
@@ -114,7 +115,13 @@ export const mediaComponents: MediaComponentMeta[] = [
       { name: "value", type: "Partial<ImageAngleState>", defaultValue: "undefined", description: "受控角度、倾斜和缩放状态。" },
       { name: "onChange", type: "(value) => void", defaultValue: "undefined", description: "拖拽或参数变化时触发。" },
       { name: "actionButton", type: "ComponentType", defaultValue: "内置按钮", description: "右下角自定义操作按钮。" },
-      { name: "dragAxisLockThreshold", type: "number", defaultValue: "8", description: "手势参与轴向判断前的像素阈值。" },
+      { name: "defaultValue", type: "Partial<ImageAngleState>", defaultValue: "{ yaw: 30, pitch: -20, zoom: 0, wideAngle: false }", description: "初始状态；重置恢复内置默认值。" },
+      { name: "onChangeEnd", type: "(value) => void", defaultValue: "undefined", description: "拖拽或滑杆操作结束、切换广角、重置时提交参数。" },
+      { name: "dragThreshold", type: "number", defaultValue: "3", description: "拖拽启动距离（像素）；按预览区尺寸映射角度，不锁轴。" },
+      { name: "dragAxisLockThreshold", type: "number", defaultValue: "undefined", description: "已弃用，保留为 dragThreshold 的兼容别名。" },
+      { name: "actionLoading", type: "boolean", defaultValue: "false", description: "操作处理中，显示加载状态并阻止重复触发。" },
+      { name: "actionDisabled", type: "boolean", defaultValue: "false", description: "禁用操作按钮。" },
+      { name: "onClose", type: "() => void", defaultValue: "undefined", description: "提供时显示关闭按钮，由宿主管理显隐。" },
     ],
   },
   {
@@ -127,19 +134,23 @@ export const mediaComponents: MediaComponentMeta[] = [
     description: "通过球面灯位、色温、强度和光束参数，为图片建立可视化布光方案。",
     summary: "面向摄影、海报和生成式图片工作流的交互式布光组件。",
     packagePath: "media-rig/light-sphere",
+    exportName: "LightSpherePanel",
     registryName: "light-sphere",
-    dependencies: ["@react-three/fiber", "@react-three/drei", "three"],
+    dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react"],
     tags: ["Lighting", "WebGL", "Temperature"],
     previewClassName: "max-w-[960px]",
-    stageClassName: "h-[520px] bg-[#141414] max-[760px]:h-[720px]",
+    stageClassName: "h-[420px] bg-[#090a0b] p-5 max-[480px]:h-[660px] max-[480px]:p-3",
     source: lightSphereSource,
     preview: LightSpherePreview,
     api: [
-      { name: "imageUrl", type: "string", defaultValue: "required", description: "接受布光预览的图片地址。" },
-      { name: "color", type: "string", defaultValue: '"#ffffff"', description: "灯光颜色。" },
-      { name: "intensity", type: "number", defaultValue: "0.5", description: "主灯强度。" },
-      { name: "viewMode", type: '"front" | "perspective"', defaultValue: '"front"', description: "预览摄影机视角。" },
-      { name: "targetPosition", type: "Vector3Like", defaultValue: "undefined", description: "外部控制的球面灯位。" },
+      { name: "imageUrl", type: "string", defaultValue: '"/assets/photo-texture2.png"', description: "LightSpherePanel 与 LightSphere 的预览图片。" },
+      { name: "value / defaultValue", type: "Partial<LightSpherePanelValue>", defaultValue: "50% · 5600K · 前方 · 透视 · 轮廓光开启", description: "面板的受控状态或初始状态。" },
+      { name: "onChange", type: "(value) => void", defaultValue: "undefined", description: "滑杆、视角、方向预设、轮廓光和拖拽灯位的状态更新。" },
+      { name: "onChangeEnd", type: "(value) => void", defaultValue: "undefined", description: "调节完成后提交完整状态。" },
+      { name: "onClose", type: "() => void", defaultValue: "undefined", description: "提供时显示关闭按钮。" },
+      { name: "onAction", type: "({ value, input }, event) => void", defaultValue: "undefined", description: "应用当前打光方案；轮廓光作为输出参数传递。" },
+      { name: "actionButton", type: "ComponentType<LightSphereActionButtonProps>", defaultValue: "内置按钮", description: "可注入自定义操作按钮，接收 value、input、disabled 和 loading。" },
+      { name: "actionLoading / actionDisabled", type: "boolean", defaultValue: "false", description: "处理中状态和禁用状态。" },
     ],
   },
   {
@@ -160,10 +171,10 @@ export const mediaComponents: MediaComponentMeta[] = [
     source: directorStageSource,
     preview: DirectorStagePreview,
     api: [
-      { name: "defaultComposition", type: "DirectorComposition", defaultValue: "内置场景", description: "初始化角色、道具和摄影机。" },
-      { name: "onChange", type: "(composition) => void", defaultValue: "undefined", description: "场景编排变化时触发。" },
-      { name: "selectedId", type: "string", defaultValue: "undefined", description: "受控选中对象。" },
-      { name: "onExport", type: "(composition) => void", defaultValue: "undefined", description: "导出场景数据时触发。" },
+      { name: "initialComposition", type: "Partial<DirectorComposition>", defaultValue: "内置场景", description: "初始化角色、道具和摄影机。" },
+      { name: "onCompositionChange", type: "(composition) => void", defaultValue: "undefined", description: "场景编排变化时触发。" },
+      { name: "storageKey", type: "string | false", defaultValue: "内置存储键", description: "本地草稿键；false 关闭持久化。" },
+      { name: "onCapture", type: "(dataUrl: string) => void", defaultValue: "undefined", description: "按选定画幅截图时触发。" },
       { name: "style", type: "CSSProperties", defaultValue: "undefined", description: "根容器尺寸样式。" },
     ],
   },

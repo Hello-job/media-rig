@@ -1,16 +1,16 @@
 import type { ImageAngleState } from "./ImageAngleRig.types";
 
 export const DEFAULT_IMAGE_ANGLE_STATE: ImageAngleState = {
-  yaw: 34,
-  pitch: -25,
+  yaw: 30,
+  pitch: -20,
   zoom: 0,
   wideAngle: false,
 };
 
 export const IMAGE_ANGLE_LIMITS = {
-  yaw: { min: -90, max: 90, step: 0.5 },
-  pitch: { min: -45, max: 45, step: 0.5 },
-  zoom: { min: 0, max: 10, step: 0.1 },
+  yaw: { min: -90, max: 90, step: 1 },
+  pitch: { min: -45, max: 45, step: 1 },
+  zoom: { min: 0, max: 10, step: 1 },
 } as const;
 
 export type ImageAngleDragAxis = "yaw" | "pitch" | "both";
@@ -37,7 +37,22 @@ export function resolveImageAngleDragAxis(
 }
 
 export function getImageAngleCubeScale(zoom: number) {
-  return 1 + clampImageAngle("zoom", zoom) * 0.035;
+  return 1 + clampImageAngle("zoom", zoom) / 10;
+}
+
+/** Match tamen-web: half a preview spans 90° horizontally and 45° vertically. */
+export function getImageAngleDragValue(
+  value: ImageAngleState,
+  deltaX: number,
+  deltaY: number,
+  width: number,
+  height: number,
+): ImageAngleState {
+  return {
+    ...value,
+    yaw: clampImageAngle("yaw", Math.round(value.yaw - (width > 0 ? deltaX / width * 180 : 0))),
+    pitch: clampImageAngle("pitch", Math.round(value.pitch - (height > 0 ? deltaY / height * 90 : 0))),
+  };
 }
 
 export function clampImageAngle(

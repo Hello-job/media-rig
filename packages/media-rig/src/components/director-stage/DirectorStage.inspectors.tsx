@@ -1,6 +1,7 @@
+import { useState } from "react";
 import CameraMonitor from "./CameraMonitor";
 import { Field, JointSlider, VectorEditor } from "./DirectorStage.controls";
-import { DIRECTOR_COLORS, POSE_PRESETS, PROP_OPTIONS } from "./DirectorStage.constants";
+import { BODY_TYPE_OPTIONS, CHARACTER_MODELS, DIRECTOR_COLORS, POSE_PRESETS, PROP_OPTIONS } from "./DirectorStage.constants";
 import type { SceneItem } from "./DirectorStage.sceneTypes";
 import type {
   DirectorCamera,
@@ -19,6 +20,7 @@ function CharacterInspector({
   character: DirectorCharacter;
   onPatch: (patch: Partial<DirectorCharacter>) => void;
 }) {
+  const [tab, setTab] = useState<"properties" | "pose" | "action">("properties");
   const updateJoint = <Group extends keyof JointAngles, Key extends keyof JointAngles[Group]>(
     group: Group,
     key: Key,
@@ -34,28 +36,20 @@ function CharacterInspector({
 
   return (
     <>
+      <div className="director-stage__inspector-tabs" aria-label="角色检查器">
+        {([['properties', '属性'], ['pose', '姿势'], ['action', '动作']] as const).map(([value, label]) => <button type="button" key={value} aria-pressed={tab === value} onClick={() => setTab(value)}>{label}</button>)}
+      </div>
+      {tab === "properties" && <>
       <Field label="名称">
         <input value={character.label} onChange={(event) => onPatch({ label: event.target.value })} />
       </Field>
+      <Field label="模型"><select aria-label="角色模型" value={CHARACTER_MODELS.some((model) => model.url === character.modelUrl) ? character.modelUrl : "custom"} onChange={(event) => onPatch({ modelUrl: event.target.value, animationMode: "static" })}>{CHARACTER_MODELS.map((model) => <option key={model.label} value={model.url}>{model.label}</option>)}<option value="custom" disabled>导入模型</option></select></Field>
       <Field label="体型">
         <select value={character.bodyType} onChange={(event) => onPatch({ bodyType: event.target.value as DirectorCharacter["bodyType"] })}>
-          <option value="mannequin">标准</option>
-          <option value="female">女性</option>
-          <option value="child">儿童</option>
+          {BODY_TYPE_OPTIONS.map(({ type, label }) => <option key={type} value={type}>{label}</option>)}
           <option value="custom">自定义模型</option>
         </select>
       </Field>
-      {character.modelUrl ? (
-        <Field label="动画">
-          <select
-            value={character.animationMode ?? "static"}
-            onChange={(event) => onPatch({ animationMode: event.target.value as DirectorCharacter["animationMode"] })}
-          >
-            <option value="static">静态摆姿</option>
-            <option value="play">播放动作</option>
-          </select>
-        </Field>
-      ) : null}
       <div className="director-stage__swatches" aria-label="角色颜色">
         {DIRECTOR_COLORS.map((color) => (
           <button
@@ -71,10 +65,12 @@ function CharacterInspector({
       <VectorEditor label="位置" value={character.position} onChange={(position) => onPatch({ position })} />
       <VectorEditor label="旋转" value={character.rotation} onChange={(rotation) => onPatch({ rotation })} step={1} />
       <VectorEditor label="缩放" value={character.scale} onChange={(scale) => onPatch({ scale })} />
+      </>}
+      {tab === "pose" && <>
       <div className="director-stage__section-title">姿态</div>
       <div className="director-stage__pose-grid">
         {POSE_PRESETS.map((pose) => (
-          <button key={pose.id} type="button" onClick={() => onPatch({ jointAngles: structuredClone(pose.joints) })}>
+          <button key={pose.id} type="button" onClick={() => onPatch({ jointAngles: structuredClone(pose.joints), animationMode: "static" })}>
             {pose.label}
           </button>
         ))}
@@ -97,6 +93,19 @@ function CharacterInspector({
       <JointSlider label="右腿展开" min={-70} max={70} value={character.jointAngles.rLeg.straddle} onChange={(value) => updateJoint("rLeg", "straddle", value)} />
       <JointSlider label="左膝弯曲" min={0} max={95} value={character.jointAngles.lKnee.bend} onChange={(value) => updateJoint("lKnee", "bend", value)} />
       <JointSlider label="右膝弯曲" min={0} max={95} value={character.jointAngles.rKnee.bend} onChange={(value) => updateJoint("rKnee", "bend", value)} />
+      </>}
+      {tab === "action" && <>      {character.modelUrl ? (
+        <Field label="动画">
+          <select
+            value={character.animationMode ?? "static"}
+            onChange={(event) => onPatch({ animationMode: event.target.value as DirectorCharacter["animationMode"] })}
+          >
+            <option value="static">静态摆姿</option>
+            <option value="play">播放动作</option>
+          </select>
+        </Field>
+      ) : null}
+<p className="director-stage__hint">播放模型自带的第一个动画片段；静态模型请使用姿势面板。</p></>}
     </>
   );
 }
@@ -132,9 +141,11 @@ function PropInspector({
 
 function CameraInspector({
   camera,
+  composition,
   onPatch,
 }: {
   camera: DirectorCamera;
+  composition: DirectorComposition;
   onPatch: (patch: Partial<DirectorCamera>) => void;
 }) {
   return (
@@ -144,10 +155,10 @@ function CameraInspector({
       </Field>
       <VectorEditor label="位置" value={camera.position} onChange={(position) => onPatch({ position })} />
       <Field label="注视目标">
-        <button type="button" className="director-stage__select-like">
-          自由（手动坐标）
-          <span>›</span>
-        </button>
+        <select aria-label="对准对象" value="" onChange={(event) => {
+          const target = [...composition.characters, ...composition.props].find((item) => item.id === event.target.value);
+          if (target) onPatch({ lookAt: { ...target.position, y: target.position.y + ("bodyType" in target ? 1.2 : 0.5) } });
+        }}><option value="">对准对象…</option>{[...composition.characters, ...composition.props].map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}</select>
       </Field>
       <VectorEditor label="注视坐标" value={camera.lookAt} onChange={(lookAt) => onPatch({ lookAt })} />
       <JointSlider label="焦距视角" min={20} max={80} value={camera.fov} onChange={(fov) => onPatch({ fov })} />
@@ -188,6 +199,7 @@ export function SelectionInspector({
           <CameraMonitor camera={selectedItem.item} composition={composition} />
           <CameraInspector
             camera={selectedItem.item}
+            composition={composition}
             onPatch={(patch) => onPatchCamera(selectedItem.item.id, patch)}
           />
         </>

@@ -73,19 +73,37 @@ export default function App() {
 
 父级容器需要提供稳定的宽度和高度。
 
+### 3D 打光面板
+
+`LightSpherePanel` 提供与 tamen-web 一致的 560×320 双栏面板：200px 球面预览、透视/正面切换、亮度、色温、六个主光源方向、轮廓光输出选项和重置。默认亮度 50%、色温 5600K、前方主光源、透视视角、轮廓光开启。图片按原比例展示；拖动灯位后同步预设选中状态。
+
+```jsx
+import { LightSpherePanel } from "media-rig/light-sphere";
+
+<LightSpherePanel
+  imageUrl="/your-image.png"
+  onChange={(value) => console.log(value)}
+  onAction={({ value }) => console.log("应用打光方案", value)}
+/>
+```
+
+`value` / `defaultValue` 支持 `Partial<LightSpherePanelValue>`，包含 `position`、`intensity`（0–1）、`colorTemperature`（2400–10000）、`activePosition`、`viewMode`、`rimLightEnabled`。`onChangeEnd` 在操作完成时提交完整状态。轮廓光与 tamen-web 一样作为输出选项，不添加第二个预览光源。
+
+`onClose` 控制关闭入口；`actionButton`、`actionInput`、`actionLoading`、`actionDisabled` 与视角面板用法一致。应用按钮通过 `onAction` 回传方案，由宿主对接生成服务。原有 `LightSphere` 仍可作为独立 3D 预览使用。
+
 ### 图片多角度调整
 
-`ImageAngleRig` 会把输入图片居中裁成正方形并贴在圆角实体方块的正面，其他面带有方向字母；横拖与竖拖会保持单轴，明确的斜向拖动会同时调整旋转和倾斜，也可以通过旋转、倾斜、整体方块缩放滑杆和广角开关精调。
+`ImageAngleRig` 使用与 tamen-web 一致的 CSS 3D 六面方块（72px、1000px 透视），不依赖 Three.js 或 WebGL。输入图片居中裁成正方形贴在正面，其他面带有方向字母；整块预览区均可拖拽，移动 3px 后同时调整水平旋转和垂直倾斜，按预览区宽高计算灵敏度并取整。镜头推进为 0–10，对应 1–2 倍预览缩放；广角开关作为输出选项，不改变预览视野。重置恢复水平 30°、垂直 -20°、推进 0 和关闭广角。
 
 ```jsx
 import { ImageAngleRig } from "media-rig/image-angle-rig";
 
 export default function App() {
   return (
-    <div style={{ width: 860, height: 520 }}>
+    <div style={{ width: 560 }}>
       <ImageAngleRig
         imageUrl="/your-image.png"
-        defaultValue={{ yaw: 34, pitch: -25, zoom: 0 }}
+        defaultValue={{ yaw: 30, pitch: -20, zoom: 0 }}
         onChange={(value) => console.log(value)}
         actionInput={{ imageId: "image-01" }}
         onAction={({ value, input }) => console.log(value, input)}
@@ -99,14 +117,20 @@ export default function App() {
 | --- | --- | --- |
 | `imageUrl` | `string` | `"/assets/photo-texture2.png"` |
 | `value` | `Partial<ImageAngleState>` | `undefined` |
-| `defaultValue` | `Partial<ImageAngleState>` | `{ yaw: 34, pitch: -25, zoom: 0, wideAngle: false }` |
+| `defaultValue` | `Partial<ImageAngleState>` | `{ yaw: 30, pitch: -20, zoom: 0, wideAngle: false }` |
 | `onChange` | `(value) => void` | `undefined` |
 | `onChangeEnd` | `(value) => void` | `undefined` |
 | `actionButton` | `ComponentType<ImageAngleActionButtonProps>` | 默认“确认调整”按钮 |
 | `actionInput` | `unknown` | `undefined` |
 | `onAction` | `({ value, input }, event) => void` | `undefined` |
-| `dragAxisLockThreshold` | `number` | `8` |
-| `title` | `string` | `"拖拽图片调整角度"` |
+| `dragThreshold` | `number` | `3`（像素） |
+| `dragAxisLockThreshold` | `number` | 已弃用，作为 `dragThreshold` 的兼容别名 |
+| `actionLoading` | `boolean` | `false`，处理中禁用操作按钮 |
+| `actionDisabled` | `boolean` | `false` |
+| `onClose` | `() => void` | `undefined`，提供时显示关闭按钮 |
+| `title` | `string` | `"视角"` |
+
+拖拽、滑杆连续更新触发 `onChange`；结束操作触发一次 `onChangeEnd`，单击预览区不会提交。切换广角和重置立即提交。自定义 `actionButton` 会收到 `disabled` 和 `loading`，应将它们绑定到按钮的禁用和加载状态。`onClose` 由宿主管理组件显隐。
 
 ## 属性
 

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Grid, OrbitControls } from "@react-three/drei";
+import { GizmoHelper, GizmoViewport, Line, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import CameraRig from "./parts/CameraRig";
 import Mannequin from "./parts/Mannequin";
@@ -17,6 +17,8 @@ import type {
 } from "./DirectorStage.types";
 
 type DirectorStageCanvasProps = {
+  onViewChange?: (camera: Pick<DirectorCamera, "position" | "lookAt" | "fov">) => void;
+  motionPath?: [number, number, number][];
   composition: DirectorComposition;
   selection: DirectorSelection;
   transformMode: DirectorTransformMode;
@@ -29,7 +31,7 @@ type DirectorStageCanvasProps = {
 };
 
 const DEFAULT_CAMERA = {
-  director: { position: new THREE.Vector3(4.2, 3.1, 6.0), target: new THREE.Vector3(0, 1.05, -0.3), fov: 42 },
+  director: { position: new THREE.Vector3(8, 6, 10), target: new THREE.Vector3(0, 1.2, 0), fov: 45 },
   front: { position: new THREE.Vector3(0, 1.6, 7.2), target: new THREE.Vector3(0, 1, 0), fov: 38 },
   top: { position: new THREE.Vector3(0, 8.2, 0.01), target: new THREE.Vector3(0, 0, 0), fov: 48 },
 };
@@ -46,37 +48,52 @@ function ViewController({
   viewMode,
   activeCamera,
   orbitEnabled = true,
+  onViewChange,
 }: {
   viewMode: DirectorViewMode;
   activeCamera?: DirectorCamera;
   orbitEnabled?: boolean;
+  onViewChange?: DirectorStageCanvasProps["onViewChange"];
 }) {
   const { camera } = useThree();
+  const controls = useRef<React.ElementRef<typeof OrbitControls>>(null);
+  const previousMode = useRef<DirectorViewMode | null>(null);
 
   useEffect(() => {
+    if (viewMode !== "camera" && previousMode.current === viewMode) return;
+    previousMode.current = viewMode;
     const perspectiveCamera = camera as THREE.PerspectiveCamera;
     if (viewMode === "camera" && activeCamera) {
       perspectiveCamera.position.copy(vectorFrom(activeCamera.position));
       perspectiveCamera.lookAt(vectorFrom(activeCamera.lookAt));
       perspectiveCamera.fov = activeCamera.fov;
+      perspectiveCamera.rotateZ(activeCamera.roll ?? 0);
     } else {
       const preset = DEFAULT_CAMERA[viewMode === "camera" ? "director" : viewMode];
       perspectiveCamera.position.copy(preset.position);
       perspectiveCamera.lookAt(preset.target);
       perspectiveCamera.fov = preset.fov;
     }
+    const target = viewMode === "camera" && activeCamera ? vectorFrom(activeCamera.lookAt) : DEFAULT_CAMERA[viewMode === "camera" ? "director" : viewMode].target;
+    controls.current?.target.copy(target);
+    if (viewMode !== "camera") controls.current?.update();
     perspectiveCamera.updateProjectionMatrix();
   }, [activeCamera, camera, viewMode]);
 
   return (
     <OrbitControls
+      ref={controls}
+      onChange={() => {
+        if (!controls.current) return;
+        const target = controls.current.target;
+        onViewChange?.({ position: { x: camera.position.x, y: camera.position.y, z: camera.position.z }, lookAt: { x: target.x, y: target.y, z: target.z }, fov: (camera as THREE.PerspectiveCamera).fov });
+      }}
       enabled={viewMode !== "camera" && orbitEnabled}
       enableDamping
       dampingFactor={0.08}
       makeDefault
-      maxDistance={12}
-      minDistance={2.4}
-      target={DEFAULT_CAMERA.director.target}
+      maxDistance={50}
+      minDistance={2}
     />
   );
 }
@@ -91,21 +108,23 @@ function StageScene({
   onSelect,
   onTransform,
   onDragChange,
+  onViewChange,
+  motionPath,
 }: DirectorStageCanvasProps) {
   const activeCamera = composition.cameras.find((camera) => camera.id === activeCameraId);
   const skyColor = composition.environment.skyColor;
 
   return (
     <>
+      {motionPath && viewMode === "director" && <Line points={motionPath} color="#22d3ee" lineWidth={2} />}
       <color attach="background" args={[skyColor]} />
-      <fog attach="fog" args={[skyColor, 8, 18]} />
-      <ViewController viewMode={viewMode} activeCamera={activeCamera} orbitEnabled={orbitEnabled} />
-      <ambientLight intensity={0.78} />
-      <hemisphereLight args={["#ffffff", "#111111", 1.25]} />
+      <ViewController viewMode={viewMode} activeCamera={activeCamera} orbitEnabled={orbitEnabled} onViewChange={onViewChange} />
+      {viewMode === "director" && <GizmoHelper alignment="top-right" margin={[78, 78]}><GizmoViewport axisColors={["#ef4444", "#22d3ee", "#64748b"]} labelColor="white" /></GizmoHelper>}
+      <ambientLight intensity={0.85} />
       <directionalLight
         castShadow
-        intensity={2.1}
-        position={[4, 5.5, 3]}
+        intensity={2.3}
+        position={[7, 12, 5]}
         shadow-mapSize={[2048, 2048]}
         shadow-camera-far={18}
         shadow-camera-left={-7}
@@ -117,18 +136,10 @@ function StageScene({
         {composition.environment.showGround ? (
           <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.006, 0]}>
             <planeGeometry args={[42, 42]} />
-            <meshStandardMaterial color="#1b1b1b" roughness={0.82} metalness={0.02} transparent opacity={Math.max(0.82, composition.environment.groundOpacity)} />
+            <meshStandardMaterial color="#15191f" roughness={0.92} metalness={0.02} transparent opacity={composition.environment.groundOpacity} />
           </mesh>
         ) : null}
-        <Grid
-          args={[18, 18]}
-          cellColor="#2d2d2d"
-          cellSize={0.5}
-          fadeDistance={16}
-          fadeStrength={1.1}
-          sectionColor="#484848"
-          sectionSize={2}
-        />
+        <gridHelper args={[40, 40, "#155e75", "#164e63"]} />
         {composition.characters.filter((character) => character.visible).map((character) => (
           <Transformable
             key={character.id}
@@ -156,7 +167,7 @@ function StageScene({
           </Transformable>
         ))}
         {composition.cameras
-          .filter((camera) => camera.visible && !(viewMode === "camera" && camera.id === activeCameraId))
+          .filter((camera) => camera.visible && viewMode !== "camera")
           .map((camera) => (
           <Transformable
             key={camera.id}
@@ -193,7 +204,7 @@ export default function DirectorStageCanvas(props: DirectorStageCanvasProps) {
   return (
     <Canvas
       shadows
-      camera={{ position: toArray(DEFAULT_CAMERA.director.position), fov: DEFAULT_CAMERA.director.fov, near: 0.05, far: 80 }}
+      camera={{ position: toArray(DEFAULT_CAMERA.director.position), fov: DEFAULT_CAMERA.director.fov, near: 0.05, far: 300 }}
       gl={{ antialias: true, preserveDrawingBuffer: true }}
       dpr={[1, 2]}
     >

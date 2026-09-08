@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import * as THREE from "three";
 import type { DirectorProp } from "../DirectorStage.types";
 
@@ -70,12 +70,12 @@ function Table({ color }: { color: string }) {
   );
 }
 
-function RoundTable() {
+function RoundTable({ color }: { color: string }) {
   return (
     <group>
       <mesh castShadow receiveShadow position={[0, 0.58, 0]}>
         <cylinderGeometry args={[0.48, 0.48, 0.08, 42]} />
-        <Standard color="#c4ad90" />
+        <Standard color={color} />
       </mesh>
       <mesh castShadow receiveShadow position={[0, 0.3, 0]}>
         <cylinderGeometry args={[0.08, 0.1, 0.56, 18]} />
@@ -110,12 +110,12 @@ function Car({ color }: { color: string }) {
   );
 }
 
-function Bed() {
+function Bed({ color }: { color: string }) {
   return (
     <group>
       <mesh castShadow receiveShadow position={[0, 0.32, 0]}>
         <boxGeometry args={[1.55, 0.22, 0.92]} />
-        <Standard color="#bfc6cd" />
+        <Standard color={color} />
       </mesh>
       <mesh castShadow receiveShadow position={[0, 0.5, -0.32]}>
         <boxGeometry args={[1.48, 0.16, 0.28]} />
@@ -132,8 +132,14 @@ function Bed() {
 export default function PropMesh({ prop, selected }: PropMeshProps) {
   const material = useMemo(() => new THREE.MeshStandardMaterial({ color: prop.color, roughness: 0.7 }), [prop.color]);
 
+  useEffect(() => () => material.dispose(), [material]);
+
   const primitive = (() => {
     switch (prop.propType) {
+      case "crate":
+        return <group><mesh castShadow receiveShadow position={[0, 0.45, 0]}><boxGeometry args={[1, 0.9, 0.9]} /><Standard color={prop.color} /></mesh>{[-0.43, 0.43].map((x) => <mesh key={x} castShadow position={[x, 0.45, 0.46]}><boxGeometry args={[0.1, 0.94, 0.04]} /><Standard color="#5b351d" /></mesh>)}</group>;
+      case "floor-lamp":
+        return <group><mesh castShadow position={[0, 0.05, 0]}><cylinderGeometry args={[0.25, 0.3, 0.1, 24]} /><Standard color="#33343a" /></mesh><mesh castShadow position={[0, 0.85, 0]}><cylinderGeometry args={[0.025, 0.025, 1.6, 16]} /><Standard color="#555861" /></mesh><mesh castShadow position={[0, 1.65, 0]}><coneGeometry args={[0.35, 0.45, 24, 1, true]} /><Standard color={prop.color} /></mesh><pointLight color={prop.color} intensity={0.8} position={[0, 1.5, 0]} /></group>;
       case "sphere":
         return (
           <mesh castShadow receiveShadow material={material} position={[0, 0.55, 0]}>
@@ -165,9 +171,9 @@ export default function PropMesh({ prop, selected }: PropMeshProps) {
       case "table":
         return <Table color={prop.color} />;
       case "roundTable":
-        return <RoundTable />;
+        return <RoundTable color={prop.color} />;
       case "bed":
-        return <Bed />;
+        return <Bed color={prop.color} />;
       case "car":
         return <Car color={prop.color} />;
       case "column":
@@ -188,7 +194,7 @@ export default function PropMesh({ prop, selected }: PropMeshProps) {
   return (
     <group>
       {primitive}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.026, 0]} visible={selected}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.026, 0]} visible={Boolean(selected)}>
         <ringGeometry args={[0.54, 0.66, 48]} />
         <meshBasicMaterial color="#f7d36b" transparent opacity={0.9} side={THREE.DoubleSide} depthTest={false} />
       </mesh>
