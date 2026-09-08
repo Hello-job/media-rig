@@ -17,7 +17,7 @@
     "@react-three/fiber": "^9.6.1",
     "fabric": "^7.4.0",
     "lucide-react": "^1.17.0",
-    "media-rig": "0.2.0",
+    "media-rig": "workspace:*",
     "radix-ui": "^1.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -36,7 +36,7 @@
     "jsdom": "^29.1.1",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "vite": "^5.4.14",
+    "vite": "^6.4.3",
     "vitest": "^4.1.9"
   }
 }

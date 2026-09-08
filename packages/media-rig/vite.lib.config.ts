@@ -19,6 +19,7 @@ export default defineConfig({
         "layer-separator": entryPath("./src/components/layer-separator/index.ts"),
       },
       name: "ReactImageEffects",
+      cssFileName: "style",
       formats: ["es", "cjs"],
       fileName: (format, entryName) => `${entryName}.${format === "es" ? "mjs" : "cjs"}`,
     },

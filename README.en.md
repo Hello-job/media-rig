@@ -20,10 +20,10 @@ If your Markdown environment does not render the video, open [`public/assets/202
 
 ## Install
 
-### npm package
+### Package installation (pnpm)
 
 ```bash
-npm install media-rig three @react-three/fiber @react-three/drei
+pnpm add media-rig three @react-three/fiber @react-three/drei
 ```
 
 ### shadcn source install
@@ -31,11 +31,11 @@ npm install media-rig three @react-three/fiber @react-three/drei
 If you want to install the component source into your project like shadcn/ui, use the shadcn CLI with this GitHub registry:
 
 ```bash
-npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
-npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
-npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
-npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
-npx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
 ```
 
 The component source will be written to:
@@ -151,8 +151,8 @@ Local preview: `http://localhost:5173/components/layer-separator`.
 ## Local Development
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 Open `http://localhost:5173/` to use the preview/configuration UI.
@@ -184,20 +184,20 @@ The root `registry.json` builds all component installers into `apps/docs/public/
 Build the npm package:
 
 ```bash
-npm run build:lib
+pnpm run build:lib
 ```
 
 Build the preview app:
 
 ```bash
-npm run build:preview
+pnpm run build:preview
 ```
 
 ## Publish Checklist
 
 1. Confirm the license and author fields.
-2. Run `npm run typecheck`.
-3. Run `npm run build:lib`.
-4. Run `npm pack --dry-run` to inspect published files.
-5. Log in with `npm login`.
-6. Publish with `npm publish --access public`.
+2. Run `pnpm run typecheck`.
+3. Run `pnpm run build:lib`.
+4. Run `pnpm --filter media-rig pack --dry-run` to inspect published files.
+5. Log in with `pnpm login`.
+6. Publish with `pnpm publish --access public`.
