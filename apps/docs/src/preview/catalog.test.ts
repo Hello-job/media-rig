@@ -8,8 +8,8 @@ import {
 
 describe("component catalog", () => {
   it("publishes every component with a unique route", () => {
-    expect(mediaComponents).toHaveLength(4);
-    expect(new Set(mediaComponents.map((component) => component.slug)).size).toBe(4);
+    expect(mediaComponents).toHaveLength(5);
+    expect(new Set(mediaComponents.map((component) => component.slug)).size).toBe(5);
     expect(mediaComponents.every((component) => component.api.length > 0)).toBe(true);
   });
 
@@ -20,5 +20,6 @@ describe("component catalog", () => {
     expect(resolveComponentFromLocation("?demo=editor")?.slug).toBe("image-editor");
     expect(findComponent("director-stage")?.legacyDemo).toBe("director");
     expect(componentHref("director-stage")).toBe("/components/director-stage");
+    expect(resolveComponentFromLocation("?demo=layers")?.slug).toBe("layer-separator");
   });
 });

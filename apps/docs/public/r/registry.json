@@ -7,11 +7,12 @@
       "name": "light-sphere",
       "type": "registry:component",
       "title": "Light Sphere",
-      "description": "A composable Three.js light sphere controller for interactive image lighting previews.",
+      "description": "A compact 3D lighting panel with sphere preview, brightness, temperature, direction presets, and rim-light output controls.",
       "dependencies": [
         "@react-three/drei",
         "@react-three/fiber",
-        "three"
+        "three",
+        "lucide-react"
       ],
       "files": [
         {
@@ -78,6 +79,31 @@
           "path": "apps/docs/public/assets/photo-texture2.png",
           "type": "registry:file",
           "target": "public/assets/photo-texture2.png"
+        },
+        {
+          "path": "packages/media-rig/src/components/light-sphere/LightSpherePanel.tsx",
+          "type": "registry:component",
+          "target": "components/light-sphere/LightSpherePanel.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/light-sphere/parts/LightingControls.tsx",
+          "type": "registry:component",
+          "target": "components/light-sphere/parts/LightingControls.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/light-sphere/utils/color-temperature.ts",
+          "type": "registry:lib",
+          "target": "components/light-sphere/utils/color-temperature.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/light-sphere/utils/photo-plane-size.ts",
+          "type": "registry:lib",
+          "target": "components/light-sphere/utils/photo-plane-size.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/light-sphere/utils/position-preset.ts",
+          "type": "registry:lib",
+          "target": "components/light-sphere/utils/position-preset.ts"
         }
       ]
     },
@@ -85,12 +111,9 @@
       "name": "image-angle-rig",
       "type": "registry:component",
       "title": "Image Angle Rig",
-      "description": "An interactive Three.js canvas for dragging and precisely adjusting image perspective angles.",
+      "description": "A CSS 3D image angle panel with drag, rotation, tilt, and camera advance controls.",
       "dependencies": [
-        "@react-three/fiber",
-        "@react-three/drei",
-        "lucide-react",
-        "three"
+        "lucide-react"
       ],
       "files": [
         {
@@ -233,9 +256,90 @@
           "target": "components/director-stage/parts/Transformable.tsx"
         },
         {
+          "path": "packages/media-rig/src/components/director-stage/assets/ue-mannequin-retopology.glb",
+          "type": "registry:file",
+          "target": "components/director-stage/assets/ue-mannequin-retopology.glb"
+        },
+        {
           "path": "packages/media-rig/src/components/director-stage/assets/static-mixamo-rigged.glb",
           "type": "registry:file",
           "target": "components/director-stage/assets/static-mixamo-rigged.glb"
+        },
+        {
+          "path": "packages/media-rig/src/components/director-stage/parts/camera-geometry.ts",
+          "type": "registry:component",
+          "target": "components/director-stage/parts/camera-geometry.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/director-stage/camera-motion-presets.ts",
+          "type": "registry:component",
+          "target": "components/director-stage/camera-motion-presets.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/director-stage/DirectorStage.motion.ts",
+          "type": "registry:component",
+          "target": "components/director-stage/DirectorStage.motion.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/director-stage/DirectorTimeline.tsx",
+          "type": "registry:component",
+          "target": "components/director-stage/DirectorTimeline.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/director-stage/body-scales.ts",
+          "type": "registry:component",
+          "target": "components/director-stage/body-scales.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/director-stage/record-video.ts",
+          "type": "registry:component",
+          "target": "components/director-stage/record-video.ts"
+        }
+      ]
+    },
+    {
+      "name": "layer-separator",
+      "type": "registry:component",
+      "title": "Layer Separator",
+      "description": "An embeddable layer-separation workspace with region selection, async processing, and editable layer composition.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "packages/media-rig/src/components/layer-separator/index.ts",
+          "type": "registry:component",
+          "target": "components/layer-separator/index.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.tsx",
+          "type": "registry:component",
+          "target": "components/layer-separator/LayerSeparator.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.types.ts",
+          "type": "registry:lib",
+          "target": "components/layer-separator/LayerSeparator.types.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.utils.ts",
+          "type": "registry:lib",
+          "target": "components/layer-separator/LayerSeparator.utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.css",
+          "type": "registry:style",
+          "target": "components/layer-separator/LayerSeparator.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/parts/SelectionStage.tsx",
+          "type": "registry:component",
+          "target": "components/layer-separator/parts/SelectionStage.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/layer-separator/parts/CompositionStage.tsx",
+          "type": "registry:component",
+          "target": "components/layer-separator/parts/CompositionStage.tsx"
         }
       ]
     },

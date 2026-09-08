@@ -79,11 +79,11 @@ export default function LightSphereScene({
   useFrame((_, delta) => {
     const desiredCameraPosition =
       viewMode === "perspective"
-        ? new THREE.Vector3(10.2, 2.0, 10.2)
+        ? new THREE.Vector3(6.1, 1.2, 6.1)
         : new THREE.Vector3(0, 0.12, 8.65);
 
     camera.position.lerp(desiredCameraPosition, 0.12);
-    camera.lookAt(0, viewMode === "perspective" ? 1.05 : 0.05, 0);
+    camera.lookAt(0, viewMode === "perspective" ? 0.2 : 0.05, 0);
     if (spotLight.current) spotLight.current.position.copy(lightRef.current);
 
     // 检查父组件传入的目标位置是否变化（来自位置预设按钮）。

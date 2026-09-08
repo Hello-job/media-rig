@@ -4,7 +4,7 @@
 
 MediaRig is a React component library for building interactive media effect controls.
 
-The first component is `LightSphere`, a Three.js-powered light controller for image lighting previews. The goal is to turn common media configuration experiences into reusable, ready-made components.
+The library includes lighting, perspective, scene composition, image editing, and AI layer-separation workflows. The goal is to turn common media configuration experiences into reusable, ready-made components.
 
 This component library also helps developers save tokens and avoid rebuilding the same interaction patterns from scratch.
 
@@ -35,6 +35,7 @@ npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
 npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
 npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
 npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
+npx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
 ```
 
 The component source will be written to:
@@ -116,6 +117,37 @@ Common props include `initialDocument`, `storageKey`, `maxImageSize`, `historyLi
 
 Local preview: `http://localhost:5173/components/image-editor`.
 
+## LayerSeparator
+
+`LayerSeparator` provides region selection, prompting, async progress, and editable layer composition. The host supplies the model integration through `onSeparate`, keeping the package provider-independent.
+
+```tsx
+import { LayerSeparator } from "media-rig/layer-separator";
+import "media-rig/style.css";
+
+export default function App() {
+  return (
+    <LayerSeparator
+      imageUrl="/source.jpg"
+      aspectRatio={3 / 2}
+      onSeparate={async (request) => {
+        const response = await fetch("/api/separate-layers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(request),
+        });
+        return response.json();
+      }}
+      onMerge={(blob) => console.log(blob)}
+    />
+  );
+}
+```
+
+`onSeparate` returns `{ background, layers }`. Each layer accepts a transparent image URL plus optional `contentBounds` and `transform`. Remote assets must allow CORS for browser-side merge export.
+
+Local preview: `http://localhost:5173/components/layer-separator`.
+
 ## Local Development
 
 ```bash
@@ -139,6 +171,7 @@ packages/
       image-angle-rig/
       director-stage/
       image-editor/
+      layer-separator/
 registry.json
 ```
 

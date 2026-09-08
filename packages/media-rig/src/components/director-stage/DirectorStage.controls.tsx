@@ -1,4 +1,4 @@
-import type React from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { readVectorInput } from "./DirectorStage.utils";
 import type { Vector3Like } from "./DirectorStage.types";
 
@@ -9,7 +9,7 @@ export function IconButton({
   onClick,
 }: {
   active?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
   label: string;
   onClick: () => void;
 }) {
@@ -32,8 +32,8 @@ export function ToolSlot({
   menu,
 }: {
   active?: boolean;
-  children: React.ReactNode;
-  menu?: React.ReactNode;
+  children: ReactNode;
+  menu?: ReactNode;
 }) {
   return (
     <div className={active ? "director-stage__tool-slot is-active" : "director-stage__tool-slot"}>
@@ -47,10 +47,20 @@ export function ToolMenuPanel({
   children,
   wide,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   wide?: boolean;
 }) {
-  return <div className={wide ? "director-stage__tool-menu is-wide" : "director-stage__tool-menu"}>{children}</div>;
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => { root.current?.querySelector<HTMLButtonElement>("button")?.focus(); }, []);
+  return <div ref={root} className={wide ? "director-stage__tool-menu is-wide" : "director-stage__tool-menu"} onKeyDown={(event) => {
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    const items = Array.from(root.current?.querySelectorAll<HTMLButtonElement>("button:not(:disabled)") ?? []);
+    if (!items.length) return;
+    event.preventDefault();
+    const index = items.indexOf(document.activeElement as HTMLButtonElement);
+    const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+    items[next].focus();
+  }}>{children}</div>;
 }
 
 export function ToolMenuItem({
@@ -61,8 +71,8 @@ export function ToolMenuItem({
   onClick,
 }: {
   active?: boolean;
-  children: React.ReactNode;
-  mark?: React.ReactNode;
+  children: ReactNode;
+  mark?: ReactNode;
   shortcut?: string;
   onClick: () => void;
 }) {
@@ -84,7 +94,7 @@ export function Field({
   children,
 }: {
   label: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <label className="director-stage__field">

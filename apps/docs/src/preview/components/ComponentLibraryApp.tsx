@@ -76,9 +76,10 @@ type CatalogLayout = "grid" | "list" | "matrix";
 const catalogCategories = ["All Components", "Image", "Lighting", "Scene", "Editor"] as const;
 
 const catalogPreviewPaths: Record<MediaComponentMeta["slug"], string> = {
+  "layer-separator": "/assets/layer-separator/scene.png",
   "image-editor": "/assets/catalog/image-editor.jpg",
-  "image-angle-rig": "/assets/catalog/image-angle-rig.jpg",
-  "light-sphere": "/assets/catalog/light-sphere.jpg",
+  "image-angle-rig": "/assets/catalog/image-angle-rig.png?v=css-panel",
+  "light-sphere": "/assets/catalog/light-sphere.png?v=compact-panel",
   "director-stage": "/assets/catalog/director-stage.jpg?v=dark-2",
 };
 
@@ -109,7 +110,7 @@ function CatalogHome() {
 
   const copyInstallCommand = async (component: MediaComponentMeta) => {
     try {
-      await navigator.clipboard.writeText(`npm install media-rig\nimport { ${component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`);
+      await navigator.clipboard.writeText(`npm install media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`);
       setCopiedSlug(component.slug);
       window.setTimeout(() => setCopiedSlug(null), 1400);
     } catch {
@@ -226,7 +227,7 @@ function CatalogHome() {
                       src={catalogPreviewPaths[component.slug]}
                       alt={`${component.title} 组件预览`}
                       className={[
-                        "w-full object-cover object-center transition duration-300 group-hover:scale-[1.01]",
+                        "w-full object-contain object-center p-3",
                         layout === "list" ? "h-full min-h-72" : layout === "matrix" ? "aspect-[1.55/1]" : "aspect-[2/1] max-[760px]:aspect-[1.35/1]",
                       ].join(" ")}
                       loading="lazy"
@@ -269,7 +270,7 @@ function InstallPanel({ component }: { component: MediaComponentMeta }) {
   const [mode, setMode] = useState<"npm" | "registry">("npm");
   const [copied, setCopied] = useState(false);
   const command = mode === "npm"
-    ? `npm install media-rig\nimport { ${component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`
+    ? `npm install media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`
     : `npx shadcn@latest add ${window.location.origin}/r/${component.slug}.json`;
 
   const copyCommand = async () => {
@@ -351,6 +352,7 @@ function ComponentDetail({ component }: { component: MediaComponentMeta }) {
                 </div>
                 <span className="hidden items-center gap-2 text-xs text-white/35 sm:flex"><Box size={14} aria-hidden="true" /> React component</span>
               </div>
+              {component.slug === "director-stage" && <a href="?component=director-stage" className="mb-4 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-black">打开独立导演台 ↗</a>}
               <div className={["mx-auto", component.previewClassName].join(" ")}>
                 <Suspense fallback={<div className="grid h-[480px] place-items-center rounded-2xl border border-white/10 bg-[#181818] text-xs tracking-[0.02em] text-white/35">Loading component…</div>}>
                   <ComponentPreview
@@ -422,7 +424,23 @@ function ComponentDetail({ component }: { component: MediaComponentMeta }) {
   );
 }
 
+function DirectorWorkspace({ component }: { component: MediaComponentMeta }) {
+  const Preview = component.preview;
+  return (
+    <div className="flex h-dvh min-h-0 flex-col overflow-hidden bg-[#080808] text-white">
+      <nav className="flex h-10 shrink-0 items-center justify-between border-b border-white/10 bg-[#181818] px-4 text-xs" aria-label="导演台导航">
+        <a href="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white"><ArrowLeft size={14} />返回组件库</a>
+        <a href="?component=director-stage&docs=1" className="text-white/50 hover:text-white">组件文档与安装</a>
+      </nav>
+      <main className="min-h-0 flex-1">
+        <Suspense fallback={<div className="grid h-full place-items-center text-sm text-white/50">正在加载导演台…</div>}><Preview /></Suspense>
+      </main>
+    </div>
+  );
+}
+
 export default function ComponentLibraryApp() {
   const component = resolveComponentFromLocation(window.location.search, window.location.pathname);
+  if (component?.slug === "director-stage" && new URLSearchParams(window.location.search).get("docs") !== "1") return <DirectorWorkspace component={component} />;
   return component ? <ComponentDetail component={component} /> : <CatalogHome />;
 }

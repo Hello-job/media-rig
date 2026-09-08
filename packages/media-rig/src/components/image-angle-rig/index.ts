@@ -4,6 +4,7 @@ export {
   IMAGE_ANGLE_LIMITS,
   clampImageAngle,
   getImageAngleCubeScale,
+  getImageAngleDragValue,
   normalizeImageAngleState,
   resolveImageAngleDragAxis,
 } from "./ImageAngleRig.constants";

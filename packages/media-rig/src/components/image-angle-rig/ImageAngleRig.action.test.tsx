@@ -1,17 +1,6 @@
-import type { ReactNode } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { ImageAngleActionButtonProps } from "./ImageAngleRig.types";
-
-vi.mock("@react-three/fiber", () => ({
-  Canvas: ({ children }: { children?: ReactNode }) => (
-    <div data-testid="angle-canvas">{children}</div>
-  ),
-}));
-
-vi.mock("./parts/ImageAngleScene", () => ({
-  default: () => null,
-}));
 
 import ImageAngleRig from "./ImageAngleRig";
 
@@ -52,7 +41,7 @@ describe("ImageAngleRig action slot", () => {
     );
 
     const action = screen.getByRole("button", { name: "应用参数" });
-    expect(action).toHaveClass("min-w-[132px]");
+    expect(action).toHaveClass("rounded-full");
     expect(action).toHaveAttribute("data-yaw", "18");
     expect(container.querySelector('[data-slot="action-slot"]')).toContainElement(action);
 
@@ -66,12 +55,12 @@ describe("ImageAngleRig action slot", () => {
     expect(onAction.mock.calls[0][1].type).toBe("click");
   });
 
-  it("keeps reset in the canvas lower-left overlay", () => {
+  it("keeps reset in the canvas lower-right overlay", () => {
     const { container } = render(<ImageAngleRig />);
     const reset = screen.getByRole("button", { name: "重置角度" });
     const canvasWrap = container.querySelector('[data-slot="canvas-wrap"]');
 
-    expect(reset).toHaveClass("absolute", "bottom-4", "left-4");
+    expect(reset).toHaveClass("absolute", "bottom-3", "right-3");
     expect(canvasWrap).toContainElement(reset);
   });
 });

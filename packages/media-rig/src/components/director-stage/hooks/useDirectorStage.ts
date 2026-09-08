@@ -7,6 +7,7 @@ import {
   defaultCharacter,
   defaultProp,
 } from "../DirectorStage.constants";
+import { parseSceneSeed } from "../DirectorStage.utils";
 import type {
   DirectorCamera,
   DirectorCharacter,
@@ -31,6 +32,7 @@ type StageState = {
 };
 
 type Action =
+  | { type: "setCameraMotions"; motions: NonNullable<DirectorComposition["cameraMotions"]> }
   | { type: "select"; selection: DirectorSelection }
   | { type: "setTransformMode"; mode: DirectorTransformMode }
   | { type: "setViewMode"; mode: DirectorViewMode; cameraId?: string | null }
@@ -77,16 +79,17 @@ const cloneComposition = (composition: DirectorComposition): DirectorComposition
 const mergeInitialComposition = (initial?: Partial<DirectorComposition>): DirectorComposition => {
   const base = cloneComposition(DEFAULT_COMPOSITION);
   return {
-    characters: initial?.characters?.length ? initial.characters.map((item, index) => ({
+    cameraMotions: initial?.cameraMotions ?? [],
+    characters: initial?.characters ? initial.characters.map((item, index) => ({
       ...defaultCharacter(index),
       ...item,
       position: { ...defaultCharacter(index).position, ...item.position },
       rotation: { ...defaultCharacter(index).rotation, ...item.rotation },
       scale: { ...defaultCharacter(index).scale, ...item.scale },
-      jointAngles: { ...structuredClone(DEFAULT_JOINTS), ...item.jointAngles } as JointAngles,
+      jointAngles: Object.fromEntries(Object.entries(DEFAULT_JOINTS).map(([key, value]) => [key, { ...value, ...item.jointAngles?.[key as keyof JointAngles] }])) as JointAngles,
       locked: item.locked ?? false,
     })) : base.characters,
-    props: initial?.props?.length ? initial.props.map((item, index) => ({
+    props: initial?.props ? initial.props.map((item, index) => ({
       ...defaultProp(index, item.propType),
       ...item,
       position: { ...defaultProp(index, item.propType).position, ...item.position },
@@ -94,7 +97,7 @@ const mergeInitialComposition = (initial?: Partial<DirectorComposition>): Direct
       scale: { ...defaultProp(index, item.propType).scale, ...item.scale },
       locked: item.locked ?? false,
     })) : base.props,
-    cameras: initial?.cameras?.length ? initial.cameras.map((item, index) => ({
+    cameras: initial?.cameras ? initial.cameras.map((item, index) => ({
       ...defaultCamera(index),
       ...item,
       position: { ...defaultCamera(index).position, ...item.position },
@@ -112,8 +115,9 @@ const selectAfterRemoval = (composition: DirectorComposition): DirectorSelection
   return null;
 };
 
-function reducer(state: StageState, action: Action): StageState {
+export function directorStageReducer(state: StageState, action: Action): StageState {
   switch (action.type) {
+    case "setCameraMotions": return { ...state, composition: { ...state.composition, cameraMotions: action.motions } };
     case "select":
       return {
         ...state,
@@ -126,7 +130,7 @@ function reducer(state: StageState, action: Action): StageState {
       return {
         ...state,
         viewMode: action.mode,
-        activeCameraId: action.cameraId ?? (action.mode === "camera" ? state.composition.cameras[0]?.id ?? null : state.activeCameraId),
+        activeCameraId: action.cameraId ?? (state.activeCameraId ?? state.composition.cameras[0]?.id ?? null),
       };
     case "addCharacter": {
       const next = {
@@ -170,11 +174,13 @@ function reducer(state: StageState, action: Action): StageState {
     }
     case "removeSelected": {
       if (!state.selection) return state;
-      return reducer(state, { type: "removeItem", selection: state.selection });
+      return directorStageReducer(state, { type: "removeItem", selection: state.selection });
     }
     case "removeItem": {
+      if (action.selection.kind === "camera" && state.composition.cameras.length <= 1) return state;
       const composition = {
         ...state.composition,
+        cameraMotions: state.composition.cameraMotions?.filter((motion) => motion.cameraId !== action.selection.id),
         characters: action.selection.kind === "character"
           ? state.composition.characters.filter((item) => item.id !== action.selection.id)
           : state.composition.characters,
@@ -252,21 +258,21 @@ function reducer(state: StageState, action: Action): StageState {
     }
     case "setItemVisible": {
       if (action.selection.kind === "character") {
-        return reducer(state, { type: "updateCharacter", id: action.selection.id, patch: { visible: action.visible } });
+        return directorStageReducer(state, { type: "updateCharacter", id: action.selection.id, patch: { visible: action.visible } });
       }
       if (action.selection.kind === "prop") {
-        return reducer(state, { type: "updateProp", id: action.selection.id, patch: { visible: action.visible } });
+        return directorStageReducer(state, { type: "updateProp", id: action.selection.id, patch: { visible: action.visible } });
       }
-      return reducer(state, { type: "updateCamera", id: action.selection.id, patch: { visible: action.visible } });
+      return directorStageReducer(state, { type: "updateCamera", id: action.selection.id, patch: { visible: action.visible } });
     }
     case "setItemLocked": {
       if (action.selection.kind === "character") {
-        return reducer(state, { type: "updateCharacter", id: action.selection.id, patch: { locked: action.locked } });
+        return directorStageReducer(state, { type: "updateCharacter", id: action.selection.id, patch: { locked: action.locked } });
       }
       if (action.selection.kind === "prop") {
-        return reducer(state, { type: "updateProp", id: action.selection.id, patch: { locked: action.locked } });
+        return directorStageReducer(state, { type: "updateProp", id: action.selection.id, patch: { locked: action.locked } });
       }
-      return reducer(state, { type: "updateCamera", id: action.selection.id, patch: { locked: action.locked } });
+      return directorStageReducer(state, { type: "updateCamera", id: action.selection.id, patch: { locked: action.locked } });
     }
     case "updateCharacter":
       return {
@@ -297,16 +303,16 @@ function reducer(state: StageState, action: Action): StageState {
       if (state.selection.kind === "character") {
         const current = state.composition.characters.find((item) => item.id === state.selection?.id);
         if (current?.locked) return state;
-        return reducer(state, { type: "updateCharacter", id: state.selection.id, patch: action.transform });
+        return directorStageReducer(state, { type: "updateCharacter", id: state.selection.id, patch: action.transform });
       }
       if (state.selection.kind === "prop") {
         const current = state.composition.props.find((item) => item.id === state.selection?.id);
         if (current?.locked) return state;
-        return reducer(state, { type: "updateProp", id: state.selection.id, patch: action.transform });
+        return directorStageReducer(state, { type: "updateProp", id: state.selection.id, patch: action.transform });
       }
       const current = state.composition.cameras.find((item) => item.id === state.selection?.id);
       if (current?.locked) return state;
-      return reducer(state, {
+      return directorStageReducer(state, {
         type: "updateCamera",
         id: state.selection.id,
         patch: action.transform.position ? { position: action.transform.position } : {},
@@ -328,7 +334,7 @@ function reducer(state: StageState, action: Action): StageState {
         position: { ...defaultCharacter(index).position, ...item.position },
         rotation: { ...defaultCharacter(index).rotation, ...item.rotation },
         scale: { ...defaultCharacter(index).scale, ...item.scale },
-        jointAngles: { ...structuredClone(DEFAULT_JOINTS), ...item.jointAngles } as JointAngles,
+        jointAngles: Object.fromEntries(Object.entries(DEFAULT_JOINTS).map(([key, value]) => [key, { ...value, ...item.jointAngles?.[key as keyof JointAngles] }])) as JointAngles,
         locked: item.locked ?? false,
       })) ?? state.composition.characters;
       const props = action.seed.props?.map((item, index) => ({
@@ -350,6 +356,11 @@ function reducer(state: StageState, action: Action): StageState {
       })) ?? state.composition.cameras;
       const composition = {
         ...state.composition,
+        cameraMotions: (action.seed.cameraMotions ?? []).flatMap((motion) => {
+          const sourceIndex = action.seed.cameras?.findIndex((camera) => camera.id === motion.cameraId) ?? -1;
+          const camera = sourceIndex >= 0 ? cameras[sourceIndex] : cameras.find((camera) => camera.id === motion.cameraId);
+          return camera ? [{ ...motion, cameraId: camera.id, camera: { ...motion.camera, id: camera.id } }] : [];
+        }),
         characters,
         props,
         cameras,
@@ -376,7 +387,7 @@ export function useDirectorStage(initial?: Partial<DirectorComposition>, storage
     try {
       const stored = window.localStorage.getItem(storageKey);
       if (stored) {
-        return mergeInitialComposition(JSON.parse(stored) as Partial<DirectorComposition>);
+        return mergeInitialComposition(parseSceneSeed(stored) as Partial<DirectorComposition>);
       }
     } catch {
       // Ignore corrupt local drafts and rebuild from defaults.
@@ -384,7 +395,7 @@ export function useDirectorStage(initial?: Partial<DirectorComposition>, storage
     return fallback;
   };
 
-  const [state, dispatch] = useReducer(reducer, undefined, () => {
+  const [state, dispatch] = useReducer(directorStageReducer, undefined, () => {
     const composition = initializer();
     return {
       composition,
@@ -397,7 +408,7 @@ export function useDirectorStage(initial?: Partial<DirectorComposition>, storage
 
   useEffect(() => {
     if (!storageKey || typeof window === "undefined") return;
-    window.localStorage.setItem(storageKey, JSON.stringify(state.composition));
+    try { window.localStorage.setItem(storageKey, JSON.stringify(state.composition)); } catch { /* Storage may be disabled or full. Keep the editor usable. */ }
   }, [state.composition, storageKey]);
 
   const selected = useMemo(() => {

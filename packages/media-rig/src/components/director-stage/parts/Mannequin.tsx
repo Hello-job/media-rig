@@ -4,6 +4,8 @@ import * as THREE from "three";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { DirectorCharacter, JointAngles } from "../DirectorStage.types";
 
+import { getUe4BodyBoneScales, getUe4ModelScale } from "../body-scales";
+
 const DEG = Math.PI / 180;
 const BASE_QUATERNION_KEY = "directorStageBaseQuaternion";
 
@@ -111,7 +113,7 @@ function ProceduralMannequin({ character, selected }: MannequinProps) {
         </group>
       </group>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.025, 0]} visible={selected}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.025, 0]} visible={Boolean(selected)}>
         <ringGeometry args={[0.5, 0.62, 48]} />
         <meshBasicMaterial color={character.color} transparent opacity={0.9} side={THREE.DoubleSide} depthTest={false} />
       </mesh>
@@ -145,6 +147,23 @@ function rotateBoneSet(root: THREE.Object3D, boneNames: string[], rotation: [num
 }
 
 function applyMixamoPose(root: THREE.Object3D, joints: JointAngles) {
+  if (root.getObjectByName("Bip001_Head_055")) {
+    root.traverse((object) => { if (object instanceof THREE.Bone) resetBone(object); });
+    const pose: Record<string, [number, number, number]> = {
+      Bip001_Head: [joints.head.turn, 0, joints.head.nod],
+      Bip001_Spine: [joints.torso.turn, 0, -joints.torso.bend],
+      Bip001_L_UpperArm: [joints.lArm.turn, 25 + joints.lArm.straddle, -joints.lArm.raise],
+      Bip001_R_UpperArm: [joints.rArm.turn, -25 + joints.rArm.straddle, -joints.rArm.raise],
+      Bip001_L_Forearm: [0, 0, 25 - joints.lElbow.bend],
+      Bip001_R_Forearm: [0, 0, 25 - joints.rElbow.bend],
+      Bip001_L_Thigh: [0, -joints.lLeg.straddle, joints.lLeg.raise],
+      Bip001_R_Thigh: [0, -joints.rLeg.straddle, joints.rLeg.raise],
+      Bip001_L_Calf: [0, 0, -joints.lKnee.bend],
+      Bip001_R_Calf: [0, 0, -joints.rKnee.bend],
+    };
+    Object.entries(pose).forEach(([bone, angles]) => rotateBone(root, bone, angles.map((v) => v * DEG) as [number, number, number]));
+    return;
+  }
   root.traverse((object) => {
     if (object instanceof THREE.Bone) resetBone(object);
   });
@@ -187,8 +206,12 @@ function CustomModel({
   url,
   animationMode = "static",
   joints,
+  color,
+  bodyType,
 }: {
   url: string;
+  color: string;
+  bodyType: DirectorCharacter["bodyType"];
   animationMode?: DirectorCharacter["animationMode"];
   joints: JointAngles;
 }) {
@@ -199,6 +222,7 @@ function CustomModel({
     next.traverse((object) => {
       if (object instanceof THREE.Bone) {
         object.userData[BASE_QUATERNION_KEY] = object.quaternion.clone();
+        object.userData.directorStageBaseScale = object.scale.clone();
       }
       if ("castShadow" in object) object.castShadow = true;
       if ("receiveShadow" in object) object.receiveShadow = true;
@@ -261,20 +285,44 @@ function CustomModel({
     applyMixamoPose(clone, joints);
   }, [animationMode, clone, joints]);
 
+  useEffect(() => {
+    const scales = getUe4BodyBoneScales(bodyType);
+    clone.traverse((object) => {
+      if (object instanceof THREE.Bone && object.userData.directorStageBaseScale) {
+        object.scale.copy(object.userData.directorStageBaseScale);
+        if (scales[object.name]) object.scale.multiply(new THREE.Vector3(...scales[object.name]));
+      }
+      if (object instanceof THREE.Mesh) {
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        materials.forEach((material) => {
+          if (material instanceof THREE.MeshStandardMaterial) material.color.set(color);
+        });
+      }
+    });
+  }, [clone, color, bodyType]);
+
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={getUe4ModelScale(bodyType)}>
       <primitive object={clone} />
     </group>
   );
 }
 
+class ModelBoundary extends React.Component<{ children: React.ReactNode; fallback: React.ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  render() { return this.state.failed ? this.props.fallback : this.props.children; }
+}
+
 export default function Mannequin(props: MannequinProps) {
   if (props.character.modelUrl) {
     return (
-      <Suspense fallback={<ProceduralMannequin {...props} />}>
+      <ModelBoundary key={props.character.modelUrl} fallback={<ProceduralMannequin {...props} />}><Suspense fallback={<ProceduralMannequin {...props} />}>
         <group>
           <CustomModel
             url={props.character.modelUrl}
+            color={props.character.color}
+            bodyType={props.character.bodyType}
             animationMode={props.character.animationMode}
             joints={props.character.jointAngles}
           />
@@ -285,7 +333,7 @@ export default function Mannequin(props: MannequinProps) {
             </mesh>
           ) : null}
         </group>
-      </Suspense>
+      </Suspense></ModelBoundary>
     );
   }
 

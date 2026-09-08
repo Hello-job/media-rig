@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { BEAM_CONFIG, SPHERE_RADIUS } from "./LightSphere.constants";
 import LightSphereScene from "./parts/LightSphereScene";
@@ -64,14 +64,16 @@ export default function LightSphere({
         }}
         dpr={[1, 1.5]}
       >
-        <LightSphereScene
-          configRef={configRef}
-          targetPosRef={targetPosRef}
-          imageUrl={imageUrl}
-          viewMode={viewMode}
-          onLightMove={onLightMove}
-          onLightSettle={onLightSettle}
-        />
+        <Suspense fallback={null}>
+          <LightSphereScene
+            configRef={configRef}
+            targetPosRef={targetPosRef}
+            imageUrl={imageUrl}
+            viewMode={viewMode}
+            onLightMove={onLightMove}
+            onLightSettle={onLightSettle}
+          />
+        </Suspense>
       </Canvas>
     </div>
   );

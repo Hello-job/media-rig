@@ -9,9 +9,9 @@ export type ImageAngleState = {
   yaw: number;
   /** Vertical tilt in degrees. */
   pitch: number;
-  /** Whole-cube zoom from 0 (base size) to 10 (maximum size). */
+  /** Camera advance from 0 (base size) to 10 (2× preview scale). */
   zoom: number;
-  /** Uses a wider camera field of view when enabled. */
+  /** Wide-angle output option; does not change the preview's field of view. */
   wideAngle: boolean;
 };
 
@@ -25,6 +25,8 @@ export type ImageAngleActionButtonProps = {
   value: ImageAngleState;
   input?: unknown;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  disabled: boolean;
+  loading: boolean;
 };
 
 export type ImageAngleRigProps = {
@@ -37,11 +39,18 @@ export type ImageAngleRigProps = {
   actionButton?: ComponentType<ImageAngleActionButtonProps>;
   /** Arbitrary input forwarded to the action button and onAction payload. */
   actionInput?: unknown;
+  /** Disables the action and shows its pending state. */
+  actionLoading?: boolean;
+  actionDisabled?: boolean;
+  /** Shows a close control when provided; the host owns visibility. */
+  onClose?: () => void;
   onAction?: (
     payload: ImageAngleActionPayload,
     event: Parameters<MouseEventHandler<HTMLButtonElement>>[0],
   ) => void;
-  /** Pixels of movement required before an axis participates in the drag. */
+  /** Movement in pixels before a free two-axis drag starts. Defaults to 3. */
+  dragThreshold?: number;
+  /** @deprecated Use dragThreshold. Kept as a threshold alias; drags no longer lock axes. */
   dragAxisLockThreshold?: number;
   title?: string;
   className?: string;
