@@ -9,6 +9,13 @@
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: "Geist Variable", sans-serif;
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-input: var(--input);
   --color-ring: var(--ring);
   --color-border: var(--border);
   --color-foreground: var(--foreground);
@@ -20,6 +27,11 @@
 }
 
 :root {
+  --popover: #242424;
+  --accent: #333333;
+  --muted: #1b1b1b;
+  --muted-foreground: #a3a3a3;
+  --input: #303030;
   --background: #121212;
   --foreground: #ffffff;
   --border: oklch(0.28 0 0);

@@ -223,16 +223,16 @@ overrides:
 
 ## MediaRig CLI
 
-The package now includes a `media-rig` binary. The currently published older npm version has no CLI: **short npx commands require publishing the new package first**. Until then use `pnpm cli` from this repository or the existing shadcn URL commands.
+`media-rig@0.2.0` is published on npm with a `media-rig` binary. Use the short commands below, `pnpm cli` in this repository for development, or the existing shadcn URL commands.
 
 ```sh
-# After the CLI release
+# Install component source
 npx media-rig@latest init
 npx media-rig@latest list
 npx media-rig@latest add image-annotation
 pnpm dlx media-rig@latest add light-sphere director-stage
 
-# Local development before publishing
+# Local development
 pnpm cli add image-annotation --cwd /path/to/react-app
 pnpm cli add director-stage --cwd /path/to/react-app --dry-run
 ```

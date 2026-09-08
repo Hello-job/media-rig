@@ -4,12 +4,7 @@ import React, { Suspense, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowDownAZ,
   ArrowLeft,
-  Box,
-  Check,
-  ChevronDown,
   ChevronsRight,
-  Code2,
-  Copy,
   GitFork,
   Grid2X2,
   LayoutGrid,
@@ -19,8 +14,7 @@ import {
 } from "lucide-react";
 import ComponentPreview from "./ComponentPreview";
 import ClientDemo from "./ClientDemo";
-import InstallPanel from "./InstallPanel";
-import { registryCommand } from "../install";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import CatalogEffectPreview from "./CatalogEffectPreview";
 import {
   componentHref,
@@ -93,7 +87,6 @@ export function CatalogHome() {
   const [category, setCategory] = useState<(typeof catalogCategories)[number]>("All Components");
   const [layout, setLayout] = useState<CatalogLayout>("grid");
   const [sortMode, setSortMode] = useState<"curated" | "ascending" | "descending">("curated");
-  const [copiedSlug, setCopiedSlug] = useState<MediaComponentMeta["slug"] | null>(null);
   const filteredComponents = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     const nextComponents = mediaComponents.filter((component) => {
@@ -112,16 +105,6 @@ export function CatalogHome() {
       return sortMode === "ascending" ? comparison : -comparison;
     });
   }, [category, query, sortMode]);
-
-  const copyInstallCommand = async (component: MediaComponentMeta) => {
-    try {
-      await navigator.clipboard.writeText(registryCommand(component.slug));
-      setCopiedSlug(component.slug);
-      window.setTimeout(() => setCopiedSlug(null), 1400);
-    } catch {
-      setCopiedSlug(null);
-    }
-  };
 
   const catalogGridClass = layout === "list"
     ? "grid grid-cols-1 gap-5"
@@ -175,17 +158,14 @@ export function CatalogHome() {
               ))}
             </div>
 
-            <label className="relative hidden h-11 items-center rounded-full border border-white/[0.08] bg-white/[0.035] px-4 text-xs text-white max-[640px]:flex">
-              <span className="sr-only">组件分类</span>
-              <select
-                value={category}
-                onChange={(event) => setCategory(event.target.value as (typeof catalogCategories)[number])}
-                className="h-full w-full appearance-none border-0 bg-transparent pr-6 text-xs font-semibold text-white outline-none"
-              >
-                {catalogCategories.map((item) => <option key={item} value={item}>{item}</option>)}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-4 text-white/35" size={14} aria-hidden="true" />
-            </label>
+            <div className="hidden max-[640px]:block">
+              <Select value={category} onValueChange={value => setCategory(value as (typeof catalogCategories)[number])}>
+                <SelectTrigger aria-label="组件分类" className="h-11 w-full rounded-full border-white/[0.05] bg-[#181818] px-4 text-xs shadow-none"><SelectValue /></SelectTrigger>
+                <SelectContent position="popper" className="rounded-xl border-white/[0.04]">
+                  {catalogCategories.map(item => <SelectItem key={item} value={item} className="rounded-lg py-2 text-xs">{item}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
 
             <button
               type="button"
@@ -224,10 +204,10 @@ export function CatalogHome() {
             <div className={catalogGridClass} aria-live="polite">
               {filteredComponents.map((component) => (
                 <article key={component.slug} className={[
-                  "group overflow-hidden rounded-[18px] border border-white/[0.075] bg-[#181818] transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]",
-                  layout === "list" ? "grid grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)] [&>div:last-child]:col-span-full max-[760px]:grid-cols-1" : "flex flex-col",
+                  "group overflow-hidden rounded-[26px] bg-[#181818] p-2.5 transition-colors duration-200 hover:bg-[#242424] focus-within:bg-[#242424] motion-reduce:transition-none",
+                  layout === "list" ? "grid grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)] max-[760px]:grid-cols-1" : "flex flex-col",
                 ].join(" ")}>
-                  <a className="relative block overflow-hidden bg-[#0d0d0d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-white/70" href={componentHref(component.slug)}>
+                  <a className="relative block overflow-hidden rounded-[18px] bg-[#111111] focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-white/70" href={componentHref(component.slug)}>
                     {component.slug === "image-annotation" || component.slug === "layer-separator" ? (
                       <CatalogEffectPreview kind={component.slug} className={layout === "list" ? "h-full min-h-72" : layout === "matrix" ? "aspect-[1.55/1]" : "aspect-[2/1] max-[760px]:aspect-[1.35/1]"} />
                     ) : <img
@@ -240,24 +220,11 @@ export function CatalogHome() {
                       loading="lazy"
                     />}
                   </a>
-                  <div className="flex min-h-16 items-start gap-4 border-t border-white/[0.065] px-4 py-3">
+                  <div className="flex min-h-20 items-start gap-4 px-2.5 pb-2.5 pt-4">
                     <a className="min-w-0 flex-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/70" href={componentHref(component.slug)}>
                       <h2 className="text-sm font-[630] tracking-[-0.025em]">{component.title}</h2>
-                      <p className="mt-1 line-clamp-2 text-[11px] leading-[1.55] text-white/38">{component.summary}</p>
+                      <p className="mt-1.5 line-clamp-2 text-xs leading-[1.6] text-white/45">{component.summary}</p>
                     </a>
-                    <button
-                      type="button"
-                      onClick={() => copyInstallCommand(component)}
-                      className="grid size-9 shrink-0 place-items-center rounded-full border border-white/[0.09] bg-white/[0.035] text-white/40 transition hover:border-white/20 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
-                      aria-label={copiedSlug === component.slug ? `${component.title} 安装命令已复制` : `复制 ${component.title} 安装命令`}
-                      title={copiedSlug === component.slug ? "Copied" : "Copy install command"}
-                    >
-                      {copiedSlug === component.slug ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
-                    </button>
-                  </div>
-                  <div className="border-t border-white/[0.065] bg-black/20 px-4 py-3">
-                    <a href={`${componentHref(component.slug)}#installation`} className="mb-2 block text-[10px] text-white/40 hover:text-white">shadcn CLI · 安装源码 ↗</a>
-                    <code className="block overflow-x-auto whitespace-nowrap pb-1 text-[10px] text-white/65">{registryCommand(component.slug)}</code>
                   </div>
                 </article>
               ))}
@@ -290,79 +257,18 @@ export function ComponentDetail({ component, source }: { component: MediaCompone
             </a>
 
             <header className="max-w-3xl">
-              <div className="mb-4 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-white/[0.1] px-2.5 py-1 text-[10px] font-bold tracking-[0.02em] text-white/80">{component.category}</span>
-                <span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold tracking-[0.02em] text-white/45">{component.status}</span>
-              </div>
-              <p className="text-xs font-semibold tracking-[0.02em] text-white/40">{component.eyebrow}</p>
-              <h1 className="mt-2 text-[clamp(2.6rem,5vw,4.8rem)] font-[720] leading-[0.94] tracking-[-0.065em]">{component.title}</h1>
-              <p className="mt-5 text-base leading-7 text-white/50">{component.description}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {component.tags.map((tag) => (
-                  <span key={tag} className="rounded-md border border-white/10 bg-white/[0.04] px-2 py-1 font-mono text-[10px] text-white/45">{tag}</span>
-                ))}
-              </div>
+              <h1 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-[720] leading-[1.05] tracking-[-0.055em]">{component.title}</h1>
+              <p className="mt-4 text-sm leading-6 text-white/50">{component.description}</p>
             </header>
 
-            <section id="preview" className="mt-12 scroll-mt-20" aria-labelledby="preview-heading">
-              <div className="mb-4 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold tracking-[0.02em] text-white/40">Playground</p>
-                  <h2 id="preview-heading" className="mt-1 text-2xl font-[680] tracking-[-0.04em]">实时预览</h2>
-                </div>
-                <span className="hidden items-center gap-2 text-xs text-white/35 sm:flex"><Box size={14} aria-hidden="true" /> React component</span>
-              </div>
-              {component.slug === "director-stage" && <a href="/playground/director-stage" className="mb-4 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-black">打开独立导演台 ↗</a>}
+            <section id="preview" className="mt-8 scroll-mt-20">
               <div className={["mx-auto", component.previewClassName].join(" ")}>
-                <Suspense fallback={<div className="grid h-[480px] place-items-center rounded-2xl border border-white/10 bg-[#181818] text-xs tracking-[0.02em] text-white/35">Loading component…</div>}>
-                  <ComponentPreview
-                    title={component.title}
-                    description={component.description}
-                    source={source}
-                    stageClassName={component.stageClassName}
-                  >
-                    <ClientDemo slug={component.slug} />
-                  </ComponentPreview>
-                </Suspense>
+                <ComponentPreview component={component} source={source}>
+                  <ClientDemo slug={component.slug} />
+                </ComponentPreview>
               </div>
             </section>
 
-            <section id="installation" className={["mx-auto mt-14 scroll-mt-20", component.previewClassName].join(" ")}>
-              <div className="mb-4">
-                <p className="text-xs font-semibold tracking-[0.02em] text-white/40">Installation</p>
-                <h2 className="mt-1 text-2xl font-[680] tracking-[-0.04em]">安装组件</h2>
-              </div>
-              <InstallPanel component={component} />
-            </section>
-
-            <section id="api" className="mt-14 scroll-mt-20" aria-labelledby="api-heading">
-              <div className="mb-4 flex items-center gap-3">
-                <Code2 size={18} aria-hidden="true" />
-                <h2 id="api-heading" className="text-2xl font-[680] tracking-[-0.04em]">核心 API</h2>
-              </div>
-              <div className="overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#181818] shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
-                <table className="w-full min-w-[760px] border-collapse text-left">
-                  <thead className="border-b border-white/[0.08] bg-white/[0.025] text-[10px] tracking-[0.02em] text-white/40">
-                    <tr>
-                      <th className="px-5 py-3 font-semibold">Property</th>
-                      <th className="px-5 py-3 font-semibold">Type</th>
-                      <th className="px-5 py-3 font-semibold">Default</th>
-                      <th className="px-5 py-3 font-semibold">Description</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/[0.07] text-sm">
-                    {component.api.map((property) => (
-                      <tr key={property.name} className="align-top">
-                        <td className="px-5 py-4 font-mono text-xs font-semibold">{property.name}</td>
-                        <td className="px-5 py-4 font-mono text-xs text-white/65">{property.type}</td>
-                        <td className="px-5 py-4 font-mono text-xs text-white/45">{property.defaultValue}</td>
-                        <td className="px-5 py-4 leading-6 text-white/50">{property.description}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
 
             <footer className="mt-14 flex items-center justify-between border-t border-white/[0.08] pt-6 text-xs text-white/35 max-[640px]:items-start max-[640px]:flex-col max-[640px]:gap-3">
               <span className="flex items-center gap-2"><Layers3 size={14} aria-hidden="true" /> {component.dependencies.length} runtime dependencies</span>
@@ -375,7 +281,7 @@ export function ComponentDetail({ component, source }: { component: MediaCompone
             <nav className="grid gap-2.5 border-l border-white/10 pl-4 text-white/40">
               <a className="transition hover:text-white" href="#preview">Preview</a>
               <a className="transition hover:text-white" href="#installation">Installation</a>
-              <a className="transition hover:text-white" href="#api">API Reference</a>
+              <a className="transition hover:text-white" href="#props">Props</a>
             </nav>
           </aside>
         </div>
