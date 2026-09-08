@@ -8,8 +8,8 @@ import {
 
 describe("component catalog", () => {
   it("publishes every component with a unique route", () => {
-    expect(mediaComponents).toHaveLength(5);
-    expect(new Set(mediaComponents.map((component) => component.slug)).size).toBe(5);
+    expect(mediaComponents).toHaveLength(6);
+    expect(new Set(mediaComponents.map((component) => component.slug)).size).toBe(6);
     expect(mediaComponents.every((component) => component.api.length > 0)).toBe(true);
   });
 

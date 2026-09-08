@@ -45,7 +45,12 @@
       "import": "./dist/layer-separator.mjs",
       "require": "./dist/layer-separator.cjs"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./image-annotation": {
+      "types": "./dist/types/components/image-annotation/index.d.ts",
+      "import": "./dist/image-annotation.mjs",
+      "require": "./dist/image-annotation.cjs"
+    }
   },
   "sideEffects": [
     "**/*.css"

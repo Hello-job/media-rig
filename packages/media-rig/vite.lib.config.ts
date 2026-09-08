@@ -14,6 +14,7 @@ export default defineConfig({
         "light-sphere": entryPath("./src/components/light-sphere/index.ts"),
         "image-angle-rig": entryPath("./src/components/image-angle-rig/index.ts"),
         "director-stage": entryPath("./src/components/director-stage/index.ts"),
+        "image-annotation": entryPath("./src/components/image-annotation/index.ts"),
         "image-editor": entryPath("./src/components/image-editor/index.ts"),
         "layer-separator": entryPath("./src/components/layer-separator/index.ts"),
       },
