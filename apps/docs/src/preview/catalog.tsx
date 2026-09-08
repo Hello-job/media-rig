@@ -3,6 +3,7 @@ import directorStageSource from "./pages/DirectorStagePreview.tsx?raw";
 import imageAngleRigSource from "./pages/ImageAngleRigPreview.tsx?raw";
 import imageEditorSource from "./pages/ImageEditorPreview.tsx?raw";
 import layerSeparatorSource from "./pages/LayerSeparatorPreview.tsx?raw";
+import imageAnnotationSource from "./pages/ImageAnnotationPreview.tsx?raw";
 import lightSphereSource from "./pages/LightSpherePreview.tsx?raw";
 
 export type ComponentStatus = "Stable" | "Beta";
@@ -15,8 +16,8 @@ export type ComponentApiProp = {
 };
 
 export type MediaComponentMeta = {
-  slug: "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
-  legacyDemo: "light" | "angle" | "director" | "editor" | "layers";
+  slug: "image-annotation" | "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
+  legacyDemo: "annotation" | "light" | "angle" | "director" | "editor" | "layers";
   title: string;
   eyebrow: string;
   category: "Image" | "Lighting" | "Scene" | "Editor";
@@ -41,7 +42,26 @@ const DirectorStagePreview = lazy(() => import("./pages/DirectorStagePreview"));
 const ImageEditorPreview = lazy(() => import("./pages/ImageEditorPreview"));
 const LayerSeparatorPreview = lazy(() => import("./pages/LayerSeparatorPreview"));
 
+const ImageAnnotationPreview = lazy(() => import("./pages/ImageAnnotationPreview"));
+
 export const mediaComponents: MediaComponentMeta[] = [
+  {
+    slug: "image-annotation", legacyDemo: "annotation", title: "Image Annotation",
+    eyebrow: "Draw on images", category: "Image", status: "Stable",
+    description: "轻量图片涂鸦组件，支持画笔、矩形、文字、选择变换、撤销重做与原尺寸 PNG 合成导出。",
+    summary: "在图片上画出想法，标记重点，再保存为完整图片。",
+    packagePath: "media-rig/image-annotation", registryName: "image-annotation",
+    dependencies: ["fabric", "lucide-react"], tags: ["Brush", "Text", "Annotation", "Export"],
+    previewClassName: "max-w-[1180px]", stageClassName: "min-h-[600px] bg-[#090a0b] p-5 max-[520px]:p-0",
+    source: imageAnnotationSource, preview: ImageAnnotationPreview,
+    api: [
+      { name: "imageUrl", type: "string", defaultValue: "required", description: "原图地址；更换后重置画布与历史。跨域图片需支持 CORS。" },
+      { name: "imageAlt", type: "string", defaultValue: "待涂鸦图片", description: "原图的替代文本。" },
+      { name: "onSave", type: "(image: Blob) => void | Promise<void>", defaultValue: "undefined", description: "接收原图尺寸的 PNG 合成结果，由宿主下载或上传。" },
+      { name: "onCancel", type: "() => void", defaultValue: "undefined", description: "显示退出按钮，并响应 Escape。" },
+      { name: "onError", type: "(error: Error) => void", defaultValue: "undefined", description: "图片加载、画布初始化和保存失败回调。" },
+    ],
+  },
   {
     slug: "layer-separator",
     legacyDemo: "layers",

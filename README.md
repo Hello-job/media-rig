@@ -266,3 +266,23 @@ npm run build:registry
 4. 运行 `npm pack --dry-run` 检查发布文件。
 5. 进入 `packages/media-rig` 后使用 `npm login` 登录。
 6. 在组件包目录使用 `npm publish --access public` 发布。
+
+### 图片涂鸦 ImageAnnotation
+
+独立的图片标注组件，参考 tamen-web 的标注工具，支持画笔、矩形、可编辑文字、选择移动/缩放/旋转、颜色、粗细、删除与撤销重做。
+
+```tsx
+import { ImageAnnotation } from "media-rig/image-annotation";
+import "media-rig/style.css";
+
+<ImageAnnotation
+  imageUrl="/scene.png"
+  onSave={async (png) => {
+    // png 是保留原图分辨率、包含全部标注的 PNG Blob。
+    await uploadImage(png);
+  }}
+  onCancel={() => setOpen(false)}
+/>
+```
+
+也可通过 `npx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json` 安装源码（依赖 Fabric.js 7+ 与 lucide-react）。更换 `imageUrl` 会重置标注；跨域原图需要支持 CORS。保存与上传由宿主回调处理，组件不绑定业务接口。

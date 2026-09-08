@@ -479,6 +479,53 @@
           "target": "components/image-editor/utils/geometry.ts"
         }
       ]
+    },
+    {
+      "name": "image-annotation",
+      "type": "registry:component",
+      "title": "Image Annotation",
+      "description": "Image drawing with brush, rectangles, editable text, undo/redo and original-size PNG export.",
+      "dependencies": [
+        "fabric",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "packages/media-rig/src/components/image-annotation/ImageAnnotation.css",
+          "type": "registry:lib",
+          "target": "components/image-annotation/ImageAnnotation.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/image-annotation/ImageAnnotation.tsx",
+          "type": "registry:component",
+          "target": "components/image-annotation/ImageAnnotation.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/image-annotation/compose.ts",
+          "type": "registry:lib",
+          "target": "components/image-annotation/compose.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/image-annotation/controller.types.ts",
+          "type": "registry:lib",
+          "target": "components/image-annotation/controller.types.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/image-annotation/fabric-canvas.ts",
+          "type": "registry:lib",
+          "target": "components/image-annotation/fabric-canvas.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/image-annotation/index.ts",
+          "type": "registry:lib",
+          "target": "components/image-annotation/index.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/image-annotation/useAnnotationController.ts",
+          "type": "registry:lib",
+          "target": "components/image-annotation/useAnnotationController.ts"
+        }
+      ]
     }
   ]
 }
