@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Suspense, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowDownAZ,
@@ -17,11 +19,11 @@ import {
   Search,
 } from "lucide-react";
 import ComponentPreview from "./ComponentPreview";
+import ClientDemo from "./ClientDemo";
 import CatalogEffectPreview from "./CatalogEffectPreview";
 import {
   componentHref,
   mediaComponents,
-  resolveComponentFromLocation,
   type MediaComponentMeta,
 } from "../catalog";
 
@@ -85,7 +87,7 @@ const catalogPreviewPaths: Record<MediaComponentMeta["slug"], string> = {
   "director-stage": "/assets/catalog/director-stage.jpg?v=dark-2",
 };
 
-function CatalogHome() {
+export function CatalogHome() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof catalogCategories)[number]>("All Components");
   const [layout, setLayout] = useState<CatalogLayout>("grid");
@@ -275,7 +277,7 @@ function InstallPanel({ component }: { component: MediaComponentMeta }) {
   const [copied, setCopied] = useState(false);
   const command = mode === "pnpm"
     ? `pnpm add media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`
-    : `pnpm dlx shadcn@latest add ${window.location.origin}/r/${component.slug}.json`;
+    : `pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/${component.slug}.json`;
 
   const copyCommand = async () => {
     try {
@@ -320,8 +322,7 @@ function InstallPanel({ component }: { component: MediaComponentMeta }) {
   );
 }
 
-function ComponentDetail({ component }: { component: MediaComponentMeta }) {
-  const Preview = component.preview;
+export function ComponentDetail({ component, source }: { component: MediaComponentMeta; source: string }) {
 
   return (
     <LibraryFrame>
@@ -356,16 +357,16 @@ function ComponentDetail({ component }: { component: MediaComponentMeta }) {
                 </div>
                 <span className="hidden items-center gap-2 text-xs text-white/35 sm:flex"><Box size={14} aria-hidden="true" /> React component</span>
               </div>
-              {component.slug === "director-stage" && <a href="?component=director-stage" className="mb-4 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-black">打开独立导演台 ↗</a>}
+              {component.slug === "director-stage" && <a href="/playground/director-stage" className="mb-4 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-medium text-black">打开独立导演台 ↗</a>}
               <div className={["mx-auto", component.previewClassName].join(" ")}>
                 <Suspense fallback={<div className="grid h-[480px] place-items-center rounded-2xl border border-white/10 bg-[#181818] text-xs tracking-[0.02em] text-white/35">Loading component…</div>}>
                   <ComponentPreview
                     title={component.title}
                     description={component.description}
-                    source={component.source}
+                    source={source}
                     stageClassName={component.stageClassName}
                   >
-                    <Preview />
+                    <ClientDemo slug={component.slug} />
                   </ComponentPreview>
                 </Suspense>
               </div>
@@ -428,23 +429,16 @@ function ComponentDetail({ component }: { component: MediaComponentMeta }) {
   );
 }
 
-function DirectorWorkspace({ component }: { component: MediaComponentMeta }) {
-  const Preview = component.preview;
+export function DirectorWorkspace() {
   return (
     <div className="flex h-dvh min-h-0 flex-col overflow-hidden bg-[#080808] text-white">
       <nav className="flex h-10 shrink-0 items-center justify-between border-b border-white/10 bg-[#181818] px-4 text-xs" aria-label="导演台导航">
         <a href="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white"><ArrowLeft size={14} />返回组件库</a>
-        <a href="?component=director-stage&docs=1" className="text-white/50 hover:text-white">组件文档与安装</a>
+        <a href="/components/director-stage" className="text-white/50 hover:text-white">组件文档与安装</a>
       </nav>
       <main className="min-h-0 flex-1">
-        <Suspense fallback={<div className="grid h-full place-items-center text-sm text-white/50">正在加载导演台…</div>}><Preview /></Suspense>
+        <Suspense fallback={<div className="grid h-full place-items-center text-sm text-white/50">正在加载导演台…</div>}><ClientDemo slug="director-stage" /></Suspense>
       </main>
     </div>
   );
-}
-
-export default function ComponentLibraryApp() {
-  const component = resolveComponentFromLocation(window.location.search, window.location.pathname);
-  if (component?.slug === "director-stage" && new URLSearchParams(window.location.search).get("docs") !== "1") return <DirectorWorkspace component={component} />;
-  return component ? <ComponentDetail component={component} /> : <CatalogHome />;
 }

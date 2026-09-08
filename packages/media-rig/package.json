@@ -101,6 +101,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.168.0",
     "@vitejs/plugin-react": "^4.3.4",
     "fabric": "^7.4.0",
     "jsdom": "^29.1.1",

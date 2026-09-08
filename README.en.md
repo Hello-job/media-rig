@@ -115,7 +115,7 @@ The parent must provide stable dimensions. PNG, JPEG, WebP, and static GIF are s
 
 Common props include `initialDocument`, `storageKey`, `maxImageSize`, `historyLimit`, `onChange`, `onSave`, `onExport`, `onClose`, and `onError`. The component ref exposes `addImage`, `addText`, `loadDocument`, `getDocument`, `undo`, `redo`, `fitToViewport`, and `exportImage`.
 
-Local preview: `http://localhost:5173/components/image-editor`.
+Local preview: `http://localhost:3000/components/image-editor`.
 
 ## LayerSeparator
 
@@ -146,7 +146,7 @@ export default function App() {
 
 `onSeparate` returns `{ background, layers }`. Each layer accepts a transparent image URL plus optional `contentBounds` and `transform`. Remote assets must allow CORS for browser-side merge export.
 
-Local preview: `http://localhost:5173/components/layer-separator`.
+Local preview: `http://localhost:3000/components/layer-separator`.
 
 ## Local Development
 
@@ -155,7 +155,7 @@ pnpm install
 pnpm run dev
 ```
 
-Open `http://localhost:5173/` to use the preview/configuration UI.
+Open `http://localhost:3000/` to use the preview/configuration UI.
 
 ## Project Structure
 
