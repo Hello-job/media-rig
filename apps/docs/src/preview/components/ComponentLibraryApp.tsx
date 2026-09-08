@@ -17,6 +17,7 @@ import {
   Search,
 } from "lucide-react";
 import ComponentPreview from "./ComponentPreview";
+import CatalogEffectPreview from "./CatalogEffectPreview";
 import {
   componentHref,
   mediaComponents,
@@ -224,7 +225,9 @@ function CatalogHome() {
                   layout === "list" ? "grid grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)] max-[760px]:grid-cols-1" : "flex flex-col",
                 ].join(" ")}>
                   <a className="relative block overflow-hidden bg-[#0d0d0d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-white/70" href={componentHref(component.slug)}>
-                    <img
+                    {component.slug === "image-annotation" || component.slug === "layer-separator" ? (
+                      <CatalogEffectPreview kind={component.slug} className={layout === "list" ? "h-full min-h-72" : layout === "matrix" ? "aspect-[1.55/1]" : "aspect-[2/1] max-[760px]:aspect-[1.35/1]"} />
+                    ) : <img
                       src={catalogPreviewPaths[component.slug]}
                       alt={`${component.title} 组件预览`}
                       className={[
@@ -232,7 +235,7 @@ function CatalogHome() {
                         layout === "list" ? "h-full min-h-72" : layout === "matrix" ? "aspect-[1.55/1]" : "aspect-[2/1] max-[760px]:aspect-[1.35/1]",
                       ].join(" ")}
                       loading="lazy"
-                    />
+                    />}
                   </a>
                   <div className="flex min-h-16 items-start gap-4 border-t border-white/[0.065] px-4 py-3">
                     <a className="min-w-0 flex-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/70" href={componentHref(component.slug)}>
