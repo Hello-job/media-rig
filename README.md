@@ -52,7 +52,9 @@ import { ImageAnnotation } from "media-rig/image-annotation";
 
 ### shadcn 源码
 
-如果需要直接修改组件实现，可以通过 Registry 将源码安装到项目中。选择需要的组件执行：
+网站每个组件详情页都提供可复制的 shadcn CLI 命令，支持 pnpm、npm、yarn、bun，默认使用 pnpm。
+
+在 React 19、Tailwind CSS 4 项目中使用。首次接入先运行 `pnpm dlx shadcn@latest init`，已有 `components.json` 的项目可跳过。然后选择需要的组件执行：
 
 ```bash
 pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
@@ -63,7 +65,18 @@ pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
 pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
 ```
 
-Registry 的源码目标目录为 `components/<component-name>/`，安装后从项目内对应路径导入。具体文件和依赖见 [`registry.json`](./registry.json)。业务图片通过 `imageUrl` 等属性传入，不应依赖文档站的示例素材路径。
+Registry 会安装当前组件的源码、样式和依赖，源码目标目录跟随 `components.json` 的 `components` 别名（例如 `src/components/<component-name>/`）。安装后使用 `import { ImageAnnotation } from "@/components/image-annotation"` 这样的本地路径导入，无需再安装 `media-rig` 包。具体文件和依赖见 [`registry.json`](./registry.json)。业务图片通过 `imageUrl` 等属性传入，不应依赖文档站的示例素材路径。
+
+使用 pnpm 11 时，在项目的 `pnpm-workspace.yaml` 中合并以下配置，再执行安装命令。`canvas` 是 Fabric 的可选 Node 原生依赖，浏览器端不需要构建；统一 Three.js 类型可避免三维依赖带来的重复类型冲突。
+
+```yaml
+allowBuilds:
+  canvas: false
+overrides:
+  '@types/three': '^0.168.0'
+```
+
+保留文件里的其他配置；已有 Three.js 项目需要先确认版本兼容性。
 
 ## 快速开始
 

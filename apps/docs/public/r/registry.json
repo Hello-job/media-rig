@@ -9,71 +9,71 @@
       "title": "Light Sphere",
       "description": "A compact 3D lighting panel with sphere preview, brightness, temperature, direction presets, and rim-light output controls.",
       "dependencies": [
-        "@react-three/drei",
-        "@react-three/fiber",
-        "three",
+        "@react-three/drei@^10",
+        "@react-three/fiber@^9",
+        "three@^0.168.0",
         "lucide-react"
       ],
       "files": [
         {
           "path": "packages/media-rig/src/components/light-sphere/index.ts",
           "type": "registry:component",
-          "target": "components/light-sphere/index.ts"
+          "target": "@components/light-sphere/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/LightSphere.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/LightSphere.tsx"
+          "target": "@components/light-sphere/LightSphere.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/LightSphere.constants.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/LightSphere.constants.ts"
+          "target": "@components/light-sphere/LightSphere.constants.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/LightSphere.types.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/LightSphere.types.ts"
+          "target": "@components/light-sphere/LightSphere.types.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/hooks/useLightDrag.ts",
           "type": "registry:hook",
-          "target": "components/light-sphere/hooks/useLightDrag.ts"
+          "target": "@components/light-sphere/hooks/useLightDrag.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/parts/Beam.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/parts/Beam.tsx"
+          "target": "@components/light-sphere/parts/Beam.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/parts/GlassSphere.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/parts/GlassSphere.tsx"
+          "target": "@components/light-sphere/parts/GlassSphere.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/parts/LightHandle.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/parts/LightHandle.tsx"
+          "target": "@components/light-sphere/parts/LightHandle.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/parts/LightSphereScene.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/parts/LightSphereScene.tsx"
+          "target": "@components/light-sphere/parts/LightSphereScene.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/parts/PhotoPlane.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/parts/PhotoPlane.tsx"
+          "target": "@components/light-sphere/parts/PhotoPlane.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/shaders/index.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/shaders/index.ts"
+          "target": "@components/light-sphere/shaders/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/utils/geometry.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/utils/geometry.ts"
+          "target": "@components/light-sphere/utils/geometry.ts"
         },
         {
           "path": "apps/docs/public/assets/photo-texture2.png",
@@ -83,28 +83,31 @@
         {
           "path": "packages/media-rig/src/components/light-sphere/LightSpherePanel.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/LightSpherePanel.tsx"
+          "target": "@components/light-sphere/LightSpherePanel.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/parts/LightingControls.tsx",
           "type": "registry:component",
-          "target": "components/light-sphere/parts/LightingControls.tsx"
+          "target": "@components/light-sphere/parts/LightingControls.tsx"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/utils/color-temperature.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/utils/color-temperature.ts"
+          "target": "@components/light-sphere/utils/color-temperature.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/utils/photo-plane-size.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/utils/photo-plane-size.ts"
+          "target": "@components/light-sphere/utils/photo-plane-size.ts"
         },
         {
           "path": "packages/media-rig/src/components/light-sphere/utils/position-preset.ts",
           "type": "registry:lib",
-          "target": "components/light-sphere/utils/position-preset.ts"
+          "target": "@components/light-sphere/utils/position-preset.ts"
         }
+      ],
+      "devDependencies": [
+        "@types/three@^0.168.0"
       ]
     },
     {
@@ -119,27 +122,27 @@
         {
           "path": "packages/media-rig/src/components/image-angle-rig/index.ts",
           "type": "registry:component",
-          "target": "components/image-angle-rig/index.ts"
+          "target": "@components/image-angle-rig/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-angle-rig/ImageAngleRig.tsx",
           "type": "registry:component",
-          "target": "components/image-angle-rig/ImageAngleRig.tsx"
+          "target": "@components/image-angle-rig/ImageAngleRig.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-angle-rig/ImageAngleRig.constants.ts",
           "type": "registry:lib",
-          "target": "components/image-angle-rig/ImageAngleRig.constants.ts"
+          "target": "@components/image-angle-rig/ImageAngleRig.constants.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-angle-rig/ImageAngleRig.types.ts",
           "type": "registry:lib",
-          "target": "components/image-angle-rig/ImageAngleRig.types.ts"
+          "target": "@components/image-angle-rig/ImageAngleRig.types.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-angle-rig/parts/ImageAngleScene.tsx",
           "type": "registry:component",
-          "target": "components/image-angle-rig/parts/ImageAngleScene.tsx"
+          "target": "@components/image-angle-rig/parts/ImageAngleScene.tsx"
         },
         {
           "path": "apps/docs/public/assets/photo-texture2.png",
@@ -154,147 +157,150 @@
       "title": "Director Stage",
       "description": "An interactive Three.js stage for composing characters, props, cameras, and shots.",
       "dependencies": [
-        "@react-three/fiber",
-        "@react-three/drei",
+        "@react-three/fiber@^9",
+        "@react-three/drei@^10",
         "lucide-react",
-        "three"
+        "three@^0.168.0"
       ],
       "files": [
         {
           "path": "packages/media-rig/src/components/director-stage/index.ts",
           "type": "registry:component",
-          "target": "components/director-stage/index.ts"
+          "target": "@components/director-stage/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorStage.tsx"
+          "target": "@components/director-stage/DirectorStage.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.css",
-          "type": "registry:style",
-          "target": "components/director-stage/DirectorStage.css"
+          "type": "registry:file",
+          "target": "@components/director-stage/DirectorStage.css"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.constants.ts",
           "type": "registry:lib",
-          "target": "components/director-stage/DirectorStage.constants.ts"
+          "target": "@components/director-stage/DirectorStage.constants.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.types.ts",
           "type": "registry:lib",
-          "target": "components/director-stage/DirectorStage.types.ts"
+          "target": "@components/director-stage/DirectorStage.types.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.utils.ts",
           "type": "registry:lib",
-          "target": "components/director-stage/DirectorStage.utils.ts"
+          "target": "@components/director-stage/DirectorStage.utils.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.sceneTypes.ts",
           "type": "registry:lib",
-          "target": "components/director-stage/DirectorStage.sceneTypes.ts"
+          "target": "@components/director-stage/DirectorStage.sceneTypes.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.menuData.ts",
           "type": "registry:lib",
-          "target": "components/director-stage/DirectorStage.menuData.ts"
+          "target": "@components/director-stage/DirectorStage.menuData.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.controls.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorStage.controls.tsx"
+          "target": "@components/director-stage/DirectorStage.controls.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.inspectors.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorStage.inspectors.tsx"
+          "target": "@components/director-stage/DirectorStage.inspectors.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.toolbars.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorStage.toolbars.tsx"
+          "target": "@components/director-stage/DirectorStage.toolbars.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStageCanvas.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorStageCanvas.tsx"
+          "target": "@components/director-stage/DirectorStageCanvas.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/CameraMonitor.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/CameraMonitor.tsx"
+          "target": "@components/director-stage/CameraMonitor.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/SceneTree.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/SceneTree.tsx"
+          "target": "@components/director-stage/SceneTree.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/hooks/useDirectorStage.ts",
           "type": "registry:hook",
-          "target": "components/director-stage/hooks/useDirectorStage.ts"
+          "target": "@components/director-stage/hooks/useDirectorStage.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/parts/CameraRig.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/parts/CameraRig.tsx"
+          "target": "@components/director-stage/parts/CameraRig.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/parts/Mannequin.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/parts/Mannequin.tsx"
+          "target": "@components/director-stage/parts/Mannequin.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/parts/PropMesh.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/parts/PropMesh.tsx"
+          "target": "@components/director-stage/parts/PropMesh.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/parts/Transformable.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/parts/Transformable.tsx"
+          "target": "@components/director-stage/parts/Transformable.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/assets/ue-mannequin-retopology.glb",
           "type": "registry:file",
-          "target": "components/director-stage/assets/ue-mannequin-retopology.glb"
+          "target": "@components/director-stage/assets/ue-mannequin-retopology.glb"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/assets/static-mixamo-rigged.glb",
           "type": "registry:file",
-          "target": "components/director-stage/assets/static-mixamo-rigged.glb"
+          "target": "@components/director-stage/assets/static-mixamo-rigged.glb"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/parts/camera-geometry.ts",
           "type": "registry:component",
-          "target": "components/director-stage/parts/camera-geometry.ts"
+          "target": "@components/director-stage/parts/camera-geometry.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/camera-motion-presets.ts",
           "type": "registry:component",
-          "target": "components/director-stage/camera-motion-presets.ts"
+          "target": "@components/director-stage/camera-motion-presets.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorStage.motion.ts",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorStage.motion.ts"
+          "target": "@components/director-stage/DirectorStage.motion.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/DirectorTimeline.tsx",
           "type": "registry:component",
-          "target": "components/director-stage/DirectorTimeline.tsx"
+          "target": "@components/director-stage/DirectorTimeline.tsx"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/body-scales.ts",
           "type": "registry:component",
-          "target": "components/director-stage/body-scales.ts"
+          "target": "@components/director-stage/body-scales.ts"
         },
         {
           "path": "packages/media-rig/src/components/director-stage/record-video.ts",
           "type": "registry:component",
-          "target": "components/director-stage/record-video.ts"
+          "target": "@components/director-stage/record-video.ts"
         }
+      ],
+      "devDependencies": [
+        "@types/three@^0.168.0"
       ]
     },
     {
@@ -309,37 +315,37 @@
         {
           "path": "packages/media-rig/src/components/layer-separator/index.ts",
           "type": "registry:component",
-          "target": "components/layer-separator/index.ts"
+          "target": "@components/layer-separator/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.tsx",
           "type": "registry:component",
-          "target": "components/layer-separator/LayerSeparator.tsx"
+          "target": "@components/layer-separator/LayerSeparator.tsx"
         },
         {
           "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.types.ts",
           "type": "registry:lib",
-          "target": "components/layer-separator/LayerSeparator.types.ts"
+          "target": "@components/layer-separator/LayerSeparator.types.ts"
         },
         {
           "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.utils.ts",
           "type": "registry:lib",
-          "target": "components/layer-separator/LayerSeparator.utils.ts"
+          "target": "@components/layer-separator/LayerSeparator.utils.ts"
         },
         {
           "path": "packages/media-rig/src/components/layer-separator/LayerSeparator.css",
-          "type": "registry:style",
-          "target": "components/layer-separator/LayerSeparator.css"
+          "type": "registry:file",
+          "target": "@components/layer-separator/LayerSeparator.css"
         },
         {
           "path": "packages/media-rig/src/components/layer-separator/parts/SelectionStage.tsx",
           "type": "registry:component",
-          "target": "components/layer-separator/parts/SelectionStage.tsx"
+          "target": "@components/layer-separator/parts/SelectionStage.tsx"
         },
         {
           "path": "packages/media-rig/src/components/layer-separator/parts/CompositionStage.tsx",
           "type": "registry:component",
-          "target": "components/layer-separator/parts/CompositionStage.tsx"
+          "target": "@components/layer-separator/parts/CompositionStage.tsx"
         }
       ]
     },
@@ -349,134 +355,134 @@
       "title": "Image Editor",
       "description": "A full-featured Fabric.js image editor with layers, history, cropping, painting, and export.",
       "dependencies": [
-        "fabric",
+        "fabric@^7",
         "lucide-react"
       ],
       "files": [
         {
           "path": "packages/media-rig/src/components/image-editor/index.ts",
           "type": "registry:component",
-          "target": "components/image-editor/index.ts"
+          "target": "@components/image-editor/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/ImageEditor.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/ImageEditor.tsx"
+          "target": "@components/image-editor/ImageEditor.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/ImageEditor.types.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/ImageEditor.types.ts"
+          "target": "@components/image-editor/ImageEditor.types.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/ImageEditor.constants.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/ImageEditor.constants.ts"
+          "target": "@components/image-editor/ImageEditor.constants.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/ImageEditor.css",
-          "type": "registry:style",
-          "target": "components/image-editor/ImageEditor.css"
+          "type": "registry:file",
+          "target": "@components/image-editor/ImageEditor.css"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/DocumentSerializer.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/DocumentSerializer.ts"
+          "target": "@components/image-editor/core/DocumentSerializer.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/HistoryManager.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/HistoryManager.ts"
+          "target": "@components/image-editor/core/HistoryManager.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/EditorCommands.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/EditorCommands.ts"
+          "target": "@components/image-editor/core/EditorCommands.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/PaintTools.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/PaintTools.ts"
+          "target": "@components/image-editor/core/PaintTools.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/ImageService.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/ImageService.ts"
+          "target": "@components/image-editor/core/ImageService.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/CropSession.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/CropSession.ts"
+          "target": "@components/image-editor/core/CropSession.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/ExportService.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/ExportService.ts"
+          "target": "@components/image-editor/core/ExportService.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/core/SnapGuides.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/core/SnapGuides.ts"
+          "target": "@components/image-editor/core/SnapGuides.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/hooks/useFabricCanvas.ts",
           "type": "registry:hook",
-          "target": "components/image-editor/hooks/useFabricCanvas.ts"
+          "target": "@components/image-editor/hooks/useFabricCanvas.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/hooks/useImageEditorController.ts",
           "type": "registry:hook",
-          "target": "components/image-editor/hooks/useImageEditorController.ts"
+          "target": "@components/image-editor/hooks/useImageEditorController.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/hooks/useEditorKeyboard.ts",
           "type": "registry:hook",
-          "target": "components/image-editor/hooks/useEditorKeyboard.ts"
+          "target": "@components/image-editor/hooks/useEditorKeyboard.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/toolbars/TopToolbar.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/toolbars/TopToolbar.tsx"
+          "target": "@components/image-editor/toolbars/TopToolbar.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/toolbars/BottomToolbar.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/toolbars/BottomToolbar.tsx"
+          "target": "@components/image-editor/toolbars/BottomToolbar.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/toolbars/PaintToolbar.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/toolbars/PaintToolbar.tsx"
+          "target": "@components/image-editor/toolbars/PaintToolbar.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/toolbars/SelectionToolbar.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/toolbars/SelectionToolbar.tsx"
+          "target": "@components/image-editor/toolbars/SelectionToolbar.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/panels/LayersPanel.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/panels/LayersPanel.tsx"
+          "target": "@components/image-editor/panels/LayersPanel.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/controls/ColorControl.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/controls/ColorControl.tsx"
+          "target": "@components/image-editor/controls/ColorControl.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/controls/NumberControl.tsx",
           "type": "registry:component",
-          "target": "components/image-editor/controls/NumberControl.tsx"
+          "target": "@components/image-editor/controls/NumberControl.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/utils/editorObject.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/utils/editorObject.ts"
+          "target": "@components/image-editor/utils/editorObject.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-editor/utils/geometry.ts",
           "type": "registry:lib",
-          "target": "components/image-editor/utils/geometry.ts"
+          "target": "@components/image-editor/utils/geometry.ts"
         }
       ]
     },
@@ -486,44 +492,44 @@
       "title": "Image Annotation",
       "description": "Image drawing with brush, rectangles, editable text, undo/redo and original-size PNG export.",
       "dependencies": [
-        "fabric",
+        "fabric@^7",
         "lucide-react"
       ],
       "files": [
         {
           "path": "packages/media-rig/src/components/image-annotation/ImageAnnotation.css",
-          "type": "registry:lib",
-          "target": "components/image-annotation/ImageAnnotation.css"
+          "type": "registry:file",
+          "target": "@components/image-annotation/ImageAnnotation.css"
         },
         {
           "path": "packages/media-rig/src/components/image-annotation/ImageAnnotation.tsx",
           "type": "registry:component",
-          "target": "components/image-annotation/ImageAnnotation.tsx"
+          "target": "@components/image-annotation/ImageAnnotation.tsx"
         },
         {
           "path": "packages/media-rig/src/components/image-annotation/compose.ts",
           "type": "registry:lib",
-          "target": "components/image-annotation/compose.ts"
+          "target": "@components/image-annotation/compose.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-annotation/controller.types.ts",
           "type": "registry:lib",
-          "target": "components/image-annotation/controller.types.ts"
+          "target": "@components/image-annotation/controller.types.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-annotation/fabric-canvas.ts",
           "type": "registry:lib",
-          "target": "components/image-annotation/fabric-canvas.ts"
+          "target": "@components/image-annotation/fabric-canvas.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-annotation/index.ts",
           "type": "registry:lib",
-          "target": "components/image-annotation/index.ts"
+          "target": "@components/image-annotation/index.ts"
         },
         {
           "path": "packages/media-rig/src/components/image-annotation/useAnnotationController.ts",
           "type": "registry:lib",
-          "target": "components/image-annotation/useAnnotationController.ts"
+          "target": "@components/image-annotation/useAnnotationController.ts"
         }
       ]
     }

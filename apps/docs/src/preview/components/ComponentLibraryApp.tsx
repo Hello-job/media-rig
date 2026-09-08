@@ -9,7 +9,6 @@ import {
   ChevronDown,
   ChevronsRight,
   Code2,
-  Command,
   Copy,
   GitFork,
   Grid2X2,
@@ -20,6 +19,8 @@ import {
 } from "lucide-react";
 import ComponentPreview from "./ComponentPreview";
 import ClientDemo from "./ClientDemo";
+import InstallPanel from "./InstallPanel";
+import { registryCommand } from "../install";
 import CatalogEffectPreview from "./CatalogEffectPreview";
 import {
   componentHref,
@@ -114,7 +115,7 @@ export function CatalogHome() {
 
   const copyInstallCommand = async (component: MediaComponentMeta) => {
     try {
-      await navigator.clipboard.writeText(`pnpm add media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`);
+      await navigator.clipboard.writeText(registryCommand(component.slug));
       setCopiedSlug(component.slug);
       window.setTimeout(() => setCopiedSlug(null), 1400);
     } catch {
@@ -224,7 +225,7 @@ export function CatalogHome() {
               {filteredComponents.map((component) => (
                 <article key={component.slug} className={[
                   "group overflow-hidden rounded-[18px] border border-white/[0.075] bg-[#181818] transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]",
-                  layout === "list" ? "grid grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)] max-[760px]:grid-cols-1" : "flex flex-col",
+                  layout === "list" ? "grid grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)] [&>div:last-child]:col-span-full max-[760px]:grid-cols-1" : "flex flex-col",
                 ].join(" ")}>
                   <a className="relative block overflow-hidden bg-[#0d0d0d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-white/70" href={componentHref(component.slug)}>
                     {component.slug === "image-annotation" || component.slug === "layer-separator" ? (
@@ -254,6 +255,10 @@ export function CatalogHome() {
                       {copiedSlug === component.slug ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
                     </button>
                   </div>
+                  <div className="border-t border-white/[0.065] bg-black/20 px-4 py-3">
+                    <a href={`${componentHref(component.slug)}#installation`} className="mb-2 block text-[10px] text-white/40 hover:text-white">shadcn CLI · 安装源码 ↗</a>
+                    <code className="block overflow-x-auto whitespace-nowrap pb-1 text-[10px] text-white/65">{registryCommand(component.slug)}</code>
+                  </div>
                 </article>
               ))}
             </div>
@@ -269,56 +274,6 @@ export function CatalogHome() {
         </footer>
       </main>
     </LibraryFrame>
-  );
-}
-
-function InstallPanel({ component }: { component: MediaComponentMeta }) {
-  const [mode, setMode] = useState<"pnpm" | "registry">("pnpm");
-  const [copied, setCopied] = useState(false);
-  const command = mode === "pnpm"
-    ? `pnpm add media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`
-    : `pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/${component.slug}.json`;
-
-  const copyCommand = async () => {
-    try {
-      await navigator.clipboard.writeText(command);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1400);
-    } catch {
-      setCopied(false);
-    }
-  };
-
-  return (
-    <section className="overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d] text-white shadow-[0_18px_46px_rgba(0,0,0,0.3)]" aria-labelledby="install-title">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <Command size={15} className="text-white/65" aria-hidden="true" />
-          <h2 id="install-title" className="text-xs font-semibold text-white/65">Install</h2>
-        </div>
-        <div className="flex rounded-lg bg-white/[0.06] p-1 text-[11px]">
-          {(["pnpm", "registry"] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={[
-                "rounded-md px-2.5 py-1.5 transition",
-                mode === item ? "bg-white/[0.12] font-semibold text-white" : "text-white/45 hover:text-white",
-              ].join(" ")}
-              onClick={() => setMode(item)}
-            >
-              {item === "pnpm" ? "pnpm" : "Registry"}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="flex items-start gap-3 px-4 py-4">
-        <pre className="min-w-0 flex-1 overflow-x-auto whitespace-pre-wrap font-mono text-xs leading-6 text-white/70"><code>{command}</code></pre>
-        <button type="button" onClick={copyCommand} className="grid size-8 shrink-0 place-items-center rounded-lg border border-white/10 text-white/45 transition hover:bg-white/10 hover:text-white" aria-label={copied ? "已复制安装命令" : "复制安装命令"}>
-          {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
-        </button>
-      </div>
-    </section>
   );
 }
 

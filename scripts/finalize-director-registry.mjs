@@ -11,3 +11,13 @@ for (const file of item.files.filter((file) => file.path.endsWith('.glb'))) {
 }
 item.files = item.files.filter((file) => !file.path.endsWith('.glb'));
 await writeFile(path, JSON.stringify(item, null, 2) + '\n');
+
+const registry = JSON.parse(await readFile('registry.json', 'utf8'));
+for (const entry of registry.items) {
+  const output = `apps/docs/public/r/${entry.name}.json`;
+  const built = JSON.parse(await readFile(output, 'utf8'));
+  for (const file of built.files) {
+    if (file.path.endsWith('/index.ts')) file.content = '"use client";\n\n' + file.content;
+  }
+  await writeFile(output, JSON.stringify(built, null, 2) + '\n');
+}

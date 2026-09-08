@@ -201,3 +201,22 @@ pnpm run build:preview
 4. Run `pnpm --filter media-rig pack --dry-run` to inspect published files.
 5. Log in with `pnpm login`.
 6. Publish with `pnpm publish --access public`.
+
+### Install component source with shadcn
+
+Each component page provides copyable pnpm (default), npm, yarn, and bun commands. In a React 19 / Tailwind CSS 4 project, run `pnpm dlx shadcn@latest init` once if you do not have `components.json`, then install a component:
+
+```sh
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
+```
+
+Source, styles, and dependencies are installed together. Files follow your `components.json` components alias. Import from `@/components/image-annotation` instead of the npm package. The same URL pattern supports all six component slugs listed above.
+
+For pnpm 11 browser projects, merge this into `pnpm-workspace.yaml` before installation to skip Fabric's optional native Node canvas build and align transitive Three.js types. Preserve existing settings and check compatibility if your project already uses Three.js.
+
+```yaml
+allowBuilds:
+  canvas: false
+overrides:
+  '@types/three': '^0.168.0'
+```
