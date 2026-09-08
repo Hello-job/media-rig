@@ -25,12 +25,12 @@ MediaRig 是一个面向图片编辑、视觉参数调整和三维场景编排�
 
 ## 安装
 
-### npm 包
+### 包安装（pnpm）
 
 在 React 项目中安装组件包：
 
 ```bash
-npm install media-rig
+pnpm add media-rig
 ```
 
 当前包声明了 React、React DOM、Three.js、React Three Fiber、Drei 和 Fabric.js 为 peer dependencies。请根据现有项目选择相互兼容的版本；本仓库使用 React 19、Fiber 9、Drei 10、Three.js 0.168 和 Fabric.js 7。
@@ -38,7 +38,7 @@ npm install media-rig
 以下命令适用于采用本仓库版本组合的新项目：
 
 ```bash
-npm install media-rig react@^19 react-dom@^19 three@^0.168 @react-three/fiber@^9 @react-three/drei@^10 fabric@^7
+pnpm add media-rig react@^19 react-dom@^19 three@^0.168 @react-three/fiber@^9 @react-three/drei@^10 fabric@^7
 ```
 
 在应用入口引入样式，并按组件子路径导入：
@@ -55,12 +55,12 @@ import { ImageAnnotation } from "media-rig/image-annotation";
 如果需要直接修改组件实现，可以通过 Registry 将源码安装到项目中。选择需要的组件执行：
 
 ```bash
-npx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
-npx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
-npx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
-npx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
-npx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
-npx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/light-sphere.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-angle-rig.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/director-stage.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-editor.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
+pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/layer-separator.json
 ```
 
 Registry 的源码目标目录为 `components/<component-name>/`，安装后从项目内对应路径导入。具体文件和依赖见 [`registry.json`](./registry.json)。业务图片通过 `imageUrl` 等属性传入，不应依赖文档站的示例素材路径。
@@ -218,25 +218,25 @@ export default function LayerExample() {
 
 ## 本地开发
 
-在仓库根目录执行：
+本仓库使用 Node.js 24 和 pnpm 11.17.0（由根目录 `packageManager` 固定）。准备好对应版本后，在仓库根目录执行：
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 以终端输出的地址为准，默认地址为 `http://localhost:5173/`。开发站点直接引用组件源码。
 
 | 命令 | 说明 |
 | --- | --- |
-| `npm run dev` | 启动文档站与组件预览 |
-| `npm run typecheck` | 检查组件包和文档站的 TypeScript 类型 |
-| `npm test` | 运行两个 workspace 的测试 |
-| `npm run build:lib` | 构建组件包及类型声明，输出到 `packages/media-rig/dist` |
-| `npm run build:preview` | 构建文档站前端，输出到 `dist/client` |
-| `npm run build:registry` | 根据 Registry 定义生成 `apps/docs/public/r/*.json` |
-| `npm run build:site` | 构建 Registry、文档站及部署产物 |
-| `npm run preview` | 本地预览文档站构建结果 |
+| `pnpm run dev` | 启动文档站与组件预览 |
+| `pnpm run typecheck` | 检查组件包和文档站的 TypeScript 类型 |
+| `pnpm test` | 运行两个 workspace 的测试 |
+| `pnpm run build:lib` | 构建组件包及类型声明，输出到 `packages/media-rig/dist` |
+| `pnpm run build:preview` | 构建文档站前端，输出到 `dist/client` |
+| `pnpm run build:registry` | 根据 Registry 定义生成 `apps/docs/public/r/*.json` |
+| `pnpm run build:site` | 构建 Registry、文档站及部署产物 |
+| `pnpm run preview` | 本地预览文档站构建结果 |
 
 ## 项目结构
 
@@ -254,32 +254,34 @@ media-rig/
 │       ├── image-annotation/
 │       └── layer-separator/
 ├── scripts/                  # 构建产物处理脚本
+├── pnpm-workspace.yaml       # Workspace 包目录与安装配置
+├── pnpm-lock.yaml            # 依赖锁文件
 ├── registry.json             # shadcn Registry 定义
 └── vercel.json               # 文档站部署配置
 ```
 
-项目使用 npm workspaces。组件包与文档站独立组织，文档站代码不会进入组件包构建产物。
+项目使用 pnpm workspace。组件包与文档站独立组织，文档站代码不会进入组件包构建产物。
 
 ## 构建与发布
 
-提交前在仓库根目录执行：
+提交前本仓库使用 Node.js 24 和 pnpm 11.17.0（由根目录 `packageManager` 固定）。准备好对应版本后，在仓库根目录执行：
 
 ```bash
-npm run typecheck
-npm test
-npm run build:lib
-npm run build:site
-npm pack --workspace media-rig --dry-run
+pnpm run typecheck
+pnpm test
+pnpm run build:lib
+pnpm run build:site
+pnpm --filter media-rig pack --dry-run
 ```
 
-文档站使用 Vercel 部署，构建命令为 `npm run build:site`，输出目录为 `dist/client`。当前生产站点随 `main` 分支更新。
+文档站使用 Vercel 部署，构建命令为 `pnpm run build:site`，输出目录为 `dist/client`。当前生产站点随 `main` 分支更新。
 
 发布 npm 包前，更新 [`packages/media-rig/package.json`](./packages/media-rig/package.json) 中的版本及包元数据，并检查打包文件。具备 npm 发布权限后，在组件包目录执行：
 
 ```bash
 cd packages/media-rig
-npm login
-npm publish --access public
+pnpm login
+pnpm publish --access public
 ```
 
 网站部署与 npm 发包是两个独立流程；更新网站不会自动发布新的 npm 版本。

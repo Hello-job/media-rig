@@ -3,23 +3,23 @@
   "version": "0.2.0",
   "private": true,
   "description": "MediaRig component library and documentation workspace.",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "dev": "npm run dev --workspace @media-rig/docs",
-    "build": "npm run build --workspace media-rig",
-    "build:lib": "npm run build --workspace media-rig",
-    "build:types": "npm run build:types --workspace media-rig",
+    "dev": "pnpm --filter @media-rig/docs run dev",
+    "build": "pnpm --filter media-rig run build",
+    "build:lib": "pnpm --filter media-rig run build",
+    "build:types": "pnpm --filter media-rig run build:types",
     "build:registry": "shadcn build registry.json --output apps/docs/public/r && node scripts/finalize-director-registry.mjs",
-    "build:preview": "npm run build --workspace @media-rig/docs",
-    "build:site": "npm run build:registry && npm run build:site --workspace @media-rig/docs && node scripts/finalize-site-build.mjs",
-    "test": "npm run test --workspace media-rig && npm run test --workspace @media-rig/docs",
-    "typecheck": "npm run typecheck --workspace media-rig && npm run typecheck --workspace @media-rig/docs",
-    "preview": "npm run preview --workspace @media-rig/docs"
+    "build:preview": "pnpm --filter @media-rig/docs run build",
+    "build:site": "pnpm run build:registry && pnpm --filter @media-rig/docs run build:site && node scripts/finalize-site-build.mjs",
+    "test": "pnpm --filter media-rig run test && pnpm --filter @media-rig/docs run test",
+    "typecheck": "pnpm --filter media-rig run typecheck && pnpm --filter @media-rig/docs run typecheck",
+    "preview": "pnpm --filter @media-rig/docs run preview"
   },
   "devDependencies": {
     "shadcn": "^4.10.0"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=24 <25"
   }
 }

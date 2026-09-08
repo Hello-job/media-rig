@@ -112,7 +112,7 @@ function CatalogHome() {
 
   const copyInstallCommand = async (component: MediaComponentMeta) => {
     try {
-      await navigator.clipboard.writeText(`npm install media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`);
+      await navigator.clipboard.writeText(`pnpm add media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`);
       setCopiedSlug(component.slug);
       window.setTimeout(() => setCopiedSlug(null), 1400);
     } catch {
@@ -271,11 +271,11 @@ function CatalogHome() {
 }
 
 function InstallPanel({ component }: { component: MediaComponentMeta }) {
-  const [mode, setMode] = useState<"npm" | "registry">("npm");
+  const [mode, setMode] = useState<"pnpm" | "registry">("pnpm");
   const [copied, setCopied] = useState(false);
-  const command = mode === "npm"
-    ? `npm install media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`
-    : `npx shadcn@latest add ${window.location.origin}/r/${component.slug}.json`;
+  const command = mode === "pnpm"
+    ? `pnpm add media-rig\nimport { ${component.exportName ?? component.title.replace(/\s+/g, "")} } from "${component.packagePath}"`
+    : `pnpm dlx shadcn@latest add ${window.location.origin}/r/${component.slug}.json`;
 
   const copyCommand = async () => {
     try {
@@ -295,7 +295,7 @@ function InstallPanel({ component }: { component: MediaComponentMeta }) {
           <h2 id="install-title" className="text-xs font-semibold text-white/65">Install</h2>
         </div>
         <div className="flex rounded-lg bg-white/[0.06] p-1 text-[11px]">
-          {(["npm", "registry"] as const).map((item) => (
+          {(["pnpm", "registry"] as const).map((item) => (
             <button
               key={item}
               type="button"
@@ -305,7 +305,7 @@ function InstallPanel({ component }: { component: MediaComponentMeta }) {
               ].join(" ")}
               onClick={() => setMode(item)}
             >
-              {item.charAt(0).toUpperCase() + item.slice(1)}
+              {item === "pnpm" ? "pnpm" : "Registry"}
             </button>
           ))}
         </div>

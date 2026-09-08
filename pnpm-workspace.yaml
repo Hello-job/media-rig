@@ -1,0 +1,10 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+allowBuilds:
+  esbuild: true
+  canvas: false
+
+# Keep local development and CI on the same project-local dependency layout.
+enableGlobalVirtualStore: false
