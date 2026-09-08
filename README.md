@@ -225,7 +225,7 @@ pnpm install
 pnpm run dev
 ```
 
-以终端输出的地址为准，默认地址为 `http://localhost:5173/`。开发站点直接引用组件源码。
+以终端输出的地址为准，默认地址为 `http://localhost:3000/`。开发站点直接引用组件源码。
 
 | 命令 | 说明 |
 | --- | --- |
@@ -233,17 +233,19 @@ pnpm run dev
 | `pnpm run typecheck` | 检查组件包和文档站的 TypeScript 类型 |
 | `pnpm test` | 运行两个 workspace 的测试 |
 | `pnpm run build:lib` | 构建组件包及类型声明，输出到 `packages/media-rig/dist` |
-| `pnpm run build:preview` | 构建文档站前端，输出到 `dist/client` |
+| `pnpm run build:preview` | 构建 Next.js 文档站，输出到 `apps/docs/.next` |
 | `pnpm run build:registry` | 根据 Registry 定义生成 `apps/docs/public/r/*.json` |
 | `pnpm run build:site` | 构建 Registry、文档站及部署产物 |
-| `pnpm run preview` | 本地预览文档站构建结果 |
+| `pnpm run preview` | 启动 Next.js 生产服务（需先构建） |
+| `pnpm run check:docs` | 检查运行中的文档站：静态内容、SEO、旧链接和 404；可用 `DOCS_URL` 指定地址 |
 
 ## 项目结构
 
 ```text
 media-rig/
 ├── apps/docs/                 # 文档站、组件目录与在线演示
-│   ├── src/preview/
+│   ├── src/app/               # 静态路由、Metadata、sitemap 与 robots
+│   ├── src/preview/           # 页面 UI 与客户端交互演示
 │   └── public/                # 示例素材和生成的 Registry
 ├── packages/media-rig/        # 可发布的 npm 组件包
 │   └── src/components/
@@ -257,8 +259,10 @@ media-rig/
 ├── pnpm-workspace.yaml       # Workspace 包目录与安装配置
 ├── pnpm-lock.yaml            # 依赖锁文件
 ├── registry.json             # shadcn Registry 定义
-└── vercel.json               # 文档站部署配置
+└── apps/docs/vercel.json     # Next.js 文档站部署配置
 ```
+
+官网使用 Next.js App Router：组件文档静态生成，交互演示在客户端按需加载。`/components/<slug>` 提供独立标题、描述、canonical 和分享信息；`/sitemap.xml` 与 `/robots.txt` 随构建生成。旧版 `?component=`、`?demo=` 地址自动跳转，独立导演台位于 `/playground/director-stage`。
 
 项目使用 pnpm workspace。组件包与文档站独立组织，文档站代码不会进入组件包构建产物。
 
@@ -274,7 +278,7 @@ pnpm run build:site
 pnpm --filter media-rig pack --dry-run
 ```
 
-文档站使用 Vercel 部署，构建命令为 `pnpm run build:site`，输出目录为 `dist/client`。当前生产站点随 `main` 分支更新。
+文档站使用 Vercel 部署，Root Directory 为 `apps/docs`，Framework Preset 为 Next.js。构建前生成 Registry，Next.js 产物写入 `apps/docs/.next`。当前生产站点随 `main` 分支更新。
 
 发布 npm 包前，更新 [`packages/media-rig/package.json`](./packages/media-rig/package.json) 中的版本及包元数据，并检查打包文件。具备 npm 发布权限后，在组件包目录执行：
 

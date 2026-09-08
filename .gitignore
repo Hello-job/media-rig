@@ -22,3 +22,7 @@ coverage/
 docs/references/
 design-qa*.png
 .vercel
+
+# Next.js build output
+.next/
+*.tsbuildinfo

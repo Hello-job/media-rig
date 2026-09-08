@@ -1,11 +1,3 @@
-import { lazy, type LazyExoticComponent, type ComponentType } from "react";
-import directorStageSource from "./pages/DirectorStagePreview.tsx?raw";
-import imageAngleRigSource from "./pages/ImageAngleRigPreview.tsx?raw";
-import imageEditorSource from "./pages/ImageEditorPreview.tsx?raw";
-import layerSeparatorSource from "./pages/LayerSeparatorPreview.tsx?raw";
-import imageAnnotationSource from "./pages/ImageAnnotationPreview.tsx?raw";
-import lightSphereSource from "./pages/LightSpherePreview.tsx?raw";
-
 export type ComponentStatus = "Stable" | "Beta";
 
 export type ComponentApiProp = {
@@ -31,18 +23,10 @@ export type MediaComponentMeta = {
   tags: string[];
   previewClassName: string;
   stageClassName: string;
-  source: string;
-  preview: LazyExoticComponent<ComponentType>;
   api: ComponentApiProp[];
 };
 
-const LightSpherePreview = lazy(() => import("./pages/LightSpherePreview"));
-const ImageAngleRigPreview = lazy(() => import("./pages/ImageAngleRigPreview"));
-const DirectorStagePreview = lazy(() => import("./pages/DirectorStagePreview"));
-const ImageEditorPreview = lazy(() => import("./pages/ImageEditorPreview"));
-const LayerSeparatorPreview = lazy(() => import("./pages/LayerSeparatorPreview"));
 
-const ImageAnnotationPreview = lazy(() => import("./pages/ImageAnnotationPreview"));
 
 export const mediaComponents: MediaComponentMeta[] = [
   {
@@ -53,7 +37,6 @@ export const mediaComponents: MediaComponentMeta[] = [
     packagePath: "media-rig/image-annotation", registryName: "image-annotation",
     dependencies: ["fabric", "lucide-react"], tags: ["Brush", "Text", "Annotation", "Export"],
     previewClassName: "max-w-[1180px]", stageClassName: "min-h-[600px] bg-[#090a0b] p-5 max-[520px]:p-0",
-    source: imageAnnotationSource, preview: ImageAnnotationPreview,
     api: [
       { name: "imageUrl", type: "string", defaultValue: "required", description: "原图地址；更换后重置画布与历史。跨域图片需支持 CORS。" },
       { name: "imageAlt", type: "string", defaultValue: "待涂鸦图片", description: "原图的替代文本。" },
@@ -77,8 +60,6 @@ export const mediaComponents: MediaComponentMeta[] = [
     tags: ["Layers", "Selection", "Async", "Composition"],
     previewClassName: "max-w-[1180px]",
     stageClassName: "h-[680px] bg-[#090a0b] p-5 max-[780px]:h-[900px] max-[520px]:p-0",
-    source: layerSeparatorSource,
-    preview: LayerSeparatorPreview,
     api: [
       { name: "imageUrl", type: "string", defaultValue: "required", description: "等待拆分的源图片地址。" },
       { name: "onSeparate", type: "(request) => Promise<result>", defaultValue: "undefined", description: "接入任意图层分离服务，并返回背景与透明图层。" },
@@ -103,8 +84,6 @@ export const mediaComponents: MediaComponentMeta[] = [
     tags: ["Canvas", "Crop", "Paint", "Layers"],
     previewClassName: "max-w-[1240px]",
     stageClassName: "h-[720px] bg-[#0b0b0d] max-[900px]:h-[820px]",
-    source: imageEditorSource,
-    preview: ImageEditorPreview,
     api: [
       { name: "initialDocument", type: "ImageEditorDocument", defaultValue: "空白画布", description: "初始化画布、对象和图层。" },
       { name: "storageKey", type: "string | false", defaultValue: "false", description: "启用本地文档持久化。" },
@@ -128,8 +107,6 @@ export const mediaComponents: MediaComponentMeta[] = [
     tags: ["Drag", "CSS 3D", "Controlled"],
     previewClassName: "max-w-[1040px]",
     stageClassName: "h-[420px] bg-[#090a0b] p-5 max-[480px]:h-[620px] max-[480px]:p-3",
-    source: imageAngleRigSource,
-    preview: ImageAngleRigPreview,
     api: [
       { name: "imageUrl", type: "string", defaultValue: '"/assets/photo-texture2.png"', description: "正面展示的图片地址。" },
       { name: "value", type: "Partial<ImageAngleState>", defaultValue: "undefined", description: "受控角度、倾斜和缩放状态。" },
@@ -160,8 +137,6 @@ export const mediaComponents: MediaComponentMeta[] = [
     tags: ["Lighting", "WebGL", "Temperature"],
     previewClassName: "max-w-[960px]",
     stageClassName: "h-[420px] bg-[#090a0b] p-5 max-[480px]:h-[660px] max-[480px]:p-3",
-    source: lightSphereSource,
-    preview: LightSpherePreview,
     api: [
       { name: "imageUrl", type: "string", defaultValue: '"/assets/photo-texture2.png"', description: "LightSpherePanel 与 LightSphere 的预览图片。" },
       { name: "value / defaultValue", type: "Partial<LightSpherePanelValue>", defaultValue: "50% · 5600K · 前方 · 透视 · 轮廓光开启", description: "面板的受控状态或初始状态。" },
@@ -188,8 +163,6 @@ export const mediaComponents: MediaComponentMeta[] = [
     tags: ["Scene", "Camera", "Transform"],
     previewClassName: "max-w-[1240px]",
     stageClassName: "h-[680px] bg-[#121212] max-[1180px]:h-[760px] max-[760px]:h-[920px]",
-    source: directorStageSource,
-    preview: DirectorStagePreview,
     api: [
       { name: "initialComposition", type: "Partial<DirectorComposition>", defaultValue: "内置场景", description: "初始化角色、道具和摄影机。" },
       { name: "onCompositionChange", type: "(composition) => void", defaultValue: "undefined", description: "场景编排变化时触发。" },

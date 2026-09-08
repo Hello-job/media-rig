@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, type ReactNode } from "react";
 import { Check, Copy } from "lucide-react";
 

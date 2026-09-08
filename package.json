@@ -10,10 +10,11 @@
     "build:types": "pnpm --filter media-rig run build:types",
     "build:registry": "shadcn build registry.json --output apps/docs/public/r && node scripts/finalize-director-registry.mjs",
     "build:preview": "pnpm --filter @media-rig/docs run build",
-    "build:site": "pnpm run build:registry && pnpm --filter @media-rig/docs run build:site && node scripts/finalize-site-build.mjs",
+    "build:site": "pnpm run build:registry && pnpm --filter @media-rig/docs run build:site",
     "test": "pnpm --filter media-rig run test && pnpm --filter @media-rig/docs run test",
     "typecheck": "pnpm --filter media-rig run typecheck && pnpm --filter @media-rig/docs run typecheck",
-    "preview": "pnpm --filter @media-rig/docs run preview"
+    "preview": "pnpm --filter @media-rig/docs run preview",
+    "check:docs": "node scripts/check-docs.mjs"
   },
   "devDependencies": {
     "shadcn": "^4.10.0"
