@@ -7,7 +7,7 @@ for (const slug of slugs) {
   const html = await response.text();
   const content = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
   assert.match(content, /<h1\b/);
-  assert.match(content, /核心 API/);
+  assert.match(content, /id="api-heading"[^>]*>Props<\/h2>/);
   assert.match(content, /pnpm dlx media-rig@latest add/);
   assert.ok(content.includes(`href="https://media-rig.vercel.app/components/${slug}"`), `canonical: ${slug}`);
   assert.ok(html.includes('application/ld+json'), `structured data: ${slug}`);
