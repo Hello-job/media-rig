@@ -93,6 +93,7 @@ export default function CameraMonitor({ camera, composition, compact }: CameraMo
       </div>
       <div className="director-stage__camera-monitor-canvas">
         <Canvas
+      resize={{ offsetSize: true }}
           shadows
           camera={{ position: [0, 1.45, 4.8], fov: camera?.fov ?? 42, near: 0.05, far: 80 }}
           dpr={[1, 2]}

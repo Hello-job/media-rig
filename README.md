@@ -18,6 +18,7 @@ MediaRig 是一个面向图片编辑、视觉参数调整和三维场景编排�
 | `ImageEditor` | 图片、文字、图形、涂绘、裁剪、图层管理和文档保存 | [图片编辑器](https://media-rig.vercel.app/components/image-editor) |
 | `ImageAnnotation` | 在原图上添加画笔、矩形和文字标注，合成导出 PNG | [图片涂鸦](https://media-rig.vercel.app/components/image-annotation) |
 | `LayerSeparator` | 框选主体、请求图层分离，以及透明图层的变换与合成 | [图层分离](https://media-rig.vercel.app/components/layer-separator) |
+| `VideoTrim` | 视频片段选区、循环预览与浏览器 MP4 导出 | [视频截取](https://media-rig.vercel.app/components/video-trim) |
 
 `ImageEditor` 适合完整的图片编辑工作流；`ImageAnnotation` 适合嵌入已有页面，对单张图片进行轻量标注。
 
@@ -48,7 +49,7 @@ import "media-rig/style.css";
 import { ImageAnnotation } from "media-rig/image-annotation";
 ```
 
-六组组件的导入路径分别为 `media-rig/light-sphere`、`media-rig/image-angle-rig`、`media-rig/director-stage`、`media-rig/image-editor`、`media-rig/image-annotation` 和 `media-rig/layer-separator`。也可以从 `media-rig` 统一导入。
+七组组件的导入路径分别为 `media-rig/light-sphere`、`media-rig/image-angle-rig`、`media-rig/director-stage`、`media-rig/image-editor`、`media-rig/image-annotation`、`media-rig/layer-separator` 和 `media-rig/video-trim`。也可以从 `media-rig` 统一导入。
 
 ### MediaRig CLI
 
@@ -293,7 +294,8 @@ media-rig/
 │       ├── director-stage/
 │       ├── image-editor/
 │       ├── image-annotation/
-│       └── layer-separator/
+│       ├── layer-separator/
+│       └── video-trim/
 ├── scripts/                  # 构建产物处理脚本
 ├── pnpm-workspace.yaml       # Workspace 包目录与安装配置
 ├── pnpm-lock.yaml            # 依赖锁文件
@@ -336,3 +338,11 @@ pnpm publish --access public
 ## 反馈与贡献
 
 欢迎通过 [Issues](https://github.com/Hello-job/media-rig/issues) 提交问题或建议。反馈问题时请附上复现步骤、浏览器与依赖版本，以及必要的截图。提交组件修改时，请同步更新示例、类型和 Registry 定义，并运行相关检查。
+
+### Video Trim
+
+视频片段截取：缩略图时间轴、拖动选区、整秒吸附、循环预览和浏览器 MP4 导出。通过 `onExport` 接收结果；支持取消和切换视频。
+
+`import { VideoTrim } from "media-rig/video-trim"`
+
+文档：`/components/video-trim` · [API and runtime requirements](packages/media-rig/README.md#video-trim)

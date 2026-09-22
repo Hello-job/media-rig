@@ -1,3 +1,5 @@
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../motion/select";
+import { Button } from "../../motion/button/base";
 import { CircleOff, Download, FilePlus2, Save, SlidersHorizontal, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { ASPECT_RATIO_OPTIONS } from "../ImageEditor.constants";
@@ -24,18 +26,18 @@ export default function TopToolbar({ document, actions, onClose }: TopToolbarPro
   return (
     <header className="image-editor__topbar" role="toolbar" aria-label="画布设置">
       <div className="image-editor__canvas-controls">
-        <select aria-label="画布比例" value={ratio} onChange={(event) => applyRatio(event.target.value)}>
+        <Select value={ratio} onValueChange={applyRatio}><SelectTrigger aria-label="画布比例" className="h-11 min-w-28"><SelectValue /></SelectTrigger><SelectContent>
           {ASPECT_RATIO_OPTIONS.map((option) => (
-            <option key={option.id} value={option.id}>{option.label}</option>
+            <SelectItem key={option.id} value={option.id}>{option.label}</SelectItem>
           ))}
-        </select>
-        <button
+        </SelectContent></Select>
+        <Button variant="ghost" size="icon"
           type="button"
           aria-label="自定义画布尺寸"
           aria-pressed={dimensionsOpen}
           title="自定义画布尺寸"
           onClick={() => setDimensionsOpen((open) => !open)}
-        ><SlidersHorizontal size={18} /></button>
+        ><SlidersHorizontal size={18} /></Button>
         {dimensionsOpen ? (
           <div className="image-editor__dimension-popover">
             <label className="image-editor__dimension">
@@ -66,9 +68,9 @@ export default function TopToolbar({ document, actions, onClose }: TopToolbarPro
           value={document.canvas.background ?? "#ffffff"}
           onChange={actions.setBackground}
         />
-        <button type="button" aria-label="透明背景" title="透明背景" onClick={() => actions.setBackground(null)}>
+        <Button variant="ghost" size="icon" type="button" aria-label="透明背景" title="透明背景" onClick={() => actions.setBackground(null)}>
           <CircleOff size={18} />
-        </button>
+        </Button>
       </div>
       <div className="image-editor__top-actions">
         <IconButton label="新建" icon={FilePlus2} onClick={() => void actions.newDocument()} />
@@ -94,8 +96,8 @@ type IconButtonProps = {
 
 function IconButton({ label, icon: Icon, onClick, disabled }: IconButtonProps) {
   return (
-    <button type="button" aria-label={label} title={label} onClick={onClick} disabled={disabled}>
+    <Button variant="ghost" size="icon" type="button" aria-label={label} title={label} onClick={onClick} disabled={disabled}>
       <Icon aria-hidden="true" size={19} />
-    </button>
+    </Button>
   );
 }

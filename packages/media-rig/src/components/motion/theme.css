@@ -1,0 +1,23 @@
+.media-rig-beui {
+  --primary: #fff;
+  --primary-foreground: #121212;
+  --foreground: #fff;
+  --background: #191919;
+  --muted: #292929;
+  --muted-foreground: #a3a3a3;
+  --border: #383838;
+  --card: #202020;
+  --ring: #a3a3a3;
+}
+
+@theme inline {
+  --color-primary: var(--primary, #fff);
+  --color-primary-foreground: var(--primary-foreground, #121212);
+  --color-foreground: var(--foreground, #fff);
+  --color-background: var(--background, #191919);
+  --color-muted: var(--muted, #292929);
+  --color-muted-foreground: var(--muted-foreground, #a3a3a3);
+  --color-border: var(--border, #383838);
+  --color-card: var(--card, #202020);
+  --color-ring: var(--ring, #a3a3a3);
+}

@@ -1,3 +1,5 @@
+import { Input } from "../motion/input";
+import { Button } from "../motion/button/base";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Camera, Download, Layers3, Search, X } from "lucide-react";
 import { recordDirectorVideo } from "./record-video";
@@ -243,14 +245,14 @@ export default function DirectorStage({
 
   return (
     <div className={stageClassName} style={style} ref={rootRef} tabIndex={-1} onPointerDown={(event) => { if (!(event.target as HTMLElement).closest("button, input, select, textarea, a")) rootRef.current?.focus({ preventScroll: true }); }}>
-      {exporting && <div className="director-stage__export-overlay" role="status"><span>正在导出运镜视频 · {Math.round(motionTime / motionDuration * 100)}%</span><button type="button" onClick={() => exportController.current?.abort()}>取消</button></div>}
+      {exporting && <div className="director-stage__export-overlay" role="status"><span>正在导出运镜视频 · {Math.round(motionTime / motionDuration * 100)}%</span><Button variant="ghost" type="button" onClick={() => exportController.current?.abort()}>取消</Button></div>}
       <header className="director-stage__topbar">
         <div className="director-stage__brand">
           <h1>3D导演台</h1>
         </div>
         <div className="director-stage__top-actions">
           <span className="director-stage__status" role="status">{status}</span>
-          {onClose && <button type="button" aria-label="关闭 3D 导演台" title="关闭 3D 导演台" onClick={onClose}><X size={16} /></button>}
+          {onClose && <Button variant="ghost" type="button" aria-label="关闭 3D 导演台" title="关闭 3D 导演台" onClick={onClose}><X size={16} /></Button>}
         </div>
       </header>
 
@@ -260,7 +262,7 @@ export default function DirectorStage({
             <div className="director-stage__hierarchy-heading"><Layers3 size={18} /><div><strong>场景层级</strong><small>{state.composition.characters.length + state.composition.cameras.length + state.composition.props.length} 个对象</small></div></div>
             <label className="director-stage__search">
               <Search size={16} />
-              <input aria-label="搜索场景对象" placeholder="搜索场景对象…" value={query} onChange={(event) => setQuery(event.target.value)} />
+              <Input aria-label="搜索场景对象" placeholder="搜索场景对象…" value={query} onChange={setQuery} classNames={{ field: "h-8 border-0 bg-transparent", input: "text-xs" }} />
             </label>
             <input
               ref={fileInputRef}
@@ -341,7 +343,7 @@ export default function DirectorStage({
         </div>
 
         <aside className="director-stage__inspector" aria-label="属性检查器">
-          <section><div className="director-stage__panel-title">机位切换</div><div className="director-stage__camera-list">{state.composition.cameras.map((camera) => <button type="button" key={camera.id} className={state.activeCameraId === camera.id ? "is-active" : ""} onClick={() => { dispatch({ type: "select", selection: { kind: "camera", id: camera.id } }); dispatch({ type: "setViewMode", mode: "camera", cameraId: camera.id }); }}><Camera size={14} />{camera.label}</button>)}</div></section>
+          <section><div className="director-stage__panel-title">机位切换</div><div className="director-stage__camera-list">{state.composition.cameras.map((camera) => <Button variant="ghost" type="button" key={camera.id} className={state.activeCameraId === camera.id ? "is-active" : ""} onClick={() => { dispatch({ type: "select", selection: { kind: "camera", id: camera.id } }); dispatch({ type: "setViewMode", mode: "camera", cameraId: camera.id }); }}><Camera size={14} />{camera.label}</Button>)}</div></section>
           <SelectionInspector
             composition={state.composition}
             selectedItem={selectedItem}
@@ -358,9 +360,9 @@ export default function DirectorStage({
             <details><summary className="director-stage__panel-title">场景 JSON</summary>
             <textarea value={jsonDraft} spellCheck={false} onChange={(event) => setJsonDraft(event.target.value)} />
             <div className="director-stage__json-actions">
-              <button type="button" onClick={() => downloadText("director-composition.json", JSON.stringify(state.composition, null, 2))}><Download size={14} />导出</button>
-              <button type="button" onClick={importJson}>导入</button>
-              <button type="button" onClick={() => setJsonDraft(JSON.stringify(state.composition, null, 2))}>当前</button>
+              <Button variant="ghost" type="button" onClick={() => downloadText("director-composition.json", JSON.stringify(state.composition, null, 2))}><Download size={14} />导出</Button>
+              <Button variant="ghost" type="button" onClick={importJson}>导入</Button>
+              <Button variant="ghost" type="button" onClick={() => setJsonDraft(JSON.stringify(state.composition, null, 2))}>当前</Button>
             </div>
             <p className="director-stage__hint" role="status">{jsonMessage}</p></details>
           </section>

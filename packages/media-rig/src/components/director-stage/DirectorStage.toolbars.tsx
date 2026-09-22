@@ -1,3 +1,4 @@
+import { Button } from "../motion/button/base";
 import { Armchair, Box, Camera, Circle, Cylinder, LampFloor, Move3d, Package, Ratio, Rotate3d, Route, Scaling, Shapes, Sofa, Table2, Upload, UserRound, UserRoundPlus, UsersRound, Video } from "lucide-react";
 import { IconButton, ToolMenuItem, ToolMenuPanel, ToolSlot } from "./DirectorStage.controls";
 import { BODY_TYPE_OPTIONS } from "./DirectorStage.constants";
@@ -13,7 +14,7 @@ export function ViewportToolbar({ viewMode, onSetViewMode }: {
   onSetTransformMode: (mode: DirectorTransformMode) => void;
   onSetViewMode: (mode: DirectorViewMode) => void;
 }) {
-  return <div className="director-stage__viewport-toolbar" aria-label="导演台视角"><div className="director-stage__segmented">{([['director', '导演视角'], ['camera', '机位视角']] as const).map(([mode, label]) => <button type="button" key={mode} aria-pressed={viewMode === mode} className={viewMode === mode ? "is-active" : ""} onClick={() => onSetViewMode(mode)}>{label}</button>)}</div></div>;
+  return <div className="director-stage__viewport-toolbar" aria-label="导演台视角"><div className="director-stage__segmented">{([['director', '导演视角'], ['camera', '机位视角']] as const).map(([mode, label]) => <Button variant="ghost" type="button" key={mode} aria-pressed={viewMode === mode} className={viewMode === mode ? "is-active" : ""} onClick={() => onSetViewMode(mode)}>{label}</Button>)}</div></div>;
 }
 
 const MODES = [
@@ -50,7 +51,7 @@ export function BottomTools(props: Props) {
     <ToolSlot active={openMenu === 'prop'} menu={openMenu === 'prop' && <ToolMenuPanel>{PROPS.map(({ type, label, Icon }) => <ToolMenuItem key={type} mark={<Icon size={16} />} onClick={() => props.onAddProp(type, label)}>{label}</ToolMenuItem>)}</ToolMenuPanel>}><IconButton label="添加道具" active={openMenu === 'prop'} onClick={() => toggle('prop')}><Shapes size={18} /></IconButton></ToolSlot>
     <span className="director-stage__toolbar-separator" />
     <IconButton label="运镜时间线" active={props.timelineOpen} onClick={props.onToggleTimeline}><Route size={18} /></IconButton>
-    <ToolSlot active={openMenu === 'aspect'} menu={openMenu === 'aspect' && <ToolMenuPanel wide><div className="director-stage__aspect-title">比例</div><div className="director-stage__aspect-grid">{ASPECT_RATIOS.map((ratio) => <button type="button" key={ratio} aria-label={`设置画面比例为 ${ratio}`} className={props.aspectRatio === ratio ? 'director-stage__aspect-option is-active' : 'director-stage__aspect-option'} onClick={() => { props.onSetAspectRatio(ratio); onSetOpenMenu(null); }}><span className={`director-stage__aspect-icon is-${ratio.replace(':', '-').toLowerCase()}`} /><span>{ratio}</span></button>)}</div></ToolMenuPanel>}><IconButton label={`画面比例：${props.aspectRatio}`} active={openMenu === 'aspect'} onClick={() => toggle('aspect')}><Ratio size={18} /></IconButton></ToolSlot>
+    <ToolSlot active={openMenu === 'aspect'} menu={openMenu === 'aspect' && <ToolMenuPanel wide><div className="director-stage__aspect-title">比例</div><div className="director-stage__aspect-grid">{ASPECT_RATIOS.map((ratio) => <Button variant="ghost" type="button" key={ratio} aria-label={`设置画面比例为 ${ratio}`} className={props.aspectRatio === ratio ? 'director-stage__aspect-option is-active' : 'director-stage__aspect-option'} onClick={() => { props.onSetAspectRatio(ratio); onSetOpenMenu(null); }}><span className={`director-stage__aspect-icon is-${ratio.replace(':', '-').toLowerCase()}`} /><span>{ratio}</span></Button>)}</div></ToolMenuPanel>}><IconButton label={`画面比例：${props.aspectRatio}`} active={openMenu === 'aspect'} onClick={() => toggle('aspect')}><Ratio size={18} /></IconButton></ToolSlot>
     <IconButton label="保存当前机位截图" onClick={props.onCapture}><Camera size={18} /></IconButton>
   </div>;
 }

@@ -1,3 +1,7 @@
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../motion/select";
+import { Input } from "../motion/input";
+import { Switch } from "../motion/switch";
+import { Button } from "../motion/button/base";
 import { useState } from "react";
 import CameraMonitor from "./CameraMonitor";
 import { Field, JointSlider, VectorEditor } from "./DirectorStage.controls";
@@ -37,22 +41,22 @@ function CharacterInspector({
   return (
     <>
       <div className="director-stage__inspector-tabs" aria-label="角色检查器">
-        {([['properties', '属性'], ['pose', '姿势'], ['action', '动作']] as const).map(([value, label]) => <button type="button" key={value} aria-pressed={tab === value} onClick={() => setTab(value)}>{label}</button>)}
+        {([['properties', '属性'], ['pose', '姿势'], ['action', '动作']] as const).map(([value, label]) => <Button variant="ghost" type="button" key={value} aria-pressed={tab === value} onClick={() => setTab(value)}>{label}</Button>)}
       </div>
       {tab === "properties" && <>
       <Field label="名称">
-        <input value={character.label} onChange={(event) => onPatch({ label: event.target.value })} />
+        <Input aria-label="名称" value={character.label} onChange={label => onPatch({ label })} classNames={{ field: "h-8", input: "text-xs" }} />
       </Field>
-      <Field label="模型"><select aria-label="角色模型" value={CHARACTER_MODELS.some((model) => model.url === character.modelUrl) ? character.modelUrl : "custom"} onChange={(event) => onPatch({ modelUrl: event.target.value, animationMode: "static" })}>{CHARACTER_MODELS.map((model) => <option key={model.label} value={model.url}>{model.label}</option>)}<option value="custom" disabled>导入模型</option></select></Field>
+      <Field label="模型"><Select value={CHARACTER_MODELS.some((model) => model.url === character.modelUrl) ? character.modelUrl : "custom"} onValueChange={(value) => onPatch({ modelUrl: value, animationMode: "static" })}><SelectTrigger aria-label="角色模型" className="min-h-8 py-1 text-xs"><SelectValue /></SelectTrigger><SelectContent>{CHARACTER_MODELS.map((model) => <SelectItem key={model.label} value={model.url}>{model.label}</SelectItem>)}<SelectItem value="custom" disabled>导入模型</SelectItem></SelectContent></Select></Field>
       <Field label="体型">
-        <select value={character.bodyType} onChange={(event) => onPatch({ bodyType: event.target.value as DirectorCharacter["bodyType"] })}>
-          {BODY_TYPE_OPTIONS.map(({ type, label }) => <option key={type} value={type}>{label}</option>)}
-          <option value="custom">自定义模型</option>
-        </select>
+        <Select value={character.bodyType} onValueChange={(value) => onPatch({ bodyType: value as DirectorCharacter["bodyType"] })}><SelectTrigger aria-label="体型" className="min-h-8 py-1 text-xs"><SelectValue /></SelectTrigger><SelectContent>
+          {BODY_TYPE_OPTIONS.map(({ type, label }) => <SelectItem key={type} value={type}>{label}</SelectItem>)}
+          <SelectItem value="custom">自定义模型</SelectItem>
+        </SelectContent></Select>
       </Field>
       <div className="director-stage__swatches" aria-label="角色颜色">
         {DIRECTOR_COLORS.map((color) => (
-          <button
+          <Button variant="ghost"
             key={color}
             type="button"
             className={character.color === color ? "is-active" : ""}
@@ -70,9 +74,9 @@ function CharacterInspector({
       <div className="director-stage__section-title">姿态</div>
       <div className="director-stage__pose-grid">
         {POSE_PRESETS.map((pose) => (
-          <button key={pose.id} type="button" onClick={() => onPatch({ jointAngles: structuredClone(pose.joints), animationMode: "static" })}>
+          <Button variant="ghost" key={pose.id} type="button" onClick={() => onPatch({ jointAngles: structuredClone(pose.joints), animationMode: "static" })}>
             {pose.label}
-          </button>
+          </Button>
         ))}
       </div>
       <JointSlider label="头部点头" min={-35} max={35} value={character.jointAngles.head.nod} onChange={(value) => updateJoint("head", "nod", value)} />
@@ -96,13 +100,13 @@ function CharacterInspector({
       </>}
       {tab === "action" && <>      {character.modelUrl ? (
         <Field label="动画">
-          <select
+          <Select
             value={character.animationMode ?? "static"}
-            onChange={(event) => onPatch({ animationMode: event.target.value as DirectorCharacter["animationMode"] })}
-          >
-            <option value="static">静态摆姿</option>
-            <option value="play">播放动作</option>
-          </select>
+            onValueChange={(value) => onPatch({ animationMode: value as DirectorCharacter["animationMode"] })}
+          ><SelectTrigger aria-label="动画" className="min-h-8 py-1 text-xs"><SelectValue /></SelectTrigger><SelectContent>
+            <SelectItem value="static">静态摆姿</SelectItem>
+            <SelectItem value="play">播放动作</SelectItem>
+          </SelectContent></Select>
         </Field>
       ) : null}
 <p className="director-stage__hint">播放模型自带的第一个动画片段；静态模型请使用姿势面板。</p></>}
@@ -120,14 +124,14 @@ function PropInspector({
   return (
     <>
       <Field label="名称">
-        <input value={prop.label} onChange={(event) => onPatch({ label: event.target.value })} />
+        <Input aria-label="名称" value={prop.label} onChange={label => onPatch({ label })} classNames={{ field: "h-8", input: "text-xs" }} />
       </Field>
       <Field label="类型">
-        <select value={prop.propType} onChange={(event) => onPatch({ propType: event.target.value as DirectorPropType })}>
+        <Select value={prop.propType} onValueChange={(value) => onPatch({ propType: value as DirectorPropType })}><SelectTrigger aria-label="类型" className="min-h-8 py-1 text-xs"><SelectValue /></SelectTrigger><SelectContent>
           {PROP_OPTIONS.map((option) => (
-            <option key={option.type} value={option.type}>{option.label}</option>
+            <SelectItem key={option.type} value={option.type}>{option.label}</SelectItem>
           ))}
-        </select>
+        </SelectContent></Select>
       </Field>
       <Field label="颜色">
         <input type="color" value={prop.color} onChange={(event) => onPatch({ color: event.target.value })} />
@@ -151,14 +155,14 @@ function CameraInspector({
   return (
     <>
       <Field label="名称">
-        <input value={camera.label} onChange={(event) => onPatch({ label: event.target.value })} />
+        <Input aria-label="名称" value={camera.label} onChange={label => onPatch({ label })} classNames={{ field: "h-8", input: "text-xs" }} />
       </Field>
       <VectorEditor label="位置" value={camera.position} onChange={(position) => onPatch({ position })} />
       <Field label="注视目标">
-        <select aria-label="对准对象" value="" onChange={(event) => {
-          const target = [...composition.characters, ...composition.props].find((item) => item.id === event.target.value);
+        <Select value="" onValueChange={(value) => {
+          const target = [...composition.characters, ...composition.props].find((item) => item.id === value);
           if (target) onPatch({ lookAt: { ...target.position, y: target.position.y + ("bodyType" in target ? 1.2 : 0.5) } });
-        }}><option value="">对准对象…</option>{[...composition.characters, ...composition.props].map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}</select>
+        }}><SelectTrigger aria-label="对准对象" className="min-h-8 py-1 text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="">对准对象…</SelectItem>{[...composition.characters, ...composition.props].map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>
       </Field>
       <VectorEditor label="注视坐标" value={camera.lookAt} onChange={(lookAt) => onPatch({ lookAt })} />
       <JointSlider label="焦距视角" min={20} max={80} value={camera.fov} onChange={(fov) => onPatch({ fov })} />
@@ -220,10 +224,10 @@ export function EnvironmentInspector({
     <section>
       <div className="director-stage__panel-title">环境</div>
       <Field label="地面">
-        <input
-          type="checkbox"
+        <Switch
+          ariaLabel="地面"
           checked={environment.showGround}
-          onChange={(event) => onPatch({ showGround: event.target.checked })}
+          onCheckedChange={showGround => onPatch({ showGround })}
         />
       </Field>
       <JointSlider

@@ -210,7 +210,7 @@ Each component page provides copyable pnpm (default), npm, yarn, and bun command
 pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
 ```
 
-Source, styles, and dependencies are installed together. Files follow your `components.json` components alias. Import from `@/components/image-annotation` instead of the npm package. The same URL pattern supports all six component slugs listed above.
+Source, styles, and dependencies are installed together. Files follow your `components.json` components alias. Import from `@/components/image-annotation` instead of the npm package. The same URL pattern supports all seven component slugs, including `video-trim`.
 
 For pnpm 11 browser projects, merge this into `pnpm-workspace.yaml` before installation to skip Fabric's optional native Node canvas build and align transitive Three.js types. Preserve existing settings and check compatibility if your project already uses Three.js.
 
@@ -238,3 +238,11 @@ pnpm cli add director-stage --cwd /path/to/react-app --dry-run
 ```
 
 Requires Node.js 22.12+ and npm/npx. The wrapper runs a tested, pinned shadcn CLI version and inherits its interactive installation flow and target package-manager detection. The consumer needs React 19, Tailwind CSS 4 and `components.json` (run `init` once). Options: `--cwd` / `-c`, `--yes` / `-y`, `--overwrite` / `-o`, and `--dry-run`. Overwrite is never enabled implicitly. See the pnpm 11 configuration above before installing Fabric or Three.js components.
+
+### Video Trim
+
+Video clipping with a thumbnail timeline, draggable range, whole-second snapping, loop preview and browser MP4 export. Receive the result via `onExport`; pending work is cancellable.
+
+`import { VideoTrim } from "media-rig/video-trim"`
+
+Docs: `/components/video-trim` · [API and runtime requirements](packages/media-rig/README.md#video-trim)

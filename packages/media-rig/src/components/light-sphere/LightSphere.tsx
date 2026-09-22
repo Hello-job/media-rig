@@ -56,7 +56,11 @@ export default function LightSphere({
       style={{ width: "100%", height: "100%", ...style }}
     >
       <Canvas
-        camera={{ position: [0, 0.12, 8.65], fov: 34 }}
+        // Measure layout pixels so a scaled catalog preview does not resize the
+        // drawing surface a second time or shift it inside its circular clip.
+        resize={{ offsetSize: true }}
+        camera={{ position: viewMode === "perspective" ? [6.1, 1.2, 6.1] : [0, 0.12, 8.65], fov: 34 }}
+        onCreated={({ gl }) => gl.setClearColor("#20201f")}
         gl={{
           antialias: true,
           alpha: false,

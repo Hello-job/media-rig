@@ -1,4 +1,7 @@
-import React, { useId, useMemo, useRef, useState } from "react";
+import { Button } from "../motion/button/base";
+import { RangeSlider } from "../motion/range-slider";
+import { Switch } from "../motion/switch";
+import React, { useMemo, useRef, useState } from "react";
 import { ArrowUp, LoaderCircle, RotateCcw, X } from "lucide-react";
 import {
   DEFAULT_IMAGE_ANGLE_STATE,
@@ -27,17 +30,9 @@ const ROOT_CLASS = [
   "shadow-[0_22px_70px_rgba(0,0,0,0.56)] max-[480px]:h-auto",
 ].join(" ");
 
-const RANGE_CLASS = [
-  "nodrag m-0 h-1 min-w-0 flex-1 cursor-pointer appearance-none rounded-full",
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60",
-  "[&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white",
-  "[&::-moz-range-thumb]:shadow-[0_1px_4px_rgba(0,0,0,0.45)]",
-  "[&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full",
-  "[&::-webkit-slider-thumb]:border-0 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_1px_4px_rgba(0,0,0,0.45)]",
-].join(" ");
 
 const RESET_BUTTON_CLASS = [
-  "absolute bottom-3 right-3 inline-flex cursor-pointer items-center gap-1 rounded-md px-1.5 py-1",
+  "absolute bottom-3 right-3 inline-flex h-auto w-auto whitespace-nowrap cursor-pointer items-center gap-1 rounded-md px-1.5 py-1",
   "text-[10px] text-white/30 transition-colors hover:bg-white/5 hover:text-white/60",
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60",
 ].join(" ");
@@ -61,9 +56,9 @@ function formatControlValue(key: AngleKey, value: number) {
 
 function DefaultActionButton({ className, onClick, disabled, loading }: ImageAngleActionButtonProps) {
   return (
-    <button type="button" className={className} onClick={onClick} disabled={disabled} aria-busy={loading} aria-label={loading ? "处理中" : "确认调整"} title={loading ? "处理中" : "确认调整"}>
+    <Button variant="ghost" size="icon" type="button" className={className} onClick={onClick} disabled={disabled} aria-busy={loading} aria-label={loading ? "处理中" : "确认调整"} title={loading ? "处理中" : "确认调整"}>
       {loading ? <LoaderCircle size={14} className="animate-spin" aria-hidden="true" /> : <ArrowUp size={16} aria-hidden="true" />}
-    </button>
+    </Button>
   );
 }
 
@@ -85,7 +80,6 @@ export default function ImageAngleRig({
   className = "",
   style,
 }: ImageAngleRigProps) {
-  const controlId = useId().replace(/:/g, "");
   const [internalValue, setInternalValue] = useState(() => normalizeImageAngleState(defaultValue));
   const isControlled = value !== undefined;
   const currentValue = useMemo(
@@ -205,7 +199,7 @@ export default function ImageAngleRig({
             <span className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-[9px] bg-black/20 px-3 py-1.5 text-[10px] font-semibold text-white/45">拖动调整视角</span>
             <ImageAngleScene imageUrl={imageUrl} value={currentValue} />
           </div>
-          <button
+          <Button variant="ghost" size="icon"
             type="button"
             data-slot="canvas-reset"
             aria-label="重置角度"
@@ -215,57 +209,42 @@ export default function ImageAngleRig({
           >
             <RotateCcw size={12} aria-hidden="true" />
             重置
-          </button>
+          </Button>
         </div>
 
         <aside className="flex min-h-0 min-w-0 flex-col border-l border-white/[0.06] bg-[#191919] px-3 pb-2.5 pt-2.5 max-[480px]:border-l-0 max-[480px]:border-t">
           <header className="flex h-6 items-center justify-between">
             <h2 className="m-0 text-[13px] font-bold leading-none text-white/90">{title}</h2>
             {onClose ? (
-              <button
+              <Button variant="ghost" size="icon"
                 type="button"
                 aria-label="关闭多角度设置"
                 className="inline-flex size-6 cursor-pointer items-center justify-center rounded-full text-white/35 transition-colors hover:bg-white/5 hover:text-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60"
                 onClick={(event) => { event.stopPropagation(); onClose(); }}
               >
                 <X size={14} aria-hidden="true" />
-              </button>
+              </Button>
             ) : null}
           </header>
 
           <div className="mt-2 flex min-h-0 flex-1 flex-col gap-2.5">
             {(Object.keys(CONTROL_LABELS) as AngleKey[]).map((key) => {
               const limits = IMAGE_ANGLE_LIMITS[key];
-              const inputId = `image-angle-rig-${controlId}-${key}`;
-              const percentage = (currentValue[key] - limits.min) / (limits.max - limits.min) * 100;
               return (
                 <div key={key} className="space-y-1.5">
-                  <label className="block text-xs font-semibold leading-none text-white/60" htmlFor={inputId}>
+                  <span className="block text-xs font-semibold leading-none text-white/60">
                     {CONTROL_LABELS[key]}
-                  </label>
+                  </span>
                   <div className="flex items-center gap-2">
-                    <input
-                      className={RANGE_CLASS}
-                      style={{ background: `linear-gradient(to right, rgba(255,255,255,0.72) 0 ${percentage}%, rgba(255,255,255,0.12) ${percentage}% 100%)` }}
-                      id={inputId}
-                      type="range"
-                      min={limits.min}
-                      max={limits.max}
-                      step={limits.step}
-                      value={currentValue[key]}
-                      aria-valuetext={formatControlValue(key, currentValue[key])}
-                      onChange={(event) => {
+                    <div className="min-w-0 flex-1" onPointerUp={() => commitControl(key)} onPointerCancel={() => commitControl(key)} onLostPointerCapture={() => commitControl(key)} onBlur={() => commitControl(key)} onKeyUp={event => {
+                      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(event.key)) commitControl(key);
+                    }}>
+                      <RangeSlider className="h-7" showTicks={false} min={limits.min} max={limits.max} step={limits.step} value={currentValue[key]} aria-label={CONTROL_LABELS[key]} formatValueText={value => formatControlValue(key, value)} onValueChange={value => {
                         pendingControl.current = key;
-                        patchValue({ [key]: Number(event.target.value) });
-                      }}
-                      onPointerUp={() => commitControl(key)}
-                      onPointerCancel={() => commitControl(key)}
-                      onKeyUp={(event) => {
-                        if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(event.key)) commitControl(key);
-                      }}
-                      onBlur={() => commitControl(key)}
-                    />
-                    <output className="flex h-7 min-w-[76px] items-center justify-center rounded-lg bg-white/[0.055] px-2 text-xs font-semibold text-white/90 tabular-nums" htmlFor={inputId}>
+                        patchValue({ [key]: value });
+                      }} />
+                    </div>
+                    <output className="flex h-7 min-w-[76px] items-center justify-center rounded-lg bg-white/[0.055] px-2 text-xs font-semibold text-white/90 tabular-nums">
                       {formatControlValue(key, currentValue[key])}
                     </output>
                   </div>
@@ -273,21 +252,9 @@ export default function ImageAngleRig({
               );
             })}
 
-            <div className="mt-0.5 flex items-center justify-between border-t border-white/[0.07] pt-2.5">
+            <div className="mt-0.5 flex items-center justify-between border-t border-white/[0.07] pt-2.5" onClick={event => event.stopPropagation()}>
               <span className="text-xs font-semibold text-white/80">广角镜头</span>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={currentValue.wideAngle}
-                aria-label="广角镜头"
-                className="group relative h-[18px] w-8 cursor-pointer rounded-full border-0 bg-white/15 p-0 transition-colors aria-checked:bg-white/85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  patchValue({ wideAngle: !currentValue.wideAngle }, true);
-                }}
-              >
-                <span className="absolute left-0.5 top-0.5 size-3.5 rounded-full bg-white/60 shadow-sm transition-transform group-aria-checked:translate-x-3.5 group-aria-checked:bg-white" />
-              </button>
+              <Switch checked={currentValue.wideAngle} onCheckedChange={wideAngle => patchValue({ wideAngle }, true)} ariaLabel="广角镜头" className="scale-75 origin-right" />
             </div>
           </div>
 

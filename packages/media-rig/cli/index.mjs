@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url';
 import spawn from 'cross-spawn';
 
 export const components = [
-  'image-annotation', 'layer-separator', 'image-editor',
+  'video-trim', 'image-annotation', 'layer-separator', 'image-editor',
   'image-angle-rig', 'light-sphere', 'director-stage',
 ];
 export const registryUrl = 'https://media-rig.vercel.app/r';

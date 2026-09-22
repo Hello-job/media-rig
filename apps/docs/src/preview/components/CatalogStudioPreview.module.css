@@ -1,0 +1,14 @@
+/* Keep the original desktop panel proportions even in a narrow catalog card. */
+.preview :global(section[data-slot="image-angle-rig"]),
+.preview :global(section[data-slot="light-sphere-panel"]) {
+  width: 560px;
+  height: 320px;
+  max-width: none;
+  box-shadow: none;
+}
+.preview :global(section[data-slot]) > div {
+  grid-template-columns: minmax(0, 300fr) minmax(220px, 260fr);
+}
+.preview :global(section[data-slot]) > div > div:first-child {
+  height: auto;
+}

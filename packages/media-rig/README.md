@@ -34,3 +34,33 @@ overrides:
 import { ImageAnnotation } from "media-rig/image-annotation";
 import "media-rig/style.css";
 ```
+
+### Video Trim
+
+```tsx
+import { VideoTrim } from 'media-rig/video-trim';
+import 'media-rig/style.css';
+
+<VideoTrim
+  src="/video.mp4"
+  onExport={(blob, { range, duration, width, height }) => {
+    // Download or upload the MP4 here. Revoke object URLs when no longer used.
+    console.log(blob, range, duration, width, height);
+  }}
+/>
+```
+
+Migrated from the tamen-web video node: thumbnail strip, draggable endpoints and
+selection, whole-second snapping, keyboard adjustments, selection looping and
+MP4 export with the source audio when present. `onRangeChange` returns start/end
+seconds; `onError` reports media/export failures; `onClose` enables closing;
+`locale` accepts `zh-CN` (default) or `en-US`.
+
+Encoding runs locally in an isolated FFmpeg worker and can be cancelled. Changing
+`src` or unmounting aborts pending work. The FFmpeg JS/WASM core is fetched on first
+export from the pinned `@ffmpeg/core@0.12.10` jsDelivr URL; the host must permit
+that fetch and blob workers. Remote videos must allow CORS. Long or high-resolution
+videos may require substantial browser memory. No upload service is included.
+
+Source installation: `pnpm dlx media-rig@latest add video-trim` (available after
+publishing the updated registry). The source version includes its own scoped CSS.

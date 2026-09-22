@@ -1,47 +1,45 @@
+"use client";
+import { useLocale } from "@/i18n/LocaleProvider";
 import React from "react";
 import { LayerSeparator, type LayerSeparatorResult } from "media-rig";
 
 const RESULT: LayerSeparatorResult = {
   background: {
     id: "background",
-    name: "暖光室内背景",
-    url: "/assets/layer-separator/background.png",
+    name: "泳池与海景背景",
+    url: "/assets/layer-separator/poolside/background.png",
   },
   layers: [
     {
-      id: "vase",
-      name: "陶瓷花瓶与枝叶",
-      url: "/assets/layer-separator/vase.png",
-      contentBounds: { x: 0.0716, y: 0.2549, width: 0.2396, height: 0.6006 },
+      id: "model",
+      name: "韩系度假人像",
+      url: "/assets/layer-separator/poolside/model.png",
+      contentBounds: { x: 0.274, y: 0.027, width: 0.205, height: 0.905 },
     },
     {
-      id: "chair",
-      name: "棕色皮革休闲椅",
-      url: "/assets/layer-separator/chair.png",
-      contentBounds: { x: 0.3698, y: 0.4375, width: 0.3092, height: 0.458 },
-    },
-    {
-      id: "lamp",
-      name: "球形落地灯",
-      url: "/assets/layer-separator/lamp.png",
-      contentBounds: { x: 0.7767, y: 0.127, width: 0.0918, height: 0.7539 },
+      id: "skincare",
+      name: "防晒护肤与石台",
+      url: "/assets/layer-separator/poolside/skincare.png",
+      contentBounds: { x: 0.713, y: 0.505, width: 0.287, height: 0.491 },
     },
   ],
 };
 
 export default function LayerSeparatorPreview() {
+  const { t, locale } = useLocale();
   return (
     <LayerSeparator
-      imageUrl="/assets/layer-separator/scene.png"
-      imageAlt="摄影风格的暖光室内场景，包含陶瓷花瓶、皮革休闲椅和球形落地灯"
-      labels={{ description: "摄影风格示例 · 使用预置图层体验拆分与合成" }}
+      locale={locale}
+      imageUrl="/assets/layer-separator/poolside/scene.svg"
+      imageAlt={t("泳池度假杂志风格，成年韩系模特、夏日护肤品与海景背景")}
+      labels={{ description: t("泳池度假大片 · 使用预置图层体验人像与护肤品拆分") }}
       aspectRatio={3 / 2}
       defaultSelections={[
-        { id: "chair-selection", x1: 0.36, y1: 0.43, x2: 0.69, y2: 0.91 },
+        { id: "model-selection", x1: 0.274, y1: 0.027, x2: 0.479, y2: 0.932 },
       ]}
       onSeparate={async () => {
         await new Promise((resolve) => window.setTimeout(resolve, 900));
-        return RESULT;
+        return { ...RESULT, background: { ...RESULT.background!, name: t(RESULT.background!.name!) }, layers: RESULT.layers.map(layer => ({ ...layer, name: t(layer.name!) })) };
       }}
       onMerge={(blob) => {
         const url = URL.createObjectURL(blob);

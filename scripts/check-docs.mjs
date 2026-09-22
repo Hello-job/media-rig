@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 const base = process.env.DOCS_URL || "http://localhost:3000";
-const slugs = ["image-annotation", "layer-separator", "image-editor", "image-angle-rig", "light-sphere", "director-stage"];
+const slugs = ["video-trim", "image-annotation", "layer-separator", "image-editor", "image-angle-rig", "light-sphere", "director-stage"];
 for (const slug of slugs) {
   const response = await fetch(`${base}/components/${slug}`);
   assert.equal(response.status, 200, slug);
   const html = await response.text();
   const content = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
   assert.match(content, /<h1\b/);
-  assert.match(content, /id="api-heading"[^>]*>Props<\/h2>/);
+  assert.match(content, /id="api-heading"[^>]*>属性<\/h2>/);
   assert.match(content, /pnpm dlx media-rig@latest add/);
   assert.ok(content.includes(`href="https://media-rig.vercel.app/components/${slug}"`), `canonical: ${slug}`);
   assert.ok(html.includes('application/ld+json'), `structured data: ${slug}`);
@@ -22,4 +22,4 @@ for (const [query, target] of [["component=image-annotation", "/components/image
   assert.equal(new URL(response.headers.get("location"), base).pathname, target);
 }
 assert.equal((await fetch(`${base}/opengraph-image`)).headers.get("content-type"), "image/png");
-console.log("Verified 6 prerendered component pages, canonical URLs, structured data, sitemap, robots, 404, legacy redirects and OG image.");
+console.log("Verified 7 rendered component pages, canonical URLs, structured data, sitemap, robots, 404, legacy redirects and OG image.");

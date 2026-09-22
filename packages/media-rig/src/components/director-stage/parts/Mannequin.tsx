@@ -317,7 +317,7 @@ class ModelBoundary extends React.Component<{ children: React.ReactNode; fallbac
 export default function Mannequin(props: MannequinProps) {
   if (props.character.modelUrl) {
     return (
-      <ModelBoundary key={props.character.modelUrl} fallback={<ProceduralMannequin {...props} />}><Suspense fallback={<ProceduralMannequin {...props} />}>
+      <ModelBoundary key={props.character.modelUrl} fallback={<ProceduralMannequin {...props} />}><Suspense fallback={null}>
         <group>
           <CustomModel
             url={props.character.modelUrl}

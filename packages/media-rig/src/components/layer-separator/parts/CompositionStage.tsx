@@ -1,3 +1,4 @@
+import { Button } from "../../motion/button/base";
 import {
   FlipHorizontal2,
   FlipVertical2,
@@ -91,7 +92,7 @@ export default function CompositionStage({
                 top: `${transform.y * 100}%`,
                 width: `${transform.width * 100}%`,
                 height: `${transform.height * 100}%`,
-                transform: `rotate(${transform.rotation}deg)`,
+                transform: `rotate(${transform.rotation}deg) scale(${transform.flipX ? -1 : 1}, ${transform.flipY ? -1 : 1})`,
                 transformOrigin: `${(bounds.x + bounds.width / 2) * 100}% ${(bounds.y + bounds.height / 2) * 100}%`,
               }}
             >
@@ -99,7 +100,6 @@ export default function CompositionStage({
                 src={layer.url}
                 alt=""
                 draggable={false}
-                style={{ transform: `scale(${transform.flipX ? -1 : 1}, ${transform.flipY ? -1 : 1})` }}
               />
             </div>
             <button
@@ -118,15 +118,11 @@ export default function CompositionStage({
             {selected ? (
               <div
                 className="layer-separator__object-toolbar"
-                style={{
-                  left: `${(frame.x + frame.width / 2) * 100}%`,
-                  top: `${frame.y * 100}%`,
-                }}
                 onPointerDown={(event) => event.stopPropagation()}
               >
-                <button type="button" aria-label="Rotate layer" onClick={() => onChange(layer.id, { ...transform, rotation: (transform.rotation + 90) % 360 })}><RotateCw size={15} /></button>
-                <button type="button" aria-label="Flip layer horizontally" onClick={() => onChange(layer.id, { ...transform, flipX: !transform.flipX })}><FlipHorizontal2 size={15} /></button>
-                <button type="button" aria-label="Flip layer vertically" onClick={() => onChange(layer.id, { ...transform, flipY: !transform.flipY })}><FlipVertical2 size={15} /></button>
+                <Button variant="ghost" size="icon" type="button" aria-label="Rotate layer" onClick={() => onChange(layer.id, { ...transform, rotation: (transform.rotation + 90) % 360 })}><RotateCw size={15} /></Button>
+                <Button variant="ghost" size="icon" type="button" aria-label="Flip layer horizontally" onClick={() => onChange(layer.id, { ...transform, flipX: !transform.flipX })}><FlipHorizontal2 size={15} /></Button>
+                <Button variant="ghost" size="icon" type="button" aria-label="Flip layer vertically" onClick={() => onChange(layer.id, { ...transform, flipY: !transform.flipY })}><FlipVertical2 size={15} /></Button>
               </div>
             ) : null}
           </div>

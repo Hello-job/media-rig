@@ -1,3 +1,6 @@
+"use client";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { Button } from "@/components/motion/button/base";
 import React, { useState } from "react";
 import { ArrowUp, Check } from "lucide-react";
 import {
@@ -14,18 +17,20 @@ function PreviewActionButton({
   disabled,
   loading,
 }: ImageAngleActionButtonProps) {
+  const { t, locale } = useLocale();
   const label = typeof input === "object" && input && "label" in input
     ? String(input.label)
     : "应用参数";
 
   return (
-    <button type="button" className={className} onClick={onClick} disabled={disabled} aria-busy={loading} aria-label={label} title={label}>
+    <Button variant="ghost" type="button" className={className} onClick={onClick} disabled={disabled} aria-busy={loading} aria-label={t(label)} title={t(label)}>
       {label.startsWith("已应用") ? <Check size={16} aria-hidden="true" /> : <ArrowUp size={16} aria-hidden="true" />}
-    </button>
+    </Button>
   );
 }
 
 export default function ImageAngleRigPreview() {
+  const { t, locale } = useLocale();
   const [open, setOpen] = useState(true);
   const [actionLabel, setActionLabel] = useState("应用参数");
   const [value, setValue] = useState<ImageAngleState>({ ...DEFAULT_IMAGE_ANGLE_STATE });
@@ -35,7 +40,7 @@ export default function ImageAngleRigPreview() {
       {open ? (
         <ImageAngleRig
           onClose={() => setOpen(false)}
-          imageUrl="/assets/photo-texture2.png"
+          imageUrl="/assets/studio/angle-editorial.png"
           value={value}
           onChange={(nextValue) => {
             setValue(nextValue);
@@ -49,9 +54,9 @@ export default function ImageAngleRigPreview() {
           }}
         />
       ) : (
-        <button type="button" className="rounded-lg border border-white/10 bg-[#191919] px-4 py-2 text-xs text-white/80 transition-colors hover:bg-white/10" onClick={() => setOpen(true)}>
-          打开视角设置
-        </button>
+        <Button variant="ghost" type="button" className="rounded-lg border border-white/10 bg-[#191919] px-4 py-2 text-xs text-white/80 transition-colors hover:bg-white/10" onClick={() => setOpen(true)}>
+          {t("打开视角设置")}
+        </Button>
       )}
     </div>
   );

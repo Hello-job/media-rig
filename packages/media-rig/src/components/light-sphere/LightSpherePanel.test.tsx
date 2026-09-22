@@ -18,8 +18,8 @@ import LightSpherePanel from "./LightSpherePanel";
 describe("LightSpherePanel", () => {
   it("matches tamen-web defaults and exposes all six directions", () => {
     render(<LightSpherePanel />);
-    expect(screen.getByRole("slider", { name: "亮度" })).toHaveValue("50");
-    expect(screen.getByRole("slider", { name: "色温" })).toHaveValue("5600");
+    expect(screen.getByRole("slider", { name: "亮度" })).toHaveAttribute("aria-valuenow", "50");
+    expect(screen.getByRole("slider", { name: "色温" })).toHaveAttribute("aria-valuenow", "5600");
     expect(screen.getByRole("button", { name: "透视" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "前方" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("switch", { name: "轮廓光" })).toHaveAttribute("aria-checked", "true");
@@ -31,13 +31,13 @@ describe("LightSpherePanel", () => {
     const onChangeEnd = vi.fn();
     render(<LightSpherePanel onChangeEnd={onChangeEnd} />);
     const brightness = screen.getByRole("slider", { name: "亮度" });
-    fireEvent.change(brightness, { target: { value: "80" } });
+    for (let i = 0; i < 3; i++) fireEvent.keyDown(brightness, { key: "PageUp" });
     expect(scene.props.intensity).toBe(0.8);
     fireEvent.pointerUp(brightness);
     fireEvent.blur(brightness);
     expect(onChangeEnd).toHaveBeenCalledTimes(1);
     const temperature = screen.getByRole("slider", { name: "色温" });
-    fireEvent.change(temperature, { target: { value: "2400" } });
+    fireEvent.keyDown(temperature, { key: "Home" });
     fireEvent.keyUp(temperature, { key: "Home" });
     fireEvent.blur(temperature);
     expect(scene.props.color).toBe(colorTemperatureToHex(2400));
@@ -71,7 +71,7 @@ describe("LightSpherePanel", () => {
     fireEvent.click(screen.getByRole("button", { name: "重置打光" }));
     expect(onChangeEnd).toHaveBeenCalledExactlyOnceWith(DEFAULT_LIGHT_SPHERE_PANEL_VALUE);
     expect(scene.props.viewMode).toBe("perspective");
-    expect(screen.getByRole("slider", { name: "亮度" })).toHaveValue("50");
+    expect(screen.getByRole("slider", { name: "亮度" })).toHaveAttribute("aria-valuenow", "50");
     expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "true");
   });
 

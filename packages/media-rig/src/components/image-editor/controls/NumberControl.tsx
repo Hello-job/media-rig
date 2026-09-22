@@ -1,3 +1,4 @@
+import { Input } from "../../motion/input";
 import { useEffect, useState } from "react";
 
 type NumberControlProps = {
@@ -32,14 +33,15 @@ export default function NumberControl({
   return (
     <label className="image-editor__number-control">
       <span>{label}</span>
-      <input
+      <Input
+        classNames={{ field: "border-0 bg-transparent", input: "h-8 min-w-0" }}
         aria-label={label}
         type="number"
         min={min}
         max={max}
         step={step}
         value={draft}
-        onChange={(event) => setDraft(event.target.value)}
+        onChange={setDraft}
         onBlur={commit}
         onKeyDown={(event) => {
           if (event.key === "Enter") commit();

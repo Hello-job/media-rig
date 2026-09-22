@@ -1,3 +1,5 @@
+import { RangeSlider } from "../motion/range-slider";
+import { Button } from "../motion/button/base";
 import {
   Eye,
   EyeOff,
@@ -29,6 +31,7 @@ import {
   isUsableSelection,
   normalizeResult,
   normalizeTransform,
+  scaleLayer,
   toBoundingBox,
 } from "./LayerSeparator.utils";
 import CompositionStage from "./parts/CompositionStage";
@@ -269,9 +272,9 @@ export default function LayerSeparator({
           <span><strong>{copy.title}</strong><small>{copy.description}</small></span>
         </div>
         <div className="layer-separator__history" aria-label="History controls">
-          <button type="button" onClick={undo} disabled={Boolean(resolvedResult) || undoStack.length === 0} aria-label="Undo"><Undo2 size={16} /></button>
-          <button type="button" onClick={redo} disabled={Boolean(resolvedResult) || redoStack.length === 0} aria-label="Redo"><Redo2 size={16} /></button>
-          <button type="button" onClick={onCancel ?? reset} aria-label={copy.cancel}><X size={17} /></button>
+          <Button variant="ghost" type="button" onClick={undo} disabled={Boolean(resolvedResult) || undoStack.length === 0} aria-label="Undo"><Undo2 size={16} /></Button>
+          <Button variant="ghost" type="button" onClick={redo} disabled={Boolean(resolvedResult) || redoStack.length === 0} aria-label="Redo"><Redo2 size={16} /></Button>
+          <Button variant="ghost" type="button" onClick={onCancel ?? reset} aria-label={copy.cancel}><X size={17} /></Button>
         </div>
       </header>
 
@@ -322,13 +325,13 @@ export default function LayerSeparator({
                   const transform = normalizeTransform(layer.transform);
                   return (
                     <div key={layer.id} className={["layer-separator__layer-row", selectedLayerId === layer.id ? "is-selected" : ""].join(" ")}>
-                      <button type="button" className="layer-separator__layer-main" onClick={() => setSelectedLayerId(layer.id)}>
+                      <Button variant="ghost" type="button" className="layer-separator__layer-main" onClick={() => setSelectedLayerId(layer.id)}>
                         <span className="layer-separator__layer-index">{String(index + 1).padStart(2, "0")}</span>
                         <span>{layer.name ?? `Layer ${index + 1}`}</span>
-                      </button>
-                      <button type="button" className="layer-separator__visibility" aria-label={transform.visible ? "Hide layer" : "Show layer"} onClick={() => patchLayer(layer.id, { ...transform, visible: !transform.visible })}>
+                      </Button>
+                      <Button variant="ghost" type="button" className="layer-separator__visibility" aria-label={transform.visible ? "Hide layer" : "Show layer"} onClick={() => patchLayer(layer.id, { ...transform, visible: !transform.visible })}>
                         {transform.visible ? <Eye size={15} /> : <EyeOff size={15} />}
-                      </button>
+                      </Button>
                     </div>
                   );
                 })}
@@ -341,16 +344,16 @@ export default function LayerSeparator({
                 return (
                   <label className="layer-separator__scale">
                     <span>Scale <output>{Math.round(transform.width * 100)}%</output></span>
-                    <input type="range" min="20" max="160" value={Math.round(transform.width * 100)} onChange={(event) => {
-                      const width = Number(event.target.value) / 100;
-                      patchLayer(selected.id, { ...transform, width, height: transform.height * (width / transform.width) });
+                    <RangeSlider className="h-7" showTicks={false} aria-label="Scale" min={20} max={160} value={Math.round(transform.width * 100)} onValueChange={value => {
+                      const width = value / 100;
+                      patchLayer(selected.id, scaleLayer(selected, width));
                     }} />
                   </label>
                 );
               })() : null}
               <div className="layer-separator__panel-actions">
-                <button type="button" className="layer-separator__secondary" onClick={reset}><RotateCcw size={15} />{copy.reset}</button>
-                <button type="button" className="layer-separator__primary" disabled={merging} onClick={() => void merge()}>{merging ? <LoaderCircle className="is-spinning" size={15} /> : <Layers3 size={15} />}{copy.merge}</button>
+                <Button variant="ghost" type="button" className="layer-separator__secondary" onClick={reset}><RotateCcw size={15} />{copy.reset}</Button>
+                <Button variant="ghost" type="button" className="layer-separator__primary" disabled={merging} onClick={() => void merge()}>{merging ? <LoaderCircle className="is-spinning" size={15} /> : <Layers3 size={15} />}{copy.merge}</Button>
               </div>
             </>
           ) : (
@@ -364,7 +367,7 @@ export default function LayerSeparator({
                   const height = Math.max(0.001, Math.abs(selection.y2 - selection.y1));
                   const thumbnailRatio = aspectRatio * width / height;
                   return (
-                    <button key={selection.id} type="button" aria-label={`Remove selection ${index + 1}`} onClick={() => commitSelections(selections.filter((item) => item.id !== selection.id))}>
+                    <Button variant="ghost" key={selection.id} type="button" aria-label={`Remove selection ${index + 1}`} onClick={() => commitSelections(selections.filter((item) => item.id !== selection.id))}>
                       <span className="layer-separator__selection-thumbnail">
                         <span style={{ width: Math.min(56, 56 * thumbnailRatio), height: Math.min(56, 56 / thumbnailRatio) }}>
                           <img
@@ -376,15 +379,15 @@ export default function LayerSeparator({
                         </span>
                       </span>
                       <strong>{String(index + 1).padStart(2, "0")}</strong><X size={13} />
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
               <textarea value={instruction} rows={5} placeholder={copy.instructionPlaceholder} aria-label={copy.instructionLabel} onChange={(event) => setInstruction(event.target.value)} />
               {error ? <p className="layer-separator__error" role="alert">{error}</p> : null}
               <div className="layer-separator__panel-actions">
-                <button type="button" className="layer-separator__secondary" disabled={submitting} onClick={onCancel ?? reset}>{copy.cancel}</button>
-                <button type="button" className="layer-separator__primary" disabled={submitting || !onSeparate} onClick={() => void separate()}><Sparkles size={15} />{selections.length ? `${copy.separate} · ${selections.length + 1}` : copy.automatic}</button>
+                <Button variant="ghost" type="button" className="layer-separator__secondary" disabled={submitting} onClick={onCancel ?? reset}>{copy.cancel}</Button>
+                <Button variant="ghost" type="button" className="layer-separator__primary" disabled={submitting || !onSeparate} onClick={() => void separate()}><Sparkles size={15} />{selections.length ? `${copy.separate} · ${selections.length + 1}` : copy.automatic}</Button>
               </div>
             </>
           )}

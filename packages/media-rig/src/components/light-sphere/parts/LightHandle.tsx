@@ -46,7 +46,7 @@ export default function LightHandle({ lightRef, configRef, dragHandlers }: Light
   const sphereShader = useMemo(() => ({
     uniforms: {
       uBeamColor: { value: new THREE.Color(configRef.current.color) },
-      uBeamDir: { value: new THREE.Vector3(0, -1, 0) },
+      uBeamDir: { value: TARGET.clone().sub(lightRef.current).normalize() },
     },
     vertexShader: lightHandleVertex,
     fragmentShader: lightHandleFragment,

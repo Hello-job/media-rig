@@ -203,6 +203,7 @@ export default function DirectorStageCanvas(props: DirectorStageCanvasProps) {
 
   return (
     <Canvas
+      resize={{ offsetSize: true }}
       shadows
       camera={{ position: toArray(DEFAULT_CAMERA.director.position), fov: DEFAULT_CAMERA.director.fov, near: 0.05, far: 300 }}
       gl={{ antialias: true, preserveDrawingBuffer: true }}

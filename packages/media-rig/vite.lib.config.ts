@@ -10,6 +10,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
+        "video-trim": entryPath("./src/components/video-trim/index.ts"),
         index: entryPath("./src/index.ts"),
         "light-sphere": entryPath("./src/components/light-sphere/index.ts"),
         "image-angle-rig": entryPath("./src/components/image-angle-rig/index.ts"),
@@ -30,10 +31,15 @@ export default defineConfig({
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
         "lucide-react",
+        "motion/react",
+        "clsx",
+        "tailwind-merge",
         "three",
         "@react-three/fiber",
         "@react-three/drei",
         "fabric",
+        "@ffmpeg/ffmpeg",
+        "@ffmpeg/util",
       ],
       output: {
         exports: "named",

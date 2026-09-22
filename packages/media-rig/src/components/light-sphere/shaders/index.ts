@@ -79,7 +79,7 @@ export const lightHandleFragment = `
   varying vec3 vViewDir;
   varying float vBeamFace;
   void main() {
-    vec3 baseColor = vec3(0.02, 0.02, 0.02);
+    vec3 baseColor = mix(vec3(0.32), uBeamColor, 0.65);
     float fresnel = pow(1.0 - abs(dot(vNormal, vViewDir)), 3.5);
     vec3 rimLight = vec3(0.4) * fresnel * 0.15;
     float beamGlow = pow(vBeamFace, 5.0) * 3.0;

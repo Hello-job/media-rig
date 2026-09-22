@@ -42,7 +42,7 @@ describe("ImageAngleRig interactions", () => {
     expect(onChange).not.toHaveBeenCalled();
     fireEvent.pointerMove(surface, pointer(30, 10));
     expect(onChange).toHaveBeenLastCalledWith({ yaw: -18, pitch: -3, zoom: 0, wideAngle: false });
-    expect(screen.getByRole("slider", { name: "水平旋转" })).toHaveValue("-18");
+    expect(screen.getByRole("slider", { name: "水平旋转" })).toHaveAttribute("aria-valuenow", "-18");
     fireEvent.pointerMove(surface, pointer(150, 160));
     fireEvent.pointerUp(surface, pointer(150, 160));
     fireEvent.lostPointerCapture(surface, pointer(150, 160));
@@ -113,18 +113,18 @@ describe("ImageAngleRig interactions", () => {
     const yaw = screen.getByRole("slider", { name: "水平旋转" });
     const pitch = screen.getByRole("slider", { name: "垂直倾斜" });
     const zoom = screen.getByRole("slider", { name: "镜头推进" });
-    for (const slider of [yaw, pitch, zoom]) expect(slider).toHaveAttribute("step", "1");
+    for (const slider of [yaw, pitch, zoom]) expect(slider).toHaveAttribute("tabindex", "0");
     fireEvent.keyUp(yaw, { key: "Tab" });
     expect(onChangeEnd).not.toHaveBeenCalled();
-    fireEvent.change(yaw, { target: { value: "42" } });
+    for (let i = 0; i < 12; i++) fireEvent.keyDown(yaw, { key: "ArrowRight" });
     fireEvent.pointerUp(yaw);
     fireEvent.blur(yaw);
     expect(onChangeEnd).toHaveBeenCalledTimes(1);
-    fireEvent.change(pitch, { target: { value: "-19" } });
+    fireEvent.keyDown(pitch, { key: "ArrowRight" });
     fireEvent.keyUp(pitch, { key: "ArrowRight" });
     fireEvent.blur(pitch);
     expect(onChangeEnd).toHaveBeenCalledTimes(2);
-    fireEvent.change(zoom, { target: { value: "10" } });
+    fireEvent.keyDown(zoom, { key: "End" });
     fireEvent.blur(zoom);
     expect(onChangeEnd).toHaveBeenCalledTimes(3);
     expect(onChangeEnd).toHaveBeenLastCalledWith({ yaw: 42, pitch: -19, zoom: 10, wideAngle: false });
@@ -146,7 +146,7 @@ describe("ImageAngleRig interactions", () => {
     expect(onAction.mock.calls[0][0].value).toEqual({ yaw: -10, pitch: 10, zoom: 4, wideAngle: true });
     fireEvent.click(screen.getByRole("button", { name: "重置角度" }));
     expect(onChangeEnd).toHaveBeenLastCalledWith(DEFAULT_IMAGE_ANGLE_STATE);
-    expect(screen.getByRole("slider", { name: "水平旋转" })).toHaveValue("30");
+    expect(screen.getByRole("slider", { name: "水平旋转" })).toHaveAttribute("aria-valuenow", "30");
     expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "false");
   });
 

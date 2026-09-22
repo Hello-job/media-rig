@@ -1,3 +1,4 @@
+import { Button } from "../../motion/button/base";
 import {
   ArrowDown,
   ArrowUp,
@@ -68,8 +69,8 @@ export default function SelectionToolbar({ selected, actions }: SelectionToolbar
 
 function Action({ label, icon: Icon, onClick }: { label: string; icon: typeof Crop; onClick(): void }) {
   return (
-    <button type="button" aria-label={label} title={label} onClick={onClick}>
+    <Button variant="ghost" size="icon" type="button" aria-label={label} title={label} onClick={onClick}>
       <Icon aria-hidden="true" size={18} />
-    </button>
+    </Button>
   );
 }

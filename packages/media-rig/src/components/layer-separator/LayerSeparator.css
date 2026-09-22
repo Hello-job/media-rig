@@ -90,7 +90,7 @@
 .layer-separator__layer-hitbox.is-selected::before, .layer-separator__layer-hitbox.is-selected::after { position: absolute; width: 8px; height: 8px; border: 1px solid #fff; background: #121315; content: ""; }
 .layer-separator__layer-hitbox.is-selected::before { left: -4px; top: -4px; }
 .layer-separator__layer-hitbox.is-selected::after { right: -4px; bottom: -4px; }
-.layer-separator__object-toolbar { position: absolute; z-index: 18; display: flex; gap: 2px; transform: translate(-50%, calc(-100% - 8px)); border: 1px solid var(--ls-line-strong); border-radius: 9px; background: rgba(28,30,34,.95); padding: 3px; box-shadow: 0 8px 24px rgba(0,0,0,.36); backdrop-filter: blur(10px); }
+.layer-separator__object-toolbar { position: absolute; left: 50%; bottom: 12px; z-index: 18; display: flex; gap: 2px; transform: translateX(-50%); border: 1px solid var(--ls-line-strong); border-radius: 9px; background: rgba(28,30,34,.95); padding: 3px; box-shadow: 0 8px 24px rgba(0,0,0,.36); backdrop-filter: blur(10px); }
 .layer-separator__object-toolbar button { display: grid; width: 29px; height: 29px; cursor: pointer; place-items: center; border: 0; border-radius: 6px; background: transparent; color: #afb4bc; }
 .layer-separator__object-toolbar button:hover { background: rgba(255,255,255,.09); color: #fff; }
 

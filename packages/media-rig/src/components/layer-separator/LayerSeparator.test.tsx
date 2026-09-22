@@ -8,6 +8,25 @@ const result = {
 };
 
 describe("LayerSeparator", () => {
+  it("rotates and flips around the same off-center subject as its selection frame", () => {
+    const { container } = render(<LayerSeparator imageUrl="/source.png" defaultResult={{
+      ...result,
+      layers: [{ ...result.layers[0], contentBounds: { x: 0.7, y: 0.5, width: 0.2, height: 0.4 } }],
+    }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Rotate layer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Flip layer horizontally" }));
+    const image = container.querySelector<HTMLElement>(".layer-separator__layer-image")!;
+    expect(image.style.transform).toBe("rotate(90deg) scale(-1, 1)");
+    expect(parseFloat(image.style.transformOrigin)).toBeCloseTo(80);
+    expect(image.style.transformOrigin.split(" ")[1]).toBe("70%");
+    expect(image.querySelector("img")!.style.transform).toBe("");
+    expect(screen.getByRole("button", { name: "Subject" }).style.transform).toBe("rotate(90deg)");
+    fireEvent.keyDown(screen.getByRole("slider"), { key: "Home" });
+    for (let i = 0; i < 3; i++) fireEvent.keyDown(screen.getByRole("slider"), { key: "PageUp" });
+    expect(parseFloat(image.style.left)).toBeCloseTo(40);
+    expect(parseFloat(image.style.top)).toBeCloseTo(35);
+  });
+
   it("sends normalized selections and the generated prompt to the host", async () => {
     const onSeparate = vi.fn().mockResolvedValue(result);
     render(

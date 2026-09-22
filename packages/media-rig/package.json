@@ -50,6 +50,11 @@
       "types": "./dist/types/components/image-annotation/index.d.ts",
       "import": "./dist/image-annotation.mjs",
       "require": "./dist/image-annotation.cjs"
+    },
+    "./video-trim": {
+      "types": "./dist/types/components/video-trim/index.d.ts",
+      "import": "./dist/video-trim.mjs",
+      "require": "./dist/video-trim.cjs"
     }
   },
   "sideEffects": [
@@ -58,7 +63,8 @@
   "files": [
     "dist",
     "README.md",
-    "cli"
+    "cli",
+    "BEUI-LICENSE"
   ],
   "scripts": {
     "build": "vite build --config vite.lib.config.ts && pnpm run build:types",
@@ -92,8 +98,13 @@
     "three": ">=0.160"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
+    "clsx": "^2.1.1",
     "cross-spawn": "^7.0.6",
-    "lucide-react": "^1.17.0"
+    "lucide-react": "^1.17.0",
+    "motion": "^13.2.0",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@react-three/drei": "^10.7.7",

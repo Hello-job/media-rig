@@ -1,3 +1,5 @@
+import { RangeSlider } from "../motion/range-slider";
+import { Button } from "../motion/button/base";
 import { useCallback, useState, type CSSProperties, type ReactNode } from "react";
 import { Brush, MousePointer2, Redo2, Square, Type, Undo2, X, Trash2, RotateCcw, LoaderCircle } from "lucide-react";
 import { useAnnotationController } from "./useAnnotationController";
@@ -40,7 +42,7 @@ function AnnotationWorkspace({ imageUrl, imageAlt = "待涂鸦图片", aspectRat
     finally { setSaving(false); }
   };
   const button = (label: string, icon: ReactNode, action: () => void, active?: boolean, disabled = false) => (
-    <button type="button" title={label} aria-label={label} aria-pressed={active} disabled={busy || disabled} onClick={action}>{icon}</button>
+    <Button variant="ghost" size="icon" type="button" title={label} aria-label={label} aria-pressed={active} disabled={busy || disabled} onClick={action}>{icon}</Button>
   );
   return (
     <section className={`image-annotation ${className ?? ""}`} style={style} aria-label="图片涂鸦" tabIndex={0}
@@ -54,13 +56,13 @@ function AnnotationWorkspace({ imageUrl, imageAlt = "待涂鸦图片", aspectRat
         {button("文字", <Type size={16} />, () => controller.setTool("text"), controller.tool === "text", !controller.ready)}
         <span className="image-annotation__divider" />
         <input type="color" aria-label="标注颜色" value={controller.color} disabled={busy} onChange={(event) => controller.setColor(event.target.value)} />
-        <label className="image-annotation__width">粗细<input type="range" min={1} max={24} aria-label="线条粗细" value={controller.strokeWidth} disabled={busy} onChange={(event) => controller.setStrokeWidth(Number(event.target.value))} /><output>{controller.strokeWidth}</output></label>
+        <label className="image-annotation__width">粗细<RangeSlider className="h-7 w-24" showTicks={false} min={1} max={24} aria-label="线条粗细" value={controller.strokeWidth} disabled={busy} onValueChange={controller.setStrokeWidth} /><output>{controller.strokeWidth}</output></label>
         <span className="image-annotation__divider" />
         {button("撤销", <Undo2 size={16} />, controller.undo, undefined, !controller.canUndo)}
         {button("重做", <Redo2 size={16} />, controller.redo, undefined, !controller.canRedo)}
         {button("删除所选", <Trash2 size={16} />, controller.deleteSelected, undefined, !controller.hasAnnotations)}
         {button("清空标注", <RotateCcw size={16} />, controller.reset, undefined, !controller.hasAnnotations)}
-        <button className="image-annotation__save" type="button" disabled={busy || !controller.ready || !controller.hasAnnotations || !onSave} onClick={() => void save()}>{saving ? <><LoaderCircle size={14} className="image-annotation__spinner" />保存中…</> : "保存"}</button>
+        <Button variant="ghost" size="icon" className="image-annotation__save" type="button" disabled={busy || !controller.ready || !controller.hasAnnotations || !onSave} onClick={() => void save()}>{saving ? <><LoaderCircle size={14} className="image-annotation__spinner" />保存中…</> : "保存"}</Button>
       </div>
       <div className="image-annotation__image" ref={controller.containerRef} style={{ aspectRatio: ratio }}>
         <img src={imageUrl} alt={imageAlt} draggable={false} onLoad={(event) => { setRatio(event.currentTarget.naturalWidth / event.currentTarget.naturalHeight); setLoaded(true); }} onError={() => reportError(new Error("图片加载失败，请检查图片地址"))} />

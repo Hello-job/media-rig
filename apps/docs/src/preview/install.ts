@@ -12,5 +12,12 @@ export function cliCommand(slug: string, manager: PackageManager = "pnpm") {
 }
 
 export function localUsageSource(source: string, slug: string) {
-  return `"use client";\n\n${source.replace(/from (["'])media-rig(?:\/[^"']+)?\1/g, `from "@/components/${slug}"`)}`;
+  // Published examples must not depend on the documentation site's locale provider.
+  const standalone = source
+    .replace(/^\s*["']use client["'];?\s*/m, "")
+    .replace(/^import \{ useLocale \} from ["']@\/i18n\/LocaleProvider["'];?\n/gm, "")
+    .replace(/^\s*const \{ t, locale \} = useLocale\(\);\n/gm, "\n")
+    .replace(/\bt\(([^()]*)\)/g, "$1")
+    .replace(/locale=\{locale\}/g, 'locale="zh-CN"');
+  return `"use client";\n\n${standalone.replace(/from (["'])media-rig(?:\/[^"']+)?\1/g, `from "@/components/${slug}"`)}`;
 }

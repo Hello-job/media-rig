@@ -1,3 +1,5 @@
+import { Button } from "../motion/button/base";
+import { RangeSlider } from "../motion/range-slider";
 import { useState } from "react";
 import { Download, Pause, Play, Plus, Route, Trash2, X } from "lucide-react";
 import { createDirectorCameraPresetPositions, DIRECTOR_CAMERA_MOTION_PRESETS, type DirectorCameraMotionPresetId } from "./camera-motion-presets";
@@ -32,16 +34,16 @@ export default function DirectorTimeline({ cameras, activeCameraId, motions, tim
   };
   return <section className="director-stage__timeline" aria-label="运镜时间线">
     <header>
-      <button type="button" aria-label={playing ? "暂停时间轴" : "播放时间轴"} disabled={!motions.length} onClick={() => { if (time >= duration) onTime(0); onPlaying(!playing); }}>{playing ? <Pause size={16} /> : <Play size={16} />}</button>
+      <Button variant="ghost" type="button" aria-label={playing ? "暂停时间轴" : "播放时间轴"} disabled={!motions.length} onClick={() => { if (time >= duration) onTime(0); onPlaying(!playing); }}>{playing ? <Pause size={16} /> : <Play size={16} />}</Button>
       <output>{time.toFixed(1)}s / {duration.toFixed(1)}s</output>
-      <button type="button" className="is-primary" disabled={!cameras.length} onClick={() => setPicker(!picker)}><Plus size={14} />添加路径</button>
-      <button type="button" aria-label="删除选中路径" disabled={!selection} onClick={() => { onPlaying(false); onChange(motions.filter((motion) => motion.id !== selected)); setSelected(null); }}><Trash2 size={14} /></button>
+      <Button variant="ghost" type="button" className="is-primary" disabled={!cameras.length} onClick={() => setPicker(!picker)}><Plus size={14} />添加路径</Button>
+      <Button variant="ghost" type="button" aria-label="删除选中路径" disabled={!selection} onClick={() => { onPlaying(false); onChange(motions.filter((motion) => motion.id !== selected)); setSelected(null); }}><Trash2 size={14} /></Button>
       {selection && <label>时长<input type="number" min={0.5} max={120} step={0.5} value={selection.duration} onChange={(event) => { const value = Number(event.target.value); if (value >= 0.5 && value <= 120) { onPlaying(false); onChange(motions.map((motion) => motion.id === selected ? { ...motion, duration: value } : motion)); } }} />秒</label>}
-      <button type="button" disabled={!motions.length} onClick={onExport}><Download size={14} />导出视频</button>
-      <label className="director-stage__timeline-zoom">缩放<input aria-label="时间线缩放" type="range" min={30} max={120} value={zoom} onChange={(event) => setZoom(Number(event.target.value))} /></label>
-      <button type="button" aria-label="关闭时间轴" onClick={onClose}><X size={16} /></button>
+      <Button variant="ghost" type="button" disabled={!motions.length} onClick={onExport}><Download size={14} />导出视频</Button>
+      <label className="director-stage__timeline-zoom">缩放<RangeSlider className="h-6 w-24" showTicks={false} aria-label="时间线缩放" min={30} max={120} value={zoom} onValueChange={setZoom} /></label>
+      <Button variant="ghost" type="button" aria-label="关闭时间轴" onClick={onClose}><X size={16} /></Button>
     </header>
-    {picker && <div className="director-stage__path-picker">{DIRECTOR_CAMERA_MOTION_PRESETS.map((preset) => <button type="button" key={preset.id} onClick={() => addPath(preset.id)}><Route size={16} /><span>{preset.label}<small>{preset.description}</small></span></button>)}</div>}
+    {picker && <div className="director-stage__path-picker">{DIRECTOR_CAMERA_MOTION_PRESETS.map((preset) => <Button variant="ghost" type="button" key={preset.id} onClick={() => addPath(preset.id)}><Route size={16} /><span>{preset.label}<small>{preset.description}</small></span></Button>)}</div>}
     <div className="director-stage__timeline-scroll">
       <div style={{ minWidth: Math.max(500, duration * zoom + 150) }}>
         <div className="director-stage__time-ruler"><span>机位轨道</span><input aria-label="时间轴播放位置" type="range" min={0} max={duration} step={0.01} value={Math.min(time, duration)} onChange={(event) => { onPlaying(false); onTime(Number(event.target.value)); }} /></div>

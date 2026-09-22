@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import ComponentPreview from "./ComponentPreview";
@@ -26,10 +26,10 @@ describe('preview and installation workspace', () => {
     expect(screen.getByLabelText('编辑状态')).not.toBeVisible();
     await waitFor(() => expect(screen.getByText('pnpm dlx media-rig@latest add image-annotation')).toBeVisible());
     expect(window.location.hash).toBe('#installation');
-    await user.click(screen.getByRole('tab', {name:'Props'}));
+    await user.click(screen.getByRole('tab', {name:'属性'}));
     expect(window.location.hash).toBe('#props');
     await waitFor(() => expect(screen.getByRole('table')).toBeVisible());
-    expect(screen.getByText(component.api[0].name)).toBeVisible();
+    expect(within(screen.getByRole('table')).getByText(component.api[0].name)).toBeVisible();
     expect(screen.getByText('pnpm dlx media-rig@latest add image-annotation')).not.toBeVisible();
     await user.click(screen.getByRole('tab', {name:'预览'}));
     expect(screen.getByLabelText('编辑状态')).toHaveValue('已编辑');
@@ -58,7 +58,7 @@ describe('preview and installation workspace', () => {
     await user.click(screen.getByRole('option', {name:/^shadcn$/}));
     fireEvent.click(screen.getByRole('button', {name:'复制安装命令'}));
     await waitFor(() => expect(writeText).toHaveBeenCalledWith('npx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json'));
-    fireEvent.click(screen.getByRole('button', {name:'手动'}));
+    fireEvent.click(screen.getByRole('tab', {name:'手动'}));
     expect(await screen.findByRole('link', {name:/下载源码清单/})).toHaveAttribute('download', 'image-annotation.json');
   });
   it('copies usage with a client boundary and local source import', async () => {

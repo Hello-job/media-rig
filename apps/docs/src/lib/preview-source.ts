@@ -3,6 +3,7 @@ import path from "node:path";
 import type { MediaComponentMeta } from "../preview/catalog";
 
 const files: Record<MediaComponentMeta["slug"], string> = {
+  "video-trim": "VideoTrimPreview.tsx",
   "light-sphere": "LightSpherePreview.tsx",
   "image-angle-rig": "ImageAngleRigPreview.tsx",
   "director-stage": "DirectorStagePreview.tsx",

@@ -8,11 +8,11 @@ export type ComponentApiProp = {
 };
 
 export type MediaComponentMeta = {
-  slug: "image-annotation" | "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
-  legacyDemo: "annotation" | "light" | "angle" | "director" | "editor" | "layers";
+  slug: "video-trim" | "image-annotation" | "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
+  legacyDemo: "trim" | "annotation" | "light" | "angle" | "director" | "editor" | "layers";
   title: string;
   eyebrow: string;
-  category: "Image" | "Lighting" | "Scene" | "Editor";
+  category: "Video" | "Image" | "Lighting" | "Scene" | "Editor";
   status: ComponentStatus;
   description: string;
   summary: string;
@@ -30,12 +30,31 @@ export type MediaComponentMeta = {
 
 export const mediaComponents: MediaComponentMeta[] = [
   {
+    slug: "video-trim", legacyDemo: "trim", title: "Video Trim",
+    eyebrow: "Video clipping", category: "Video", status: "Beta",
+    description: "带缩略图时间轴的视频片段截取组件，支持拖动选区、整秒吸附、循环预览，并在浏览器内导出含音轨的 MP4。",
+    summary: "从视频中选出需要的片段，预览后生成独立视频。",
+    packagePath: "media-rig/video-trim", registryName: "video-trim",
+    dependencies: ["@ffmpeg/ffmpeg", "@ffmpeg/util", "lucide-react", "motion", "clsx", "tailwind-merge"],
+    tags: ["Video", "Trim", "Timeline", "MP4", "FFmpeg"],
+    previewClassName: "max-w-[1120px]", stageClassName: "min-h-[480px] bg-[#090a0b] p-6 max-[520px]:p-3",
+    api: [
+      { name: "src", type: "string", defaultValue: "required", description: "视频 URL 或本地 object URL；远程视频需支持 CORS。更换后重置选区并取消旧任务。" },
+      { name: "onExport", type: "(blob: Blob, result: VideoTrimResult) => void | Promise<void>", defaultValue: "required", description: "接收 MP4、截取范围、时长和尺寸，由宿主下载或上传。首次生成从 CDN 加载 FFmpeg 引擎。" },
+      { name: "onRangeChange", type: "(range: [number, number]) => void", defaultValue: "undefined", description: "初始化及调整选区时返回起止秒数。支持方向键、Shift 和 Home / End 调整。" },
+      { name: "onError", type: "(error: Error) => void", defaultValue: "undefined", description: "视频读取、播放或导出失败回调。" },
+      { name: "onClose", type: "() => void", defaultValue: "undefined", description: "提供时显示关闭按钮，并在组件内响应 Escape。卸载会终止截取任务。" },
+      { name: "locale", type: '"zh-CN" | "en-US"', defaultValue: '"zh-CN"', description: "内置界面语言。" },
+      { name: "poster / className / style", type: "string / string / CSSProperties", defaultValue: "undefined", description: "视频封面及组件外观。" },
+    ],
+  },
+  {
     slug: "image-annotation", legacyDemo: "annotation", title: "Image Annotation",
     eyebrow: "Draw on images", category: "Image", status: "Stable",
     description: "轻量图片涂鸦组件，支持画笔、矩形、文字、选择变换、撤销重做与原尺寸 PNG 合成导出。",
     summary: "在图片上画出想法，标记重点，再保存为完整图片。",
     packagePath: "media-rig/image-annotation", registryName: "image-annotation",
-    dependencies: ["fabric", "lucide-react"], tags: ["Brush", "Text", "Annotation", "Export"],
+    dependencies: ["fabric", "lucide-react", "motion", "clsx", "tailwind-merge"], tags: ["Brush", "Text", "Annotation", "Export"],
     previewClassName: "max-w-[1180px]", stageClassName: "min-h-[600px] bg-[#090a0b] p-5 max-[520px]:p-0",
     api: [
       { name: "imageUrl", type: "string", defaultValue: "required", description: "原图地址；更换后重置画布与历史。跨域图片需支持 CORS。" },
@@ -56,7 +75,7 @@ export const mediaComponents: MediaComponentMeta[] = [
     summary: "把单张图片拆成可独立移动、旋转、翻转和合并的透明图层。",
     packagePath: "media-rig/layer-separator",
     registryName: "layer-separator",
-    dependencies: ["lucide-react"],
+    dependencies: ["lucide-react", "motion", "clsx", "tailwind-merge"],
     tags: ["Layers", "Selection", "Async", "Composition"],
     previewClassName: "max-w-[1180px]",
     stageClassName: "h-[680px] bg-[#090a0b] p-5 max-[780px]:h-[900px] max-[520px]:p-0",
@@ -80,7 +99,7 @@ export const mediaComponents: MediaComponentMeta[] = [
     summary: "面向媒体工作流的可嵌入式图片编辑工作台。",
     packagePath: "media-rig/image-editor",
     registryName: "image-editor",
-    dependencies: ["fabric", "lucide-react"],
+    dependencies: ["fabric", "lucide-react", "motion", "clsx", "tailwind-merge"],
     tags: ["Canvas", "Crop", "Paint", "Layers"],
     previewClassName: "max-w-[1240px]",
     stageClassName: "h-[720px] bg-[#0b0b0d] max-[900px]:h-[820px]",
@@ -103,7 +122,7 @@ export const mediaComponents: MediaComponentMeta[] = [
     summary: "用于商品图、封面和视觉素材的多角度构图控制器。",
     packagePath: "media-rig/image-angle-rig",
     registryName: "image-angle-rig",
-    dependencies: ["lucide-react"],
+    dependencies: ["lucide-react", "motion", "clsx", "tailwind-merge"],
     tags: ["Drag", "CSS 3D", "Controlled"],
     previewClassName: "max-w-[1040px]",
     stageClassName: "h-[420px] bg-[#090a0b] p-5 max-[480px]:h-[620px] max-[480px]:p-3",
@@ -133,7 +152,7 @@ export const mediaComponents: MediaComponentMeta[] = [
     packagePath: "media-rig/light-sphere",
     exportName: "LightSpherePanel",
     registryName: "light-sphere",
-    dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react"],
+    dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react", "motion", "clsx", "tailwind-merge"],
     tags: ["Lighting", "WebGL", "Temperature"],
     previewClassName: "max-w-[960px]",
     stageClassName: "h-[420px] bg-[#090a0b] p-5 max-[480px]:h-[660px] max-[480px]:p-3",
@@ -159,7 +178,7 @@ export const mediaComponents: MediaComponentMeta[] = [
     summary: "适合分镜、姿态预演与生成式视频前期编排的导演台。",
     packagePath: "media-rig/director-stage",
     registryName: "director-stage",
-    dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react"],
+    dependencies: ["@react-three/fiber", "@react-three/drei", "three", "lucide-react", "motion", "clsx", "tailwind-merge"],
     tags: ["Scene", "Camera", "Transform"],
     previewClassName: "max-w-[1240px]",
     stageClassName: "h-[680px] bg-[#121212] max-[1180px]:h-[760px] max-[760px]:h-[920px]",

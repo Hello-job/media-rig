@@ -1,0 +1,67 @@
+import { catalogMessages } from "./catalog-messages";
+export type Locale = "zh-CN" | "en-US";
+export const LOCALE_COOKIE = "media-rig-locale";
+export const messages: [string, string][] = [
+  ...catalogMessages,
+  ["首页导航", "Home navigation"],
+  ["组件", "Components"],
+  ["为创意工作流而生", "Made for creative workflows"],
+  ["让创作灵感", "Turn creative ideas"],
+  ["即刻成为交互", "into interaction"],
+  ["为图片、视频与 3D 创作打造的 React 交互组件。", "Interactive React components for image, video, and 3D creation."],
+  ["shadcn 安装", "Install with shadcn"],
+  ["从一个组件开始", "Start with a component"],
+  ["查看全部", "View all"],
+  ["选取片段，保留精彩", "Trim the clip. Keep the moment."],
+  ["画出想法，标记重点", "Draw ideas. Highlight what matters."],
+  ["让每一束光恰到好处", "Put every light in the right place."],
+  ["为创作提供更多可能", "More possibilities for your creativity"],
+  ["图层分离：泳池度假人像、护肤品与泳池背景独立图层", "Layer Separator: portrait, skincare, and pool background on separate layers"],
+  ["泳池畔 / 杂志大片", "POOLSIDE / EDITORIAL"],
+  ["一张照片，重新编排每个细节。", "One photo. Recompose every detail."],
+  ["01  度假人像", "01  Holiday portrait"],
+  ["02  夏日护肤", "02  Summer skincare"],
+  ["分离 · 移动 · 编排", "ISOLATE. MOVE. COMPOSE."],
+  ["正在生成", "Writing"], ["已复制", "Copied"], ["复制代码", "Copy code"],
+["视频截取：真实航船镜头与白色五秒选区","Video Trim: ship footage with a five-second selection"],["图片涂鸦：韩系杂志人像与手绘标注","Image Annotation: editorial portrait with hand-drawn notes"],["应用参数","Apply settings"],["已应用","Applied"],["打开视角设置","Open angle settings"],["已应用打光","Lighting applied"],["应用打光","Apply lighting"],["打开打光设置","Open lighting settings"],
+  ["愿这些光芒", "May these lights guide you on"], ["照亮你的前路", "your path"], ["开始使用", "Get started"],
+  ["语言", "Language"], ["切换语言", "Change language"], ["搜索组件", "Search components"], ["搜索组件…", "Search components…"], ["浏览组件…", "Browse components…"],
+  ["MediaRig — 媒体交互组件", "MediaRig — Media primitives"], ["面向图片、视频、灯光和三维编排的 React 媒体组件。", "React components for images, video, lighting, and 3D composition."],
+  ["GitHub 仓库", "GitHub Repo"], ["浏览组件", "Browse Components"], ["全部组件", "All Components"], ["图片", "Image"], ["视频", "Video"], ["灯光", "Lighting"], ["场景", "Scene"], ["编辑器", "Editor"],
+  ["组件分类", "Component category"], ["按名称升序排列", "Sort by name ascending"], ["按名称降序排列", "Sort by name descending"], ["恢复推荐排序", "Restore curated order"],
+  ["目录布局", "Catalog layout"], ["列表布局", "List layout"], ["网格布局", "Grid layout"], ["矩阵布局", "Matrix layout"], ["个组件", "components"],
+  ["没有找到匹配的组件", "No matching components found"], ["MediaRig · 类型安全的 React 组件", "MediaRig · Typed React components"],
+  ["运行时依赖", "runtime dependencies"], ["页面目录", "On this page"], ["预览", "Preview"], ["代码", "Code"], ["属性", "Props"], ["安装", "Installation"],
+  ["组件内容", "Component content"], ["复制组件链接", "Copy component link"], ["下载使用示例", "Download usage example"], ["下载使用示例 (.tsx)", "Download usage example (.tsx)"],
+  ["复制选项", "Copy options"], ["复制给 AI", "Copy for AI"], ["复制完整上下文给 AI", "Copy full context for AI"], ["仅复制使用示例", "Copy usage example only"], ["仅复制安装命令", "Copy installation command only"],
+  ["组件链接", "Component link"], ["AI 上下文", "AI context"], ["使用示例", "Usage"], ["安装命令", "Installation command"],
+  ["组件链接已复制", "Component link copied"], ["AI 上下文已复制", "AI context copied"], ["使用示例已复制", "Usage example copied"], ["安装命令已复制", "Installation command copied"], ["使用示例已下载", "Usage example downloaded"],
+  ["复制失败，请选择代码手动复制", "Copy failed. Select and copy the code manually."], ["复制失败，请手动选择命令复制。", "Copy failed. Select and copy the command manually."],
+  ["打开独立导演台 ↗", "Open standalone workspace ↗"], ["复制使用示例", "Copy usage example"], ["属性名", "Property"], ["类型", "Type"], ["默认值", "Default"], ["说明", "Description"],
+  ["安装方式", "Installation method"], ["命令行", "CLI"], ["手动", "Manual"], ["包管理器", "Package manager"], ["安装工具", "Installer"], ["复制安装命令", "Copy installation command"],
+  ["1. 下载源码清单，将 files 中的 content 按 target 路径保存；@components 对应项目的组件目录。", "1. Download the source manifest and save each file's content to its target path. @components points to your components directory."],
+  ["2. 安装清单中的 dependencies 和 devDependencies，保留组件的 CSS 文件和相对引用。", "2. Install dependencies and devDependencies from the manifest. Keep the component CSS files and relative imports."],
+  ["3. 使用下方示例接入，并替换示例图片与业务回调。", "3. Use the example below, then replace the sample images and application callbacks."],
+  ["下载源码清单 (.json)", "Download source manifest (.json)"], ["查看组件源码", "View component source"], ["首次安装与环境配置", "First-time setup"],
+  ["目标项目使用 React 19 / Tailwind CSS 4。没有 components.json 时先运行", "Use React 19 / Tailwind CSS 4. If components.json is missing, first run"],
+  ["。CLI 需要 Node.js 22.12+ 和 npm/npx。", ". The CLI requires Node.js 22.12+ and npm/npx."],
+  ["pnpm 11 项目在 pnpm-workspace.yaml 合并以下配置，跳过浏览器不需要的 canvas 原生构建并统一 Three.js 类型：", "For pnpm 11, merge the following into pnpm-workspace.yaml to skip the native canvas build and align Three.js types:"],
+  ["保留项目已有配置；已有 Three.js 依赖时先检查兼容性。示例素材和业务接口由宿主提供。", "Keep existing project settings and check compatibility with any installed Three.js version. Supply your own assets and application callbacks."],
+  ["正在加载交互演示…", "Loading interactive demo…"], ["正在加载交互演示", "Loading interactive demo"], ["正在加载导演台…", "Loading workspace…"],
+  ["导演台导航", "Workspace navigation"], ["返回组件库", "Back to components"], ["组件文档与安装", "Documentation and installation"],
+  ["找不到这个组件", "Component not found"], ["页面可能已移动，请从组件目录重新选择。", "This page may have moved. Choose a component from the catalog."], ["返回组件目录", "Back to component catalog"],
+  ["必填", "required"], ["待涂鸦图片", "Image to annotate"], ["空白画布", "Blank canvas"], ["内置按钮", "Built-in button"], ["内置场景", "Default scene"], ["内置存储键", "Default storage key"],
+  ["50% · 5600K · 前方 · 透视 · 轮廓光开启", "50% · 5600K · Front · Perspective · Rim light on"],
+  ["已选片段", "Selected clip"], ["就绪", "Ready"], ["保留自然光", "Keep the natural light"], ["人像研究 / 01", "PORTRAIT STUDY / 01"], ["静谧", "The"], ["缪斯。", "quiet muse."], ["自然光，近距离观察。", "Natural light. A closer look."], ["画出你的视角 ↗", "Draw your point of view ↗"],
+  ["拖动两端选择片段，拖动中间移动选区。", "Drag either end to trim, or drag the middle to move the selection."], ["选择视频", "Choose video"], ["片段已生成 ·", "Clip generated ·"], ["秒", "s"], ["下载 MP4", "Download MP4"], ["截取结果", "Trimmed video"],
+  ["韩系个人杂志风肖像", "Editorial portrait"], ["已导出原图尺寸的 PNG 图片", "PNG exported at the original image size"], ["泳池与海景背景", "Pool and ocean background"], ["韩系度假人像", "Holiday portrait"], ["防晒护肤与石台", "Sunscreen and stone pedestal"],
+  ["泳池度假杂志风格，成年韩系模特、夏日护肤品与海景背景", "Poolside editorial with a model, skincare products, and an ocean backdrop"], ["泳池度假大片 · 使用预置图层体验人像与护肤品拆分", "Poolside editorial · Explore portrait and skincare separation with sample layers"],
+  ["文档", "Documentation"], ["React 19 / Tailwind CSS 4。首次运行 media-rig init，图片与业务接口由宿主提供。", "React 19 / Tailwind CSS 4. Run media-rig init first, then provide your own images and application callbacks."],
+];
+const zh = new Map(messages.flatMap(([cn, en]) => [[cn, cn], [en, cn]]));
+const en = new Map(messages.flatMap(([cn, english]) => [[cn, english], [english, english]]));
+// Aliases keep existing content stable while normalizing the visible UI.
+zh.set("Install", "安装"); en.set("Install", "Install");
+zh.set("All components", "全部组件"); en.set("All components", "All components");
+zh.set("Media Rig · Typed React components", "MediaRig · 类型安全的 React 组件"); en.set("Media Rig · Typed React components", "MediaRig · Typed React components");
+export function translate(text: string, locale: Locale) { return (locale === "en-US" ? en : zh).get(text) ?? text; }

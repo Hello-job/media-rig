@@ -1,3 +1,6 @@
+import { RangeSlider } from "../motion/range-slider";
+import { Tooltip } from "../motion/tooltip";
+import { Button } from "../motion/button/base";
 import { useEffect, useRef, type ReactNode } from "react";
 import { readVectorInput } from "./DirectorStage.utils";
 import type { Vector3Like } from "./DirectorStage.types";
@@ -14,15 +17,16 @@ export function IconButton({
   onClick: () => void;
 }) {
   return (
-    <button
+    <Tooltip content={label}>
+    <Button variant="ghost" size="icon"
       type="button"
       className={active ? "director-stage__icon-button is-active" : "director-stage__icon-button"}
-      title={label}
       aria-label={label}
       onClick={onClick}
     >
       {children}
-    </button>
+    </Button>
+    </Tooltip>
   );
 }
 
@@ -77,7 +81,7 @@ export function ToolMenuItem({
   onClick: () => void;
 }) {
   return (
-    <button
+    <Button variant="ghost" size="icon"
       type="button"
       className={active ? "director-stage__tool-menu-item is-active" : "director-stage__tool-menu-item"}
       onClick={onClick}
@@ -85,7 +89,7 @@ export function ToolMenuItem({
       <span className="director-stage__tool-menu-mark">{mark}</span>
       <span>{children}</span>
       {shortcut ? <kbd>{shortcut}</kbd> : null}
-    </button>
+    </Button>
   );
 }
 
@@ -150,14 +154,7 @@ export function JointSlider({
   return (
     <label className="director-stage__slider">
       <span>{label}</span>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
-      />
+      <RangeSlider className="h-7" showTicks={false} aria-label={label} min={min} max={max} step={step} value={value} onValueChange={onChange} />
       <output>{step < 1 ? value.toFixed(2) : Math.round(value)}</output>
     </label>
   );

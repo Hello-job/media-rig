@@ -118,7 +118,8 @@ describe("ImageEditor", () => {
     await user.click(screen.getByRole("button", { name: "添加文本" }));
     await user.click(screen.getByRole("button", { name: "矩形" }));
     await user.click(screen.getAllByRole("button", { name: "图层" })[0]);
-    await user.selectOptions(screen.getByRole("combobox", { name: "画布比例" }), "16:9");
+    await user.click(screen.getByRole("combobox", { name: "画布比例" }));
+    await user.click(screen.getByRole("option", { name: "16:9" }));
     expect(actions.addText).toHaveBeenCalledOnce();
     expect(actions.addRect).toHaveBeenCalledOnce();
     expect(actions.toggleLayers).toHaveBeenCalledOnce();
@@ -133,21 +134,17 @@ describe("ImageEditor", () => {
     expect(screen.getByRole("toolbar", { name: "绘色板设置" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "画笔" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByLabelText("画笔颜色")).toHaveValue("#ff2d20");
-    expect(screen.getByRole("slider", { name: "画笔大小" })).toHaveValue("4");
-    expect(screen.getByRole("slider", { name: "画笔不透明度" })).toHaveValue("100");
+    expect(screen.getByRole("slider", { name: "画笔大小" })).toHaveAttribute("aria-valuenow", "4");
+    expect(screen.getByRole("slider", { name: "画笔不透明度" })).toHaveAttribute("aria-valuenow", "100");
     await user.click(screen.getByRole("button", { name: "橡皮擦" }));
     fireEvent.change(screen.getByLabelText("画笔颜色"), { target: { value: "#14b8a6" } });
-    fireEvent.change(screen.getByRole("slider", { name: "画笔大小" }), {
-      target: { value: "18" },
-    });
-    fireEvent.change(screen.getByRole("slider", { name: "画笔不透明度" }), {
-      target: { value: "45" },
-    });
+    fireEvent.keyDown(screen.getByRole("slider", { name: "画笔大小" }), { key: "End" });
+    fireEvent.keyDown(screen.getByRole("slider", { name: "画笔不透明度" }), { key: "Home" });
 
     expect(actions.setPaintMode).toHaveBeenCalledWith("eraser");
     expect(actions.setDrawColor).toHaveBeenCalledWith("#14b8a6");
-    expect(actions.setDrawWidth).toHaveBeenCalledWith(18);
-    expect(actions.setDrawOpacity).toHaveBeenCalledWith(0.45);
+    expect(actions.setDrawWidth).toHaveBeenCalledWith(40);
+    expect(actions.setDrawOpacity).toHaveBeenCalledWith(0.1);
   });
 
   it("collapses the paint palette when the active palette button is clicked again", async () => {

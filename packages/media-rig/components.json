@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/src/components",
+    "ui": "@/src/components/ui",
+    "lib": "@/src/components/motion/lib",
+    "hooks": "@/src/components/motion/lib/hooks",
+    "utils": "@/src/components/motion/lib/utils"
+  },
+  "registries": {
+    "@beui": "https://beui.dev/r/{name}.json"
+  }
+}

@@ -12,7 +12,10 @@
         "@react-three/drei@^10",
         "@react-three/fiber@^9",
         "three@^0.168.0",
-        "lucide-react"
+        "lucide-react",
+        "motion",
+        "clsx",
+        "tailwind-merge"
       ],
       "files": [
         {
@@ -104,6 +107,56 @@
           "path": "packages/media-rig/src/components/light-sphere/utils/position-preset.ts",
           "type": "registry:lib",
           "target": "@components/light-sphere/utils/position-preset.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/range-slider.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/range-slider.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/switch.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/switch.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
         }
       ],
       "devDependencies": [
@@ -116,7 +169,10 @@
       "title": "Image Angle Rig",
       "description": "A CSS 3D image angle panel with drag, rotation, tilt, and camera advance controls.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "motion",
+        "clsx",
+        "tailwind-merge"
       ],
       "files": [
         {
@@ -148,6 +204,56 @@
           "path": "apps/docs/public/assets/photo-texture2.png",
           "type": "registry:file",
           "target": "public/assets/photo-texture2.png"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/range-slider.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/range-slider.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/switch.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/switch.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
         }
       ]
     },
@@ -160,7 +266,10 @@
         "@react-three/fiber@^9",
         "@react-three/drei@^10",
         "lucide-react",
-        "three@^0.168.0"
+        "three@^0.168.0",
+        "motion",
+        "clsx",
+        "tailwind-merge"
       ],
       "files": [
         {
@@ -297,6 +406,91 @@
           "path": "packages/media-rig/src/components/director-stage/record-video.ts",
           "type": "registry:component",
           "target": "@components/director-stage/record-video.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/tooltip.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/tooltip.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/tooltip-surface.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/tooltip-surface.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-dismiss.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-dismiss.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-gesture.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-gesture.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-tap-gesture.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-tap-gesture.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/range-slider.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/range-slider.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/select.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/select.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/input.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/input.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/switch.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/switch.tsx"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
         }
       ],
       "devDependencies": [
@@ -309,7 +503,10 @@
       "title": "Layer Separator",
       "description": "An embeddable layer-separation workspace with region selection, async processing, and editable layer composition.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "motion",
+        "clsx",
+        "tailwind-merge"
       ],
       "files": [
         {
@@ -346,6 +543,51 @@
           "path": "packages/media-rig/src/components/layer-separator/parts/CompositionStage.tsx",
           "type": "registry:component",
           "target": "@components/layer-separator/parts/CompositionStage.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/range-slider.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/range-slider.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
         }
       ]
     },
@@ -356,7 +598,10 @@
       "description": "A full-featured Fabric.js image editor with layers, history, cropping, painting, and export.",
       "dependencies": [
         "fabric@^7",
-        "lucide-react"
+        "lucide-react",
+        "motion",
+        "clsx",
+        "tailwind-merge"
       ],
       "files": [
         {
@@ -483,6 +728,86 @@
           "path": "packages/media-rig/src/components/image-editor/utils/geometry.ts",
           "type": "registry:lib",
           "target": "@components/image-editor/utils/geometry.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/tooltip.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/tooltip.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/tooltip-surface.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/tooltip-surface.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-dismiss.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-dismiss.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-gesture.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-gesture.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-tap-gesture.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-tap-gesture.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/input.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/input.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/range-slider.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/range-slider.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/select.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/select.tsx"
         }
       ]
     },
@@ -493,7 +818,10 @@
       "description": "Image drawing with brush, rectangles, editable text, undo/redo and original-size PNG export.",
       "dependencies": [
         "fabric@^7",
-        "lucide-react"
+        "lucide-react",
+        "motion",
+        "clsx",
+        "tailwind-merge"
       ],
       "files": [
         {
@@ -530,6 +858,147 @@
           "path": "packages/media-rig/src/components/image-annotation/useAnnotationController.ts",
           "type": "registry:lib",
           "target": "@components/image-annotation/useAnnotationController.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/range-slider.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/range-slider.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "video-trim",
+      "type": "registry:component",
+      "title": "Video Trim",
+      "description": "Thumbnail timeline, draggable selection, snapping, looping and browser MP4 export.",
+      "dependencies": [
+        "@ffmpeg/ffmpeg@^0.12.15",
+        "@ffmpeg/util@^0.12.2",
+        "lucide-react",
+        "motion",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/media-rig/src/components/video-trim/VideoTrim.tsx",
+          "type": "registry:component",
+          "target": "@components/video-trim/VideoTrim.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/index.ts",
+          "type": "registry:component",
+          "target": "@components/video-trim/index.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/labels.ts",
+          "type": "registry:lib",
+          "target": "@components/video-trim/labels.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/thumbnail-strip.ts",
+          "type": "registry:lib",
+          "target": "@components/video-trim/thumbnail-strip.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/trim-range.ts",
+          "type": "registry:lib",
+          "target": "@components/video-trim/trim-range.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/trim-video.ts",
+          "type": "registry:lib",
+          "target": "@components/video-trim/trim-video.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/use-trim-preview.ts",
+          "type": "registry:hook",
+          "target": "@components/video-trim/use-trim-preview.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/video-engine.ts",
+          "type": "registry:lib",
+          "target": "@components/video-trim/video-engine.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/video-trim-selection.tsx",
+          "type": "registry:component",
+          "target": "@components/video-trim/video-trim-selection.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-trim/video-trim.css",
+          "type": "registry:style",
+          "target": "@components/video-trim/video-trim.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/button/base.tsx",
+          "type": "registry:component",
+          "target": "@components/motion/button/base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/hooks/use-hover-capable.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/hooks/use-hover-capable.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/motion/theme.css",
+          "type": "registry:lib",
+          "target": "@components/motion/theme.css"
+        },
+        {
+          "path": "packages/media-rig/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/motion/BEUI-LICENSE"
         }
       ]
     }

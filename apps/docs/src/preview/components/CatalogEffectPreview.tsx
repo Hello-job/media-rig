@@ -1,43 +1,39 @@
+"use client";
+import { useLocale } from "@/i18n/LocaleProvider";
 import React from "react";
 
-/** Lightweight visual examples: no editor or canvas runtime on the catalog. */
-export default function CatalogEffectPreview({ kind, className }: { kind: "image-annotation" | "layer-separator"; className: string }) {
-  const annotation = kind === "image-annotation";
-  return <div className={`relative ${className}`} role="img" aria-label={annotation ? "图片涂鸦：红色圈线、矩形与文字标注效果" : "图层分离：室内背景与花瓶、椅子、落地灯独立图层"}>
+/** Lightweight layer preview; the editor uses these same extracted assets. */
+export default function CatalogEffectPreview({ className }: { kind: "layer-separator"; className: string }) {
+  const { t } = useLocale();
+  return <div className={`relative ${className}`} role="img" aria-label={t("图层分离：泳池度假人像、护肤品与泳池背景独立图层")}>
     <svg viewBox="0 0 800 400" className="h-full w-full" aria-hidden="true">
       <defs>
-        <clipPath id={`catalog-${kind}`}><rect x="92" y="28" width="616" height="344" rx="12" /></clipPath>
+        <clipPath id="pool-scene-clip"><rect x="30" y="28" width="504" height="332" rx="14" /></clipPath>
+        <pattern id="pool-checker" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#242728" /><path d="M0 0h8v8H0zM8 8h8v8H8z" fill="#2b2e2f" /></pattern>
+        <linearGradient id="pool-shade" x1="0" y1="0" x2="0" y2="1"><stop offset=".5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".65" /></linearGradient>
       </defs>
-      {annotation ? <>
-        <image href="/assets/layer-separator/scene.png" x="92" y="28" width="616" height="344" preserveAspectRatio="xMidYMid slice" clipPath={`url(#catalog-${kind})`} />
-        <g fill="none" stroke="#ff4545" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M 370 186 C 323 192 300 262 341 324 C 377 357 502 351 531 307 C 557 261 522 191 468 179 C 421 168 368 173 352 194" />
-          <rect x="556" y="67" width="70" height="265" rx="4" />
-          <path d="M 431 104 Q 459 122 478 150 M 459 144 L 478 150 L 478 130" />
-          <path d="M 163 334 Q 211 343 262 332" />
-        </g>
-        <rect x="288" y="61" width="165" height="44" rx="9" fill="#202124" />
-        <text x="306" y="90" fill="#ff6969" fontSize="22" fontFamily="sans-serif" fontWeight="600">调整这个位置</text>
-        <rect x="113" y="44" width="126" height="32" rx="8" fill="#17181bea" />
-        <text x="129" y="65" fill="#f5f5f5" fontSize="14" fontFamily="sans-serif">✎  涂鸦与标注</text>
-      </> : <>
-        <rect x="42" y="84" width="345" height="248" rx="12" fill="#24262a" stroke="#ffffff25" />
-        <image href="/assets/layer-separator/background.png" x="53" y="95" width="323" height="215" />
-        <text x="59" y="72" fill="#a1a1aa" fontSize="15" fontFamily="sans-serif">背景层</text>
-        <path d="M 402 208 H 443 M 432 197 L 444 208 L 432 219" stroke="#8c9eae" strokeWidth="3" fill="none" />
-        {[
-          { name: "花瓶", file: "vase", x: 458, y: 112, box: "100 250 390 640" },
-          { name: "椅子", file: "chair", x: 554, y: 79, box: "550 430 510 510" },
-          { name: "落地灯", file: "lamp", x: 650, y: 46, box: "1120 110 290 810" },
-        ].map((layer, index) => <g key={layer.file}>
-          <rect x={layer.x} y={layer.y} width="112" height="230" rx="10" fill="#20252a" stroke="#87b6d7" strokeOpacity=".6" />
-          <svg x={layer.x + 9} y={layer.y + 14} width="94" height="166" viewBox={layer.box} preserveAspectRatio="xMidYMid meet">
-            <image href={`/assets/layer-separator/${layer.file}.png`} width="1536" height="1024" />
-          </svg>
-          <text x={layer.x + 12} y={layer.y + 209} fill="#d1e8f7" fontSize="13" fontFamily="sans-serif">0{index + 1}  {layer.name}</text>
-        </g>)}
-        <text x="461" y="373" fill="#8da8bc" fontSize="14" fontFamily="sans-serif">独立图层 · 自由编排</text>
-      </>}
+      <image href="/assets/layer-separator/poolside/scene.svg" x="30" y="28" width="504" height="332" preserveAspectRatio="xMidYMid slice" clipPath="url(#pool-scene-clip)" />
+      <rect x="30" y="28" width="504" height="332" rx="14" fill="url(#pool-shade)" />
+      <text x="51" y="58" fill="white" fontSize="11" letterSpacing="2" fontFamily="sans-serif">{t("泳池畔 / 杂志大片")}</text>
+      <text x="51" y="333" fill="white" fontSize="13" fontFamily="sans-serif">{t("一张照片，重新编排每个细节。")}</text>
+      <g transform="rotate(-4 579 187)">
+        <rect x="492" y="45" width="174" height="290" rx="12" fill="url(#pool-checker)" stroke="#ffffff65" />
+        <svg x="506" y="62" width="146" height="231" viewBox="401 8 355 966" preserveAspectRatio="xMidYMid meet">
+          <image href="/assets/layer-separator/poolside/model.png" width="1536" height="1024" />
+        </svg>
+        <rect x="492" y="300" width="174" height="35" rx="12" fill="#202324" />
+        <text x="508" y="322" fill="#e9eded" fontSize="12" fontFamily="sans-serif">{t("01  度假人像")}</text>
+        <circle cx="647" cy="318" r="3" fill="#fafafa" />
+      </g>
+      <g transform="rotate(5 700 264)">
+        <rect x="632" y="159" width="142" height="190" rx="12" fill="url(#pool-checker)" stroke="#ffffff65" />
+        <svg x="641" y="169" width="124" height="134" viewBox="1080 502 471 533" preserveAspectRatio="xMidYMid meet">
+          <image href="/assets/layer-separator/poolside/skincare.png" width="1536" height="1024" />
+        </svg>
+        <rect x="632" y="314" width="142" height="35" rx="12" fill="#202324" />
+        <text x="645" y="336" fill="#e9eded" fontSize="12" fontFamily="sans-serif">{t("02  夏日护肤")}</text>
+      </g>
+      <text x="511" y="381" fill="#969e9e" fontSize="10" letterSpacing="1.5" fontFamily="sans-serif">{t("分离 · 移动 · 编排")}</text>
     </svg>
   </div>;
 }

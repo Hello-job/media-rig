@@ -1,3 +1,5 @@
+import { Tooltip } from "../../motion/tooltip";
+import { Button } from "../../motion/button/base";
 import {
   Expand,
   ImagePlus,
@@ -64,16 +66,17 @@ type ToolButtonProps = {
 
 function ToolButton({ label, icon: Icon, active, disabled, onClick }: ToolButtonProps) {
   return (
-    <button
+    <Tooltip content={label}>
+    <Button variant="ghost" size="icon"
       type="button"
       aria-label={label}
       aria-pressed={active}
-      title={label}
       className={active ? "is-active" : undefined}
       disabled={disabled}
       onClick={onClick}
     >
       <Icon aria-hidden="true" size={20} />
-    </button>
+    </Button>
+    </Tooltip>
   );
 }

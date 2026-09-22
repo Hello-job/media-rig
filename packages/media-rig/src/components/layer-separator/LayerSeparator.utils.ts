@@ -1,4 +1,5 @@
 import type {
+  LayerSeparatorAsset,
   LayerSeparatorBoundingBox,
   LayerSeparatorResult,
   LayerSeparatorSelection,
@@ -68,6 +69,24 @@ export function normalizeResult(result: LayerSeparatorResult) {
       transform: normalizeTransform(layer.transform),
     })),
   } satisfies LayerSeparatorResult;
+}
+
+/** Resize around the visible subject, including layers with transparent margins. */
+export function scaleLayer(layer: LayerSeparatorAsset, requestedWidth: number) {
+  const transform = normalizeTransform(layer.transform);
+  const bounds = layer.contentBounds ?? { x: 0, y: 0, width: 1, height: 1 };
+  const ratio = clamp(requestedWidth / transform.width,
+    Math.max(0.04 / transform.width, 0.04 / transform.height),
+    Math.min(2 / transform.width, 2 / transform.height));
+  const width = transform.width * ratio;
+  const height = transform.height * ratio;
+  return {
+    ...transform,
+    x: transform.x + (bounds.x + bounds.width / 2) * (transform.width - width),
+    y: transform.y + (bounds.y + bounds.height / 2) * (transform.height - height),
+    width,
+    height,
+  };
 }
 
 async function loadImage(url: string) {

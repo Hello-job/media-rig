@@ -1,0 +1,40 @@
+.video, .editorial { position: relative; width: 100%; overflow: hidden; container-type: inline-size; }
+.video { background: #18262a; color: white; }
+.videoPoster, .portrait { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.videoPoster { object-position: center 39%; transition: transform .65s ease; }
+a:hover .videoPoster { transform: scale(1.035); }
+.videoShade { position: absolute; inset: 0; background: linear-gradient(180deg, #07101255, transparent 35%, #06090c77 68%, #06090ce6); }
+.videoTop { position: absolute; inset: 6% 5% auto; display: flex; justify-content: space-between; align-items: center; font-size: clamp(8px, 2cqw, 12px); letter-spacing: .13em; }
+.videoTop > span:first-child { display: flex; align-items: center; gap: 7px; }
+.duration { font-variant-numeric: tabular-nums; letter-spacing: .04em; color: #ffffffb0; }
+.play { position: absolute; top: 34%; left: 50%; transform: translate(-50%, -50%); width: 10%; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid #ffffff60; border-radius: 50%; background: #ffffff12; backdrop-filter: blur(8px); }
+.play svg { margin-left: 2px; width: 40%; }
+.timelinePanel { position: absolute; bottom: 5%; left: 5%; right: 5%; padding: 3% 3% 2%; border: 1px solid #ffffff24; border-radius: 11px; background: #111619bf; box-shadow: 0 8px 24px #0003; backdrop-filter: blur(16px); }
+.timelineHeading { display: flex; align-items: center; gap: 9px; margin-bottom: 3%; font-size: clamp(8px, 2cqw, 12px); color: #d5d9da; }
+.timelineHeading strong { color: #fff; font-variant-numeric: tabular-nums; font-weight: 500; }
+.timelineHeading strong span { color: #ffffff70; }
+.done { margin-left: auto; display: flex; align-items: center; gap: 4px; color: #ffffffa0; }
+.timeline { display: flex; position: relative; height: clamp(25px, 8cqw, 52px); border-radius: 5px; }
+.timeline > img { width: 12.5%; height: 100%; object-fit: cover; }
+.timeline > img:first-child { border-radius: 5px 0 0 5px; }
+.timeline > img:last-of-type { border-radius: 0 5px 5px 0; }
+.timelineDim { position: absolute; inset: 0 0 0 14.36%; background: #06090ca6; border-radius: 0 5px 5px 0; }
+.selection { position: absolute; inset: -2px auto -2px 0; width: 14.36%; border: solid white; border-width: 2px 7px; border-radius: 5px; }
+.selection i { position: absolute; top: 32%; height: 36%; width: 1px; background: #232323; }
+.selection i:first-child { left: -4px; } .selection i:last-child { right: -4px; }
+.playhead { position: absolute; top: -5px; bottom: -4px; left: 7%; width: 1px; background: white; box-shadow: 0 0 4px #0008; }
+.playhead::before { content: ''; position: absolute; top: 0; left: -3px; width: 7px; height: 5px; background: white; border-radius: 1px; }
+.timelineTicks { display: flex; justify-content: space-between; margin-top: 2%; color: #a6afb1; font-size: clamp(7px, 1.8cqw, 10px); font-variant-numeric: tabular-nums; }
+.editorial { background: #e8e2d8; color: #292724; }
+.portrait { object-position: 50% 20%; }
+.editorialCopy { position: absolute; left: 7%; top: 16%; display: flex; flex-direction: column; }
+.editorialCopy > span { font-size: clamp(6px, 1.6cqw, 10px); letter-spacing: .2em; }
+.editorialCopy strong { margin-top: 13%; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(20px, 7.7cqw, 54px); line-height: .96; font-weight: 400; letter-spacing: -.05em; }
+.editorialCopy small { margin-top: 10%; font-size: clamp(6px, 1.6cqw, 10px); color: #494640; }
+.annotationTools { position: absolute; right: 5%; top: 7%; display: flex; align-items: center; gap: 12px; border-radius: 7px; padding: 9px 11px; color: #e9e7e2; background: #242321eb; box-shadow: 0 4px 16px #0002; }
+.annotationTools span { width: 10px; height: 10px; border-radius: 50%; background: #9f392f; border: 2px solid #ffffffb0; }
+.markup { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: #9f392f; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.annotationNote { position: absolute; left: 12%; top: 68%; color: #8f3028; font-size: clamp(9px, 2.5cqw, 15px); transform: rotate(-5deg); letter-spacing: .08em; }
+.editorialFooter { position: absolute; bottom: 5%; left: 7%; right: 5%; display: flex; justify-content: space-between; font-size: clamp(6px, 1.5cqw, 9px); letter-spacing: .13em; }
+.editorialFooter > span { letter-spacing: 0; }
+@media (prefers-reduced-motion: reduce) { .videoPoster { transition: none; } }

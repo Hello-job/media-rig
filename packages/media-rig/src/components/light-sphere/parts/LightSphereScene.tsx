@@ -44,9 +44,12 @@ export default function LightSphereScene({
   onLightSettle,
 }: LightSphereSceneProps) {
   const sphereRadius = configRef.current.sphereRadius;
-  const lightRef = useRef(sphericalPoint(-45, 146, sphereRadius));
+  const initialTarget = targetPosRef.current;
+  const lightRef = useRef(initialTarget
+    ? new THREE.Vector3(initialTarget.x, initialTarget.y, initialTarget.z)
+    : sphericalPoint(-45, 146, sphereRadius));
   const snapAnimation = useRef<SnapAnimation | null>(null);
-  const lastTargetPos = useRef<Vector3Like | null | undefined>(null);
+  const lastTargetPos = useRef<Vector3Like | null | undefined>(initialTarget);
   const spotTarget = useRef<THREE.Object3D>(null);
   const spotLight = useRef<THREE.SpotLight>(null);
   const { camera } = useThree();
