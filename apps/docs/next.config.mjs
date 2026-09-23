@@ -2,7 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const slugs = "video-trim|light-sphere|image-angle-rig|director-stage|image-editor|image-annotation|layer-separator";
+const slugs = "video-editor|video-trim|light-sphere|image-angle-rig|director-stage|image-editor|image-annotation|layer-separator";
 export default {
   outputFileTracingRoot: root,
   transpilePackages: ["media-rig"],

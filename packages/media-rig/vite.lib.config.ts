@@ -10,6 +10,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
+        "video-editor": entryPath("./src/components/video-editor/index.ts"),
         "video-trim": entryPath("./src/components/video-trim/index.ts"),
         index: entryPath("./src/index.ts"),
         "light-sphere": entryPath("./src/components/light-sphere/index.ts"),

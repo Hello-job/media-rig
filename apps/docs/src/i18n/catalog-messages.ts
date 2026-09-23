@@ -1,4 +1,18 @@
 export const catalogMessages: [string, string][] = [
+  ["视频剪辑：画面预览、剪辑工具与多轨时间线", "Video editing: preview, editing tools, and a multi-track timeline"],
+  ["受控视频剪辑器，支持多片段时间线、音频混合、文字字幕、分割裁剪与撤销重做。", "A controlled video editor with a multi-clip timeline, audio mixing, text, subtitles, splitting, trimming, and undo/redo."],
+  ["视频剪辑", "Video editing"],
+  ["受控工程数据；保持未修改对象的引用，更新时立即提交状态。", "Controlled project data. Preserve unchanged object references and commit state updates immediately."],
+  ["视频和音频素材列表，包含唯一 id、url、label 和 kind。", "Video and audio sources with unique id, url, label, and kind fields."],
+  ["自动按顺序导入新素材。", "Automatically import new sources in order."],
+  ["可注入元数据、缩略图和波形加载器。", "Inject metadata, thumbnail, and waveform loaders."],
+  ["由宿主实现编码与保存，支持取消及进度回报；组件不内置编码器。", "The host provides encoding and saving with cancellation and progress reporting. No encoder is bundled."],
+  ["可替换内置文案，键以 videoEditor. 开头。", "Override built-in messages using keys prefixed with videoEditor."],
+  ["禁用编辑、导入和导出。", "Disable editing, importing, and exporting."],
+  ["添加视频或音频，开始剪辑；支持文字、字幕和撤销重做。", "Add video or audio to start editing, with text, subtitles, and undo/redo."],
+  ["添加素材", "Add media"],
+  ["素材仅在浏览器本地使用。此演示展示剪辑功能，视频编码与保存可通过 onExport 接入。", "Media stays in your browser. This demo shows editing; connect encoding and saving through onExport."],
+
   [
     "带缩略图时间轴的视频片段截取组件，支持拖动选区、整秒吸附、循环预览，并在浏览器内导出含音轨的 MP4。",
     "Trim video on a thumbnail timeline with draggable selections, whole-second snapping, loop playback, and in-browser MP4 export with audio."

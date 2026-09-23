@@ -1,0 +1,86 @@
+
+.video-editor, .mr-video-editor-theme {
+  color-scheme: dark;
+
+  /* Canonical project semantics; shadcn aliases below must resolve to these. */
+  --ui-bg-app: #111111;
+  --ui-bg-surface: #202020;
+  --ui-bg-surface-raised: #292929;
+  --ui-bg-control: #262626;
+  --ui-bg-control-hover: #ffffff1a;
+  --ui-bg-control-active: #ffffff26;
+  --ui-text-primary: #f5f5f5;
+  --ui-text-on-accent: #fff;
+  --ui-text-on-danger: #fff;
+  --ui-text-secondary: rgb(255 255 255 / 70%);
+  --ui-text-muted: rgb(255 255 255 / 45%);
+  --ui-text-disabled: rgb(255 255 255 / 28%);
+  --ui-border-subtle: rgb(255 255 255 / 10%);
+  --ui-border-strong: rgb(255 255 255 / 18%);
+  --ui-accent: #38bdf8;
+  --ui-accent-subtle: rgb(56 189 248 / 16%);
+  --ui-danger: #f43f5e;
+  --ui-favorite: #facc15;
+  --ui-warning: #f59e0b;
+  --ui-success: #22c55e;
+  --ui-overlay-backdrop: rgb(0 0 0 / 72%);
+  --ui-focus-ring: #38bdf8;
+
+  /* Shape, elevation, motion, and layering. */
+  --ui-radius-xs: 4px;
+  --ui-radius-sm: 6px;
+  --ui-radius-md: 8px;
+  --ui-radius-lg: 12px;
+  --ui-radius-xl: 16px;
+  --ui-radius-2xl: 28px;
+  --ui-radius-full: 9999px;
+  --ui-shadow-popover: 0 18px 48px rgb(0 0 0 / 48%);
+  --ui-shadow-dialog: 0 24px 80px rgb(0 0 0 / 56%);
+  --ui-duration-fast: 120ms;
+  --ui-duration-normal: 180ms;
+  --ui-duration-slow: 240ms;
+  --ui-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --dropdown-open-dur: 250ms;
+  --dropdown-close-dur: 150ms;
+  --dropdown-pre-scale: 0.97;
+  --dropdown-closing-scale: 0.99;
+  --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-box: 150ms;
+  --check-draw: 350ms;
+  --check-delay: 0ms;
+  --check-uncheck: 150ms;
+  --check-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ui-z-popover: 1000;
+  --ui-z-dialog: 1200;
+  --ui-z-fullscreen: 1400;
+  --ui-z-overlay-popover: 1500;
+  --ui-z-toast: 1600;
+
+  /* shadcn public contract. Keep generated primitives close to upstream. */
+  --background: var(--ui-bg-app);
+  --foreground: var(--ui-text-primary);
+  --card: var(--ui-bg-surface);
+  --card-foreground: var(--ui-text-primary);
+  --popover: var(--ui-bg-surface-raised);
+  --popover-foreground: var(--ui-text-primary);
+  --primary: var(--ui-accent);
+  --primary-foreground: var(--ui-text-on-accent);
+  --secondary: var(--ui-bg-control);
+  --secondary-foreground: var(--ui-text-primary);
+  --muted: var(--ui-bg-control);
+  --muted-foreground: var(--ui-text-muted);
+  --accent: var(--ui-bg-control-hover);
+  --accent-foreground: var(--ui-text-primary);
+  --destructive: var(--ui-danger);
+  --destructive-foreground: var(--ui-text-on-danger);
+  --border: var(--ui-border-subtle);
+  --input: var(--ui-border-subtle);
+  --ring: var(--ui-focus-ring);
+  --overlay: var(--ui-overlay-backdrop);
+
+}
+
+.video-editor, .mr-video-editor-theme { font-family: ui-sans-serif, system-ui, sans-serif; }
+.video-editor *, .mr-video-editor-theme, .mr-video-editor-theme * { box-sizing: border-box; }
+
+.video-editor { color: var(--ui-text-primary); }

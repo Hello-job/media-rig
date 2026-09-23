@@ -49,11 +49,11 @@ import "media-rig/style.css";
 import { ImageAnnotation } from "media-rig/image-annotation";
 ```
 
-七组组件的导入路径分别为 `media-rig/light-sphere`、`media-rig/image-angle-rig`、`media-rig/director-stage`、`media-rig/image-editor`、`media-rig/image-annotation`、`media-rig/layer-separator` 和 `media-rig/video-trim`。也可以从 `media-rig` 统一导入。
+八组组件的导入路径分别为 `media-rig/light-sphere`、`media-rig/image-angle-rig`、`media-rig/director-stage`、`media-rig/image-editor`、`media-rig/image-annotation`、`media-rig/layer-separator`、`media-rig/video-trim` 和 `media-rig/video-editor`。也可以从 `media-rig` 统一导入。
 
 ### MediaRig CLI
 
-`media-rig@0.2.0` 已发布到 npm，提供 CLI 入口，复用 shadcn 安装源码、样式与依赖。也可以在本仓库通过 `pnpm cli` 调试。
+`media-rig` 已发布到 npm，提供 CLI 入口，复用 shadcn 安装源码、样式与依赖。也可以在本仓库通过 `pnpm cli` 调试。
 
 ```bash
 # 安装组件源码
@@ -346,3 +346,14 @@ pnpm publish --access public
 `import { VideoTrim } from "media-rig/video-trim"`
 
 文档：`/components/video-trim` · [API and runtime requirements](packages/media-rig/README.md#video-trim)
+
+## Video Editor
+
+```tsx
+import { VideoEditor, EMPTY_EDIT } from "media-rig/video-editor";
+import "media-rig/style.css";
+```
+
+Controlled multi-clip video editor with audio, text, subtitles and undo/redo. The host provides encoding and saving through `onExport`.
+
+[API](packages/media-rig/src/components/video-editor/README.md) · Demo: `/components/video-editor`

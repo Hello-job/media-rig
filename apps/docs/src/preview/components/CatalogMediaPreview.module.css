@@ -38,3 +38,33 @@ a:hover .videoPoster { transform: scale(1.035); }
 .editorialFooter { position: absolute; bottom: 5%; left: 7%; right: 5%; display: flex; justify-content: space-between; font-size: clamp(6px, 1.5cqw, 9px); letter-spacing: .13em; }
 .editorialFooter > span { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) { .videoPoster { transition: none; } }
+
+.editing { position: relative; width: 100%; overflow: hidden; container-type: inline-size; background: #101112; color: #e4e4e7; }
+.editingWorkspace { position: absolute; inset: 5% 5% 0; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #ffffff12; border-radius: 8px 8px 0 0; background: #191a1b; box-shadow: 0 8px 30px #0005; }
+.editingViewer { position: relative; display: flex; flex: 1; min-height: 0; justify-content: center; background: #0c0d0e; padding: 2% 0; }
+.editingViewer > img { height: 100%; max-width: 76%; object-fit: contain; }
+.editingTimecode { position: absolute; left: 3%; bottom: 8%; font: 500 clamp(6px, 1.5cqw, 10px) monospace; }
+.editingTimecode > span { color: #ffffff55; }
+.editingViewerTag { position: absolute; right: 3%; top: 10%; font-size: clamp(6px, 1.4cqw, 9px); color: #ffffff70; }
+.editingToolbar { height: 10%; min-height: 16px; display: flex; align-items: center; justify-content: space-between; padding: 0 3%; border-block: 1px solid #ffffff10; }
+.editingToolbar > span { display: flex; align-items: center; gap: 2.4cqw; width: 29%; font-size: 10px; }
+.editingToolbar > span:last-child { justify-content: flex-end; }
+.editingToolbar svg { width: clamp(7px, 2cqw, 13px); height: clamp(7px, 2cqw, 13px); }
+.editingToolbar i { width: 8cqw; height: 2px; background: #777; position: relative; }
+.editingToolbar i::after { content: ""; position: absolute; width: 5px; height: 5px; border-radius: 50%; left: 40%; top: -1.5px; background: #ddd; }
+.editingTracks { position: relative; display: flex; flex-direction: column; gap: 4%; height: 40%; padding: 0 3% 3%; }
+.editingRuler { height: 20%; display: flex; align-items: center; justify-content: space-between; margin-left: 6%; font: 400 clamp(5px, 1.4cqw, 9px) monospace; color: #888; }
+.editingRow { display: flex; gap: 2%; align-items: center; height: 20%; min-height: 0; }
+.editingRow:nth-child(2) { height: 32%; }
+.editingRow > svg { width: 4%; height: 70%; color: #777; flex-shrink: 0; }
+.editingFilm { display: flex; position: relative; height: 100%; width: 94%; border: 1px solid #e4e4e7; border-radius: 2px; overflow: hidden; }
+.editingFilm img { width: calc(100% / 7); min-width: 0; height: 100%; object-fit: cover; }
+.editingCut { position: absolute; left: 57%; top: 0; bottom: 0; border-left: 2px solid #191a1b; }
+.editingCaptions { display: flex; gap: 4%; width: 94%; height: 100%; padding-left: 14%; }
+.editingCaptions span { display: flex; align-items: center; width: 35%; padding: 0 3%; overflow: hidden; white-space: nowrap; border-radius: 2px; background: #514433; color: #dcc5a4; font-size: clamp(5px, 1.3cqw, 9px); }
+.editingCaptions span:last-child { width: 43%; }
+.editingAudio { display: flex; gap: 1%; align-items: center; width: 86%; height: 100%; background: #24383b; border-radius: 2px; padding: 0 1%; overflow: hidden; }
+.editingAudio > svg { height: 65%; width: 3%; flex-shrink: 0; color: #87b0b5; }
+.editingAudio > i { flex: 1; min-width: 1px; background: #6b969b; border-radius: 1px; opacity: .8; }
+.editingPlayhead { position: absolute; top: 5%; bottom: 0; left: 39%; width: 1px; background: #eee; }
+.editingPlayhead > i { position: absolute; top: 0; left: -3px; width: 7px; height: 7px; background: #eee; clip-path: polygon(0 0, 100% 0, 100% 65%, 50% 100%, 0 65%); }

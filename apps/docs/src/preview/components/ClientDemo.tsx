@@ -7,6 +7,7 @@ import type { MediaComponentMeta } from "../catalog";
 
 function DemoLoading() { const { t } = useLocale(); return <div className="grid min-h-96 place-items-center text-sm text-white/45"><div className="flex items-center gap-3"><Loader size={20} label={t("正在加载交互演示")} />{t("正在加载交互演示…")}</div></div>; }
 const demos = {
+  "video-editor": dynamic(() => import("../pages/VideoEditorPreview"), { ssr: false, loading: DemoLoading }),
   "video-trim": dynamic(() => import("../pages/VideoTrimPreview"), { ssr: false, loading: DemoLoading }),
   "light-sphere": dynamic(() => import("../pages/LightSpherePreview"), { ssr: false, loading: DemoLoading }),
   "image-angle-rig": dynamic(() => import("../pages/ImageAngleRigPreview"), { ssr: false, loading: DemoLoading }),

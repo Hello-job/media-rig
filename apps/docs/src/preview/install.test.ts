@@ -4,7 +4,7 @@ import { localUsageSource } from "./install";
 
 describe("standalone usage examples", () => {
   it("removes site locale dependencies while preserving component locale options", () => {
-    for (const [name, slug] of [["VideoTrim", "video-trim"], ["LayerSeparator", "layer-separator"], ["ImageAnnotation", "image-annotation"], ["ImageAngleRig", "image-angle-rig"], ["LightSphere", "light-sphere"]]) {
+    for (const [name, slug] of [["VideoEditor", "video-editor"], ["VideoTrim", "video-trim"], ["LayerSeparator", "layer-separator"], ["ImageAnnotation", "image-annotation"], ["ImageAngleRig", "image-angle-rig"], ["LightSphere", "light-sphere"]]) {
       const source = readFileSync(`${process.cwd()}/src/preview/pages/${name}Preview.tsx`, "utf8");
       const example = localUsageSource(source, slug);
       expect(example).not.toContain("useLocale");

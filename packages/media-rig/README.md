@@ -62,5 +62,33 @@ export from the pinned `@ffmpeg/core@0.12.10` jsDelivr URL; the host must permit
 that fetch and blob workers. Remote videos must allow CORS. Long or high-resolution
 videos may require substantial browser memory. No upload service is included.
 
-Source installation: `pnpm dlx media-rig@latest add video-trim` (available after
-publishing the updated registry). The source version includes its own scoped CSS.
+Source installation: `pnpm dlx media-rig@latest add video-trim`.
+The source version includes its own scoped CSS.
+
+## Video Editor
+
+```tsx
+import { useState } from "react";
+import { VideoEditor, EMPTY_EDIT, type VideoEditorSource } from "media-rig/video-editor";
+import "media-rig/style.css";
+
+export function Editor({ sources }: { sources: VideoEditorSource[] }) {
+  const [value, onChange] = useState(EMPTY_EDIT);
+  return <div style={{ height: 720 }}>
+    <VideoEditor value={value} onChange={onChange} sources={sources} autoImport />
+  </div>;
+}
+```
+
+Migrated from tamen-web's standalone component: multi-clip timeline, splitting,
+trimming, audio envelopes, text, subtitle tracks, preview, and undo/redo.
+Sources use stable `id`, `url`, `label`, and `kind: "video" | "audio"` fields.
+Optional `services` supplies metadata, thumbnails, and waveforms. `translate`
+overrides the built-in English messages. `readOnly` disables editing.
+
+Encoding and saving belong to the host: supply `exportActions` and `onExport` to
+show export controls. Honor its `signal`, `onProgress`, resolution and format.
+This package does not include the original app's upload or canvas adapters.
+
+Source installation: `pnpm dlx media-rig@latest add video-editor`.
+Local demo: `/components/video-editor`.

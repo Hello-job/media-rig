@@ -8,8 +8,8 @@ export type ComponentApiProp = {
 };
 
 export type MediaComponentMeta = {
-  slug: "video-trim" | "image-annotation" | "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
-  legacyDemo: "trim" | "annotation" | "light" | "angle" | "director" | "editor" | "layers";
+  slug: "video-editor" | "video-trim" | "image-annotation" | "light-sphere" | "image-angle-rig" | "director-stage" | "image-editor" | "layer-separator";
+  legacyDemo: "video-editor" | "trim" | "annotation" | "light" | "angle" | "director" | "editor" | "layers";
   title: string;
   eyebrow: string;
   category: "Video" | "Image" | "Lighting" | "Scene" | "Editor";
@@ -29,6 +29,26 @@ export type MediaComponentMeta = {
 
 
 export const mediaComponents: MediaComponentMeta[] = [
+  {
+    slug: "video-editor", legacyDemo: "video-editor", title: "Video Editor",
+    eyebrow: "Video editing", category: "Video", status: "Beta",
+    description: "受控视频剪辑器，支持多片段时间线、音频混合、文字字幕、分割裁剪与撤销重做。",
+    summary: "视频剪辑",
+    packagePath: "media-rig/video-editor", registryName: "video-editor",
+    dependencies: ["clsx", "lucide-react", "motion", "tailwind-merge", "@floating-ui/react", "@radix-ui/react-context-menu", "@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "@radix-ui/react-select", "@radix-ui/react-slot", "@radix-ui/react-tabs", "@radix-ui/react-tooltip", "class-variance-authority"],
+    tags: ["Video", "Timeline", "Audio", "Subtitles"],
+    previewClassName: "max-w-[1400px]", stageClassName: "min-h-[760px] bg-[#141414] p-3",
+    api: [
+      { name: "value / onChange", type: "VideoEditDocument / (value: VideoEditDocument) => void", defaultValue: "required", description: "受控工程数据；保持未修改对象的引用，更新时立即提交状态。" },
+      { name: "sources", type: "VideoEditorSource[]", defaultValue: "required", description: "视频和音频素材列表，包含唯一 id、url、label 和 kind。" },
+      { name: "autoImport", type: "boolean", defaultValue: "false", description: "自动按顺序导入新素材。" },
+      { name: "services", type: "VideoEditorServices", defaultValue: "undefined", description: "可注入元数据、缩略图和波形加载器。" },
+      { name: "onExport / exportActions", type: "VideoEditorOptions", defaultValue: "undefined", description: "由宿主实现编码与保存，支持取消及进度回报；组件不内置编码器。" },
+      { name: "translate", type: "VideoEditorTranslate", defaultValue: "English", description: "可替换内置文案，键以 videoEditor. 开头。" },
+      { name: "readOnly", type: "boolean", defaultValue: "false", description: "禁用编辑、导入和导出。" },
+    ],
+  },
+
   {
     slug: "video-trim", legacyDemo: "trim", title: "Video Trim",
     eyebrow: "Video clipping", category: "Video", status: "Beta",

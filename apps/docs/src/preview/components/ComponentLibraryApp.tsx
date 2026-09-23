@@ -78,6 +78,7 @@ type CatalogLayout = "grid" | "list" | "matrix";
 const catalogCategories = ["All Components", "Image", "Video", "Lighting", "Scene", "Editor"] as const;
 
 const catalogPreviewPaths: Record<MediaComponentMeta["slug"], string> = {
+  "video-editor": "/assets/video-trim/poster.jpg",
   "video-trim": "/assets/video-trim/poster.jpg",
   "image-annotation": "/assets/image-annotation/editorial-portrait.png",
   "layer-separator": "/assets/layer-separator/poolside/scene.svg",
@@ -204,7 +205,7 @@ export function CatalogHome() {
                   layout === "list" ? "grid grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)] max-[760px]:grid-cols-1" : "flex flex-col",
                 ].join(" ")}>
                   <a className="relative block overflow-hidden rounded-[18px] bg-[#111111] focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-white/70" href={componentHref(component.slug)}>
-                    {component.slug === "video-trim" || component.slug === "image-annotation" ? (
+                    {component.slug === "video-editor" || component.slug === "video-trim" || component.slug === "image-annotation" ? (
                       <CatalogMediaPreview kind={component.slug} className={layout === "list" ? "h-full min-h-72" : layout === "matrix" ? "aspect-[1.55/1]" : "aspect-[2/1] max-[760px]:aspect-[1.35/1]"} />
                     ) : component.slug === "layer-separator" ? (
                       <CatalogEffectPreview kind={component.slug} className={layout === "list" ? "h-full min-h-72" : layout === "matrix" ? "aspect-[1.55/1]" : "aspect-[2/1] max-[760px]:aspect-[1.35/1]"} />

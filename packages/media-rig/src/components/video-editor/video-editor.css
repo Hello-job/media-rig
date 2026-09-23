@@ -1,0 +1,52 @@
+@import "./theme.css";
+.video-editor {
+  --ui-bg-app: #141414;
+  --ui-bg-surface: #1e1e1e;
+  --ui-bg-surface-raised: #252525;
+  --ui-bg-control: #303030;
+  --ui-bg-control-hover: #393939;
+  --ui-bg-control-active: #414141;
+  --ui-border-subtle: #353535;
+  --edit-text-track: #30374e;
+  --edit-subtitle-track: #4b4030;
+  --edit-audio-track: #1b2433;
+  --edit-waveform: #2e9adc;
+}
+
+.video-editor .edit-clip {
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-xs);
+}
+.video-editor .edit-clip-video {
+  border-radius: 0;
+}
+.video-editor .edit-clip-text {
+  background: var(--edit-text-track);
+}
+.video-editor .edit-clip-subtitle {
+  background: var(--edit-subtitle-track);
+}
+.video-editor .edit-clip-audio {
+  background: var(--edit-audio-track);
+}
+.video-editor .edit-clip-selected {
+  outline: 2px solid var(--ui-text-primary);
+  outline-offset: -1px;
+}
+.video-editor .edit-clip-selected.edit-clip-text {
+  outline-color: var(--ui-accent);
+}
+.video-editor .edit-trim-handle {
+  z-index: 1;
+}
+.video-editor .edit-trim-handle:hover {
+  background: transparent;
+}
+.video-editor .edit-preview-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.video-editor .edit-preview-stage:fullscreen {
+  background: var(--ui-bg-app);
+}

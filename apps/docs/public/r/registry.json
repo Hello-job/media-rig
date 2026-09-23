@@ -1001,6 +1001,329 @@
           "target": "@components/motion/BEUI-LICENSE"
         }
       ]
+    },
+    {
+      "name": "video-editor",
+      "type": "registry:component",
+      "title": "Video Editor",
+      "description": "Controlled multi-clip video editor with audio, text, subtitles and undo/redo. Encoding is provided by the host.",
+      "dependencies": [
+        "clsx",
+        "lucide-react",
+        "motion",
+        "tailwind-merge",
+        "@floating-ui/react",
+        "@radix-ui/react-context-menu",
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-select",
+        "@radix-ui/react-slot",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "packages/media-rig/src/components/video-editor/audio-clip-waveform.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/audio-clip-waveform.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/audio-envelope.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/audio-envelope.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/clip-context-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/clip-context-menu.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/clip-properties.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/clip-properties.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/draw-text.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/draw-text.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-busy-overlay.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-busy-overlay.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-export-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-export-menu.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-icon-button.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-icon-button.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-number-field.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-number-field.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-preview.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-preview.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-source-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-source-menu.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-timeline.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-timeline.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/edit-transport.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/edit-transport.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/index.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/index.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/icons/glyphs/clip-split-icon.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/icons/glyphs/clip-split-icon.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/icons/glyphs/clip-trim-after-icon.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/icons/glyphs/clip-trim-after-icon.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/icons/glyphs/clip-trim-before-icon.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/icons/glyphs/clip-trim-before-icon.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/icons/icon.types.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/internal/components/icons/icon.types.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/icons/internal/icon-base.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/icons/internal/icon-base.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/button.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/button.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/context-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/context-menu.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/dialog.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/dialog.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/dropdown-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/dropdown-menu.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/input.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/input.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/range-slider-bubble.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/range-slider-bubble.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/range-slider-fluid.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/range-slider-fluid.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/select.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/select.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/spinner.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/spinner.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/tabs.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/tabs.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/textarea.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/textarea.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/components/ui/tooltip.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/internal/components/ui/tooltip.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/lib/ease.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/internal/lib/ease.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/lib/hooks/use-slider.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/internal/lib/hooks/use-slider.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/lib/touch.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/internal/lib/touch.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/internal/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/internal/lib/utils.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/media-metadata.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/media-metadata.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/messages.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/messages.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/preview-geometry.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/preview-geometry.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/preview-selection.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/preview-selection.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/preview-stage.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/preview-stage.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/subtitle-panel.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/subtitle-panel.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/subtitles.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/subtitles.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/text-overlay-frames.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/text-overlay-frames.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/text-style-controls.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/text-style-controls.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/theme.css",
+          "type": "registry:lib",
+          "target": "@components/video-editor/theme.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/thumbnail-cache.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/thumbnail-cache.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/timeline-clip.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/timeline-clip.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/timeline.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/timeline.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/types.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/types.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/use-connected-sources.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/use-connected-sources.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/use-frame-callback.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/use-frame-callback.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/use-video-editor.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/use-video-editor.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/video-clip-strip.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/video-clip-strip.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/video-editor-context.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/video-editor-context.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/video-editor-panel.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/video-editor-panel.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/video-editor-shortcuts.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/video-editor-shortcuts.ts"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/video-editor.css",
+          "type": "registry:lib",
+          "target": "@components/video-editor/video-editor.css"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/video-editor.tsx",
+          "type": "registry:component",
+          "target": "@components/video-editor/video-editor.tsx"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/BEUI-LICENSE",
+          "type": "registry:lib",
+          "target": "@components/video-editor/BEUI-LICENSE"
+        },
+        {
+          "path": "packages/media-rig/src/components/video-editor/thumbnail-strip.ts",
+          "type": "registry:lib",
+          "target": "@components/video-editor/thumbnail-strip.ts"
+        }
+      ]
     }
   ]
 }

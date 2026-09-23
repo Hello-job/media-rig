@@ -5,6 +5,7 @@ import { afterEach, vi } from "vitest";
 afterEach(cleanup);
 
 Object.defineProperty(window, "ResizeObserver", {
+  configurable: true,
   writable: true,
   value: class ResizeObserver {
     observe = vi.fn();

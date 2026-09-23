@@ -5,3 +5,4 @@ export * from "./image-editor";
 export * from "./layer-separator";
 export * from "./image-annotation";
 export * from "./video-trim";
+export * from "./video-editor";

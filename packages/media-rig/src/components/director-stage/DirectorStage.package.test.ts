@@ -13,8 +13,7 @@ describe("DirectorStage package surface", () => {
     expect(defaultCharacter(0).modelUrl).toBe(DEFAULT_CHARACTER_MODEL_URL);
   });
 
-  it("publishes the DirectorStage stylesheet in version 0.2.0", () => {
-    expect(packageJson.version).toBe("0.2.0");
+  it("publishes the DirectorStage stylesheet", () => {
     expect(packageJson.exports?.["./style.css"]).toBe("./dist/style.css");
   });
 });

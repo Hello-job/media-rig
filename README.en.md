@@ -210,7 +210,7 @@ Each component page provides copyable pnpm (default), npm, yarn, and bun command
 pnpm dlx shadcn@latest add https://media-rig.vercel.app/r/image-annotation.json
 ```
 
-Source, styles, and dependencies are installed together. Files follow your `components.json` components alias. Import from `@/components/image-annotation` instead of the npm package. The same URL pattern supports all seven component slugs, including `video-trim`.
+Source, styles, and dependencies are installed together. Files follow your `components.json` components alias. Import from `@/components/image-annotation` instead of the npm package. The same URL pattern supports all eight component slugs, including `video-trim`.
 
 For pnpm 11 browser projects, merge this into `pnpm-workspace.yaml` before installation to skip Fabric's optional native Node canvas build and align transitive Three.js types. Preserve existing settings and check compatibility if your project already uses Three.js.
 
@@ -223,7 +223,7 @@ overrides:
 
 ## MediaRig CLI
 
-`media-rig@0.2.0` is published on npm with a `media-rig` binary. Use the short commands below, `pnpm cli` in this repository for development, or the existing shadcn URL commands.
+`media-rig` is published on npm with a `media-rig` binary. Use the short commands below, `pnpm cli` in this repository for development, or the existing shadcn URL commands.
 
 ```sh
 # Install component source
@@ -246,3 +246,14 @@ Video clipping with a thumbnail timeline, draggable range, whole-second snapping
 `import { VideoTrim } from "media-rig/video-trim"`
 
 Docs: `/components/video-trim` · [API and runtime requirements](packages/media-rig/README.md#video-trim)
+
+## Video Editor
+
+```tsx
+import { VideoEditor, EMPTY_EDIT } from "media-rig/video-editor";
+import "media-rig/style.css";
+```
+
+Controlled multi-clip video editor with audio, text, subtitles and undo/redo. The host provides encoding and saving through `onExport`.
+
+[API](packages/media-rig/src/components/video-editor/README.md) · Demo: `/components/video-editor`
