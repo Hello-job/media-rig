@@ -36,8 +36,8 @@ export default function Welcome() {
       <h1>{t("让创作灵感")}<br />{t("即刻成为交互")}</h1>
       <p className={styles.description}>{t("为图片、视频与 3D 创作打造的 React 交互组件。")}</p>
       <div className={styles.actions}>
-        <Link href="/components/video-trim#installation" className={styles.primary}>{t("开始使用")}<ArrowRight size={20} /></Link>
-        <Link href="/components" className={styles.secondary}>{t("浏览组件")}<ArrowUpRight size={17} /></Link>
+        <Link href="/components" className={styles.primary}>{t("开始使用")}<ArrowRight size={20} /></Link>
+        <Link href="/components#components" className={styles.secondary}>{t("浏览组件")}<ArrowUpRight size={17} /></Link>
       </div>
       <p className={styles.facts}>{mediaComponents.length} {t("个组件")}<span>·</span>TypeScript<span>·</span>{t("shadcn 安装")}</p>
     </section>
